@@ -4,6 +4,8 @@
 
 const {Pool, Client } = require('pg');
 
+
+
 const dbConfig =  {"user": process.env.DATABASE_USER,
 "host": process.env.DATABASE_HOST,
 "database" : process.env.DATABASE_DB,
@@ -16,27 +18,38 @@ const pool = new Pool(
   );
 
 // example from postgres client npm site
-pool.query('SELECT NOW()', (err, res) => {
-    console.log(err, res)
-    pool.end()
-  });
+// pool.query('SELECT NOW()', (err, res) => {
+//     console.log(err, res)
+//     pool.end()
+//   });
   
 
-async function runQuery(queryText) {
-  // connect to database
-
-  // run query
+async function runQuery(queryText, queryValues) {
+  // format query
+  const query = {text: queryText, values: queryValues};
+  
+  // connect and run
+  const queryResult = await pool.query(query);
 
   // get response
-
-  // handle error
-
-  // close connection
-
-  // return result
+  if (queryResult.rowCount) {
+    return queryResult.rows[0];
+  }
+   else {
+     return 0;
+   }
 };
 
-async function insertData(insertText) {
+async function insertData(insertText, insertValues) {
+
+  const query = {text: insertText, values: insertValues};
+
+  const insertResult = await pool.query(query);
+
+  console.log(insertResult.rows[0])
+  console.log(insertResult.rows);
+
+
 
 }
 
@@ -49,4 +62,10 @@ async function updateData(updateText) {
 
 }
 
-module.exports = {insertData, runQuery, deleteData, updateData};
+function addSelf(req, id, type, obj) {
+
+  return `${req.protocol}://${req.get('host')}${type}/${id}`;
+}
+
+
+module.exports = {insertData, runQuery, deleteData, updateData, addSelf};
