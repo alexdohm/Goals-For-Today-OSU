@@ -4,8 +4,6 @@
 
 const {Pool, Client } = require('pg');
 
-
-
 const dbConfig =  {"user": process.env.DATABASE_USER,
 "host": process.env.DATABASE_HOST,
 "database" : process.env.DATABASE_DB,
@@ -22,12 +20,11 @@ const pool = new Pool(
 //     console.log(err, res)
 //     pool.end()
 //   });
-  
+//
 
 async function runQuery(queryText, queryValues) {
   // format query
   const query = {text: queryText, values: queryValues};
-  
   // connect and run
   const queryResult = await pool.query(query);
 

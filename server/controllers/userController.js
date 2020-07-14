@@ -36,16 +36,23 @@ router.get('/:email', function (req, res) {
 // add a user
 router.post('/', async function (req, res) {
     if (req.body.first_name && req.body.last_name && req.body.email && req.body.password) {
+        User.addUser(req.body.first_name, req.body.last_name, req.body.email, req.body.password)
+        .then( (result) => {
+            console.log(result)    //it is doing the proper query, and being put into the database but is returning 404?
+            // ill let you set this below
 
-        //TODO: continue 
-        // User.addUser(req.body)
-
+            // if (failedResponseMatch.get(result)) {
+            //     res.status(Number(result)).json({"Error": `${failedResponseMatch.get(result)}`});
+            // } else {
+            //     result.self = Helpers.addSelf(req, result.member_id, 'users', result);
+            //     res.status(200).json(result);
+            // }
+        });
     } else {
         res.status(400)
             .json({ "Error": MISSING_ATTRIBUTE_TEXT })
             .end();
     }
 });
-
 
 module.exports = router;
