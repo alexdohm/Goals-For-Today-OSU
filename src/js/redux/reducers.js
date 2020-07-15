@@ -6,7 +6,6 @@ const initialState = {
 
 export const toDos = (state = initialState, action) => {
   const { type, payload } = action;
-  console.log('inside reducer');
 
   switch (type) {
     case SELECT_TODO: {
@@ -15,7 +14,6 @@ export const toDos = (state = initialState, action) => {
         ...state,
         selectedToDoId: toDoID
       };
-      console.log('new state', newState);
       return newState;
     }
     default:

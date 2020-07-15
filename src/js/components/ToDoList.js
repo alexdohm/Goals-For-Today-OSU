@@ -136,7 +136,6 @@ const AddToDoForm = (props) => {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     selectedToDoId: state.toDos.selectedToDoId
   }
