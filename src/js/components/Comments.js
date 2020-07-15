@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Form, Icon } from 'semantic-ui-react';
+import { connect } from 'react-redux';
 
 import { USER_ICON, EDIT_ICON } from './common/constants';
 import Heading from './common/Heading';
@@ -9,18 +10,48 @@ import Text from './common/Text';
 const testHeading = 'Comments';
 const testSubHeading = 'These are some comments';
 const testComments = [
-  {
-    user: 'Alexandra',
-    body: 'Great stuff. Really top notch work here.'
-  },
-  {
-    user: 'Kelly',
-    body: 'The Goals For Today team is without a doubt the best team.'
-  },
-  {
-    user: 'Emre',
-    body: 'Did you know the Hoos are STILL defending NCAA men\'s basketball champs???? No I will never get over it :) :) :) :)'
-  }
+  [
+    {
+      user: 'Alexandra',
+      body: 'Great stuff. Really top notch work here.'
+    },
+    {
+      user: 'Kelly',
+      body: 'The Goals For Today team is without a doubt the best team.'
+    },
+    {
+      user: 'Emre',
+      body: 'Did you know the Hoos are STILL defending NCAA men\'s basketball champs???? No I will never get over it :) :) :) :)'
+    }
+  ],
+  [
+    {
+      user: 'Alexandra',
+      body: 'This a comment on the second item in the to do list'
+    },
+    {
+      user: 'Kelly',
+      body: 'Cool, that must mean that redux works!'
+    },
+    {
+      user: 'Emre',
+      body: 'Download the Redux devtools chrome extension! it\'s pretty handy when developing using redux'
+    }
+  ],
+  [
+    {
+      user: 'Alexandra',
+      body: 'One more set of comments for the third item'
+    },
+    {
+      user: 'Kelly',
+      body: 'COne more set of comments for the third item'
+    },
+    {
+      user: 'Emre',
+      body: 'One more set of comments for the third item'
+    }
+  ]
 ]
 
 class Comments extends Component {
@@ -38,13 +69,15 @@ class Comments extends Component {
           {testSubHeading}
         </Heading>
         <div className='Comments-list'>
-          {testComments.map( (comment, index) => (
-            <Comment 
-              key={index} 
-              user={comment.user} 
-              body={comment.body} 
-            />
-          ))}
+          {this.props.selectedToDoId != null && this.props.selectedToDoId < testComments.length
+            ? testComments[this.props.selectedToDoId].map( (comment, index) => (
+              <Comment 
+                key={index} 
+                user={comment.user} 
+                body={comment.body} 
+              />
+            ))
+            : null}
         </div>
         <CommentForm />
       </div>
@@ -82,4 +115,8 @@ const CommentForm = (props) => {
   )
 }
 
-export default Comments;
+const mapStateToProps = state => ({
+  selectedToDoId: state.toDos.selectedToDoId
+});
+
+export default connect(mapStateToProps)(Comments);
