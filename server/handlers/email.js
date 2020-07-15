@@ -2,17 +2,18 @@ const nodemailer = require('nodemailer');
 const pug = require('pug');
 const juice = require('juice');
 const htmlToText = require('html-to-text');
-//const Config = require('../config/config');
 
-//const mailOptions = Config.mail_config;
-// TODO setup actual email account
 var transport = nodemailer.createTransport({
 	host: process.env.MAIL_HOST,
 	port: process.env.MAIL_PORT,
-	auth: {
-		user: process.env.MAIL_AUTH_USER,
-		pass: process.env.MAIL_AUTH_PASSs
-	}
+    secureConnection: false,
+    tls: {
+      ciphers:'SSLv3'
+    },
+    auth: {
+      user: process.env.MAIL_AUTH_USER, 
+      pass: process.env.MAIL_AUTH_PASS 
+    }
   });
 
 
@@ -26,8 +27,8 @@ exports.send = async (options) => {
 	const html = generateHTML(options.filename, options);
 	const text = htmlToText.fromString(html);
 	const mailOptions = {
-		from: `Goals For Today <noreply@goalsfortoday.com>`,
-		to: options.user,
+		from: `goalsfortoday@outlook.com`,
+		to: options.email,
 		subject: options.subject,
 		html: html,
 		text: text
