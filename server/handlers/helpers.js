@@ -2,24 +2,28 @@
 // This file is primarily responsible for generic database queries and interactions that can be reused regardless of entity
 // https://node-postgres.com/features/queries
 
-const {Pool, Client } = require('pg');
+const { Pool, Client } = require("pg");
 
-const dbConfig =  {"user": process.env.DATABASE_USER,
-"host": process.env.DATABASE_HOST,
-"database" : process.env.DATABASE_DB,
-"password": process.env.DATABASE_PW,
-"port": process.env.DATABASE_PORT}
+const dbConfig = {
+  user: process.env.DATABASE_USER,
+  host: process.env.DATABASE_HOST,
+  database: process.env.DATABASE_DB,
+  password: process.env.DATABASE_PW,
+  port: process.env.DATABASE_PORT,
+};
 
-if (!dbConfig.host || !dbConfig.database || !dbConfig.password || !dbConfig.port) {
+if (
+  !dbConfig.host ||
+  !dbConfig.database ||
+  !dbConfig.password ||
+  !dbConfig.port
+) {
   console.log("WARNING!!! AT LEAST ONE DATABASE CONFIGURATION IS NOT SET!!");
 }
 
 // should probably not do this if above returns true anywhere ...
 //TODO: also maybe shut down if DB can't connect, because, what's the point?
-const pool = new Pool(
-   dbConfig
-  );
-
+const pool = new Pool(dbConfig);
 
 /**
  * Runs query based on parameter array provided. DB Driver requires second
@@ -29,19 +33,17 @@ const pool = new Pool(
  */
 async function runQuery(queryText, queryValues) {
   // format query
-  const query = {text: queryText, values: queryValues};
+  const query = { text: queryText, values: queryValues };
   // connect and run
   const queryResult = await pool.query(query);
 
   // get response
   if (queryResult.rowCount) {
     return queryResult.rows[0];
+  } else {
+    return 0;
   }
-   else {
-     return 0;
-   }
-};
-
+}
 
 /**
  * Inserts data into database and returns unique key for new entity
@@ -50,8 +52,7 @@ async function runQuery(queryText, queryValues) {
  * @param {string} key_name field that should be returned after insert statement
  */
 async function insertData(insertText, insertValues, key_field_name) {
-
-  const query = {text: insertText, values: insertValues};
+  const query = { text: insertText, values: insertValues };
 
   const insertResult = await pool.query(query);
 
@@ -63,16 +64,9 @@ async function insertData(insertText, insertValues, key_field_name) {
   return insertResult.rows[0][key_name];
 }
 
+async function deleteData(deleteText) {}
 
-
-async function deleteData(deleteText) {
-
-}
-
-
-async function updateData(updateText) {
-
-}
+async function updateData(updateText) {}
 
 /**
  * Adds resource location to object based on environment and entity
@@ -81,9 +75,7 @@ async function updateData(updateText) {
  * @param {string} type base URL of entity ex: users
  */
 function addSelf(req, id, type) {
-
-  return `${req.protocol}://${req.get('host')}/${type}/${id}`;
+  return `${req.protocol}://${req.get("host")}/${type}/${id}`;
 }
 
-
-module.exports = {insertData, runQuery, deleteData, updateData, addSelf};
+module.exports = { insertData, runQuery, deleteData, updateData, addSelf };
