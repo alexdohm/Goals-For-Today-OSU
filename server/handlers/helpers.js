@@ -10,18 +10,23 @@ const dbConfig =  {"user": process.env.DATABASE_USER,
 "password": process.env.DATABASE_PW,
 "port": process.env.DATABASE_PORT}
 
+if (!dbConfig.host || !dbConfig.database || !dbConfig.password || !dbConfig.port) {
+  console.log("WARNING!!! AT LEAST ONE DATABASE CONFIGURATION IS NOT SET!!");
+}
 
+// should probably not do this if above returns true anywhere ...
+//TODO: also maybe shut down if DB can't connect, because, what's the point?
 const pool = new Pool(
    dbConfig
   );
 
-// example from postgres client npm site
-// pool.query('SELECT NOW()', (err, res) => {
-//     console.log(err, res)
-//     pool.end()
-//   });
-//
 
+/**
+ * Runs query based on parameter array provided. DB Driver requires second
+ * argument to be array. Returns first set in rows array or 0 if no results
+ * @param {string} queryText text of query with substitute parameters
+ * @param {array} queryValues array of parameters for query
+ */
 async function runQuery(queryText, queryValues) {
   // format query
   const query = {text: queryText, values: queryValues};
@@ -37,18 +42,28 @@ async function runQuery(queryText, queryValues) {
    }
 };
 
-async function insertData(insertText, insertValues) {
+
+/**
+ * Inserts data into database and returns unique key for new entity
+ * @param {string} insertText query text of insert statement
+ * @param {array} insertValues user input
+ * @param {string} key_name field that should be returned after insert statement
+ */
+async function insertData(insertText, insertValues, key_field_name) {
 
   const query = {text: insertText, values: insertValues};
 
   const insertResult = await pool.query(query);
 
-  console.log(insertResult.rows[0])
-  console.log(insertResult.rows);
+  // uncomment to check out what is returned
+  //console.log(insertResult.rows[0][key_name])
+  //console.log(insertResult.rows);
 
-
-
+  // return id so it can be added to entity and formatted after insert
+  return insertResult.rows[0][key_name];
 }
+
+
 
 async function deleteData(deleteText) {
 
@@ -59,9 +74,15 @@ async function updateData(updateText) {
 
 }
 
-function addSelf(req, id, type, obj) {
+/**
+ * Adds resource location to object based on environment and entity
+ * @param {request} req inbound request from route used to get where app is hosted
+ * @param {number} id unique id of entity
+ * @param {string} type base URL of entity ex: users
+ */
+function addSelf(req, id, type) {
 
-  return `${req.protocol}://${req.get('host')}${type}/${id}`;
+  return `${req.protocol}://${req.get('host')}/${type}/${id}`;
 }
 
 
