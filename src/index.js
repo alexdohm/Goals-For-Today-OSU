@@ -2,10 +2,12 @@ require('./styles/main.scss');
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
 import CreateAccountPage from './js/CreateAccountPage.js';
 import LoginPage from './js/Loginpage.js';
 import HomePage from './js/HomePage.js';
+import { configureStore } from './js/redux/store.js';
 
 const wrapper = document.querySelector('#container');
 
@@ -23,4 +25,11 @@ const App = () => {
   );
 }
 
-wrapper && ReactDOM.render(<App />, wrapper);
+if (wrapper) {
+  ReactDOM.render(
+    <Provider store={configureStore()}>
+      <App />
+    </Provider>,
+    wrapper
+  );
+} 
