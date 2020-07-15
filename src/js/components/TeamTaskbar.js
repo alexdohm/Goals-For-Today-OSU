@@ -1,18 +1,23 @@
 import React, { Component } from 'react';
 import { Icon } from 'semantic-ui-react';
+import { connect } from 'react-redux';
 
 import { GROUP_ICON, SETTING_ICON, SIGN_OUT_ICON, USER_ICON } from './common/constants';
 import IconButton from './common/IconButton';
 import Text from './common/Text';
+import { selectUser } from '../redux/actions';
 
 const testUsers = [ //TODO: replace with real data from database
   {
+    id: 0,
     name: 'Emre'
   },
   {
+    id: 1,
     name: 'Kelly'
   },
   {
+    id: 2,
     name: 'Alexandra'
   }
 ];
@@ -35,7 +40,15 @@ class TeamTaskbar extends Component {
     return (
       <div className='TeamTaskbar'>
         <div className='TeamTaskbar-members'>
-          {testUsers.map( (user, index) => <TaskbarItem key={index} icon={USER_ICON}>{user.name}</TaskbarItem>)}
+          {testUsers.map( (user, index) => (
+            <TaskbarItem 
+              key={index} 
+              onClick={() => this.props.onUserSelected(user.id)} 
+              icon={USER_ICON}
+              isSelected={user.id == this.props.selectedUserId}>
+                {user.name}
+            </TaskbarItem>
+          ))}
         </div>
         <div className='TeamTaskbar-bottom'>
           <TaskbarItem icon={GROUP_ICON}>{testTeamName}</TaskbarItem>
@@ -51,12 +64,22 @@ class TeamTaskbar extends Component {
 
 const TaskbarItem = (props) => {
 
+  const className = `TaskbarItem${props.isSelected ? ' TaskbarItem--selected' : ''}`
+
   return (  
-    <div className='TaskbarItem'>
+    <div className={className} onClick={props.onClick}>
       <Icon className='TaskbarItem-icon' name={props.icon} size='large' />
       <Text baseClass='TaskbarItem'>{props.children}</Text>
     </div>
   );
 }
 
-export default TeamTaskbar;
+const mapStateToProps = state => ({
+  selectedUserId: state.toDos.selectedUserId
+});
+
+const mapDispatchToProps = dispatch => ({
+  onUserSelected: userID => dispatch(selectUser(userID))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TeamTaskbar);

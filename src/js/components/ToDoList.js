@@ -11,13 +11,39 @@ import ToDoItem from './ToDoItem';
 
 const testTodos = [ //TODO: replace with data from database
   {
+    id: 0,
+    userID: 0,
+    description: 'Create a component hierarchy'
+  },
+  {
+    id: 1,
+    userID: 0,
     description: 'Create a react layout'
   },
   {
-    description: 'Create a database'
+    id: 2,
+    userID: 0,
+    description: 'add redux to app'
   },
   {
-    description: 'learn to interact with the database'
+    id: 3,
+    userID: 1,
+    description: 'create api documentation'
+  },
+  {
+    id: 4,
+    userID: 1,
+    description: 'configure nodemailer'
+  },
+  {
+    id: 5,
+    userID: 2,
+    description: 'write sql commands to interact with database'
+  },
+  {
+    id: 6,
+    userID: 2,
+    description: 'integrate frontend with the database'
   }
 ]
 
@@ -90,18 +116,19 @@ class ToDoList extends Component {
           To do list for today
         </Heading>
         <div className='ToDoList-items'>
-          {testTodos.map( (item, index) => (
-            <ToDoItem 
-              key={index} 
-              id={index} 
-              selected={this.props.selectedToDoId == index} 
-              description={item.description} 
-              onClick={() => {
-                console.log('clicked to do item');
-                this.props.onToDoSelected(index);
-              }}
-            />
-          ))}
+          {testTodos.map( (item, index) => {
+            if (item.userID == this.props.selectedUserId) {
+              return (
+                <ToDoItem 
+                  key={index} 
+                  id={index} 
+                  selected={this.props.selectedToDoId == index} 
+                  description={item.description} 
+                  onClick={() => this.props.onToDoSelected(item.id)}
+                />
+              );
+            }
+          })}
         </div>
         <IconButton baseClass='ToDoList' color='green' icon={ADD_ICON} onClick={this.openAddModal} />
         {this.state.showAddModal
@@ -135,11 +162,10 @@ const AddToDoForm = (props) => {
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    selectedToDoId: state.toDos.selectedToDoId
-  }
-}
+const mapStateToProps = state => ({
+  selectedToDoId: state.toDos.selectedToDoId,
+  selectedUserId: state.toDos.selectedUserId
+});
 
 const mapDispatchToProps = dispatch => ({
   onToDoSelected: toDoID => dispatch(selectToDo(toDoID))

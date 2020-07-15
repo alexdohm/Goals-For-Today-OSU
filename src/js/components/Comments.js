@@ -10,48 +10,41 @@ import Text from './common/Text';
 const testHeading = 'Comments';
 const testSubHeading = 'These are some comments';
 const testComments = [
-  [
-    {
-      user: 'Alexandra',
-      body: 'Great stuff. Really top notch work here.'
-    },
-    {
-      user: 'Kelly',
-      body: 'The Goals For Today team is without a doubt the best team.'
-    },
-    {
-      user: 'Emre',
-      body: 'Did you know the Hoos are STILL defending NCAA men\'s basketball champs???? No I will never get over it :) :) :) :)'
-    }
-  ],
-  [
-    {
-      user: 'Alexandra',
-      body: 'This a comment on the second item in the to do list'
-    },
-    {
-      user: 'Kelly',
-      body: 'Cool, that must mean that redux works!'
-    },
-    {
-      user: 'Emre',
-      body: 'Download the Redux devtools chrome extension! it\'s pretty handy when developing using redux'
-    }
-  ],
-  [
-    {
-      user: 'Alexandra',
-      body: 'One more set of comments for the third item'
-    },
-    {
-      user: 'Kelly',
-      body: 'COne more set of comments for the third item'
-    },
-    {
-      user: 'Emre',
-      body: 'One more set of comments for the third item'
-    }
-  ]
+  {
+    toDoID: 0, 
+    user: 'Alexandra',
+    body: 'Great stuff. Really top notch work here.'
+  },
+  {
+    toDoID: 1,
+    user: 'Kelly',
+    body: 'The Goals For Today team is without a doubt the best team.'
+  },
+  {
+    toDoID: 2,
+    user: 'Emre',
+    body: 'Did you know the Hoos are STILL defending NCAA men\'s basketball champs???? No I will never get over it :) :) :) :)'
+  },
+  {
+    toDoID: 3,
+    user: 'Alexandra',
+    body: 'This a comment on the second item in the to do list'
+  },
+  {
+    toDoID: 4,
+    user: 'Kelly',
+    body: 'Cool, that must mean that redux works!'
+  },
+  {
+    toDoID: 5,
+    user: 'Emre',
+    body: 'Download the Redux devtools chrome extension! it\'s pretty handy when developing using redux'
+  },
+  {
+    toDoID: 6,
+    user: 'Alexandra',
+    body: 'One more set of comments for the third item'
+  }
 ]
 
 class Comments extends Component {
@@ -70,13 +63,17 @@ class Comments extends Component {
         </Heading>
         <div className='Comments-list'>
           {this.props.selectedToDoId != null && this.props.selectedToDoId < testComments.length
-            ? testComments[this.props.selectedToDoId].map( (comment, index) => (
-              <Comment 
-                key={index} 
-                user={comment.user} 
-                body={comment.body} 
-              />
-            ))
+            ? testComments.map( (comment, index) => {
+                if (comment.toDoID == this.props.selectedToDoId) {
+                  return (
+                    <Comment 
+                      key={index} 
+                      user={comment.user} 
+                      body={comment.body} 
+                    />
+                  );
+                }
+              })
             : null}
         </div>
         <CommentForm />

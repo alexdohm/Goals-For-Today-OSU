@@ -4,3 +4,8 @@ export const selectToDo = toDoID => ({
   payload: { toDoID },
 });
 
+export const SELECT_USER = 'SELECT_USER';
+export const selectUser = userID => ({
+  type: SELECT_USER,
+  payload: { userID }
+});
