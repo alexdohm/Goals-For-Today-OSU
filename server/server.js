@@ -10,6 +10,9 @@ require('dotenv').config();
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
+// future use - app.use(passport.initialize())
+// future use - app.use(passport.session())
+
 app.use(express.static(path.join(__dirname, '../dist')));
 
 app.get('/', function(req, res) {
