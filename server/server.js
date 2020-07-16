@@ -24,7 +24,7 @@ app.get("/", function (req, res) {
  * need to manually serve index.html when a request is made
  * for /create-account or /home
  */
-app.get("/team_overview", function (req, res) {
+app.get("/team-overview", function (req, res) {
   res.sendFile(path.join(__dirname, "../dist", "index.html"));
 });
 
@@ -32,7 +32,7 @@ app.get("/settings", function (req, res) {
   res.sendFile(path.join(__dirname, "../dist", "index.html"));
 });
 
-app.get("/create_account", function (req, res) {
+app.get("/create-account", function (req, res) {
   res.sendFile(path.join(__dirname, "../dist", "index.html"));
 });
 

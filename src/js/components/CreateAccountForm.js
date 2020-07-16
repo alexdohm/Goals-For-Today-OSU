@@ -24,6 +24,7 @@ class CreateAccountForm extends Component {
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handlePasswordConfirmChange = this.handlePasswordConfirmChange.bind(this);
+    this.handleCreateAccount = this.handleCreateAccount.bind(this);
   }
 
   handleFirstNameChange(event) {
