@@ -33,9 +33,9 @@ const addUser = async function (firstName, lastName, email, password, req) {
     };
 
     // don't really need this but temporarily putting to see how it works
-    const mailoutcome = await Mail.send(mailOptions);
+   // const mailoutcome = await Mail.send(mailOptions);
 
-    console.log(mailoutcome);
+    //console.log(mailoutcome);
   }
   // I think error handling upstream should be enough if we get something weird back
   return getUserById(user);

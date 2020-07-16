@@ -61,7 +61,7 @@ async function insertData(insertText, insertValues, key_field_name) {
   //console.log(insertResult.rows);
 
   // return id so it can be added to entity and formatted after insert
-  return insertResult.rows[0][key_name];
+  return insertResult.rows[0][key_field_name];
 }
 
 async function deleteData(deleteText) {}
