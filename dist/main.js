@@ -20181,7 +20181,7 @@ object-assign
     var Da = Ra,
       Ia = n(49),
       Aa = n.n(Ia),
-      Ma = "http://goals-for-today-osu.herokuapp.com";
+      Ma = "https://goals-for-today-osu.herokuapp.com";
     function La(e) {
       console.log(e),
         e
