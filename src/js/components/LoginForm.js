@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { Button, Form } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { FormFieldHelper } from './common/helpers';
+import { login } from '../redux/actions';
 
 class LoginForm extends Component {
   constructor(props) {
@@ -34,7 +38,13 @@ class LoginForm extends Component {
 
   handleLogin() {
     //TODO: implement
-    alert('you clicked the login button');
+    console.log('you clicked the login button');
+    this.props.login(this.state).then(
+      (res) => this.props.history.push('/home'),
+      (err) => {
+        console.error(err);
+      }
+    )
   }
 
   render() {
@@ -48,4 +58,8 @@ class LoginForm extends Component {
   }
 }
 
-export default LoginForm;
+LoginForm.propTypes = {
+  login: PropTypes.func.isRequired
+};
+
+export default withRouter(connect(null, { login })(LoginForm));

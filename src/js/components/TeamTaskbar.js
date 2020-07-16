@@ -6,6 +6,7 @@ import { GROUP_ICON, SETTING_ICON, SIGN_OUT_ICON, USER_ICON } from './common/con
 import IconButton from './common/IconButton';
 import Text from './common/Text';
 import { selectUser } from '../redux/actions';
+import { logout } from '../redux/actions';
 
 const testUsers = [ //TODO: replace with real data from database
   {
@@ -26,9 +27,17 @@ const testTeamName = 'Team Quasar'; //TODO: replace with real data from database
 
 class TeamTaskbar extends Component {
 
-  handleLogout() {
+  constructor(props) {
+    super(props);
+
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleLogout(e) {
     //TODO: implement
-    alert('You clicked the logout button');
+    e.preventDefault();
+    console.log('logging out');
+    this.props.logout();
   }
 
   handleSettings() {
@@ -75,11 +84,13 @@ const TaskbarItem = (props) => {
 }
 
 const mapStateToProps = state => ({
-  selectedUserId: state.toDos.selectedUserId
+  selectedUserId: state.toDos.selectedUserId,
+  auth: state.isAuthenticated
 });
 
 const mapDispatchToProps = dispatch => ({
-  onUserSelected: userID => dispatch(selectUser(userID))
+  onUserSelected: userID => dispatch(selectUser(userID)),
+  logout
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamTaskbar);

@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Button, Form } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
+import { signup } from '../redux/actions';
 import { FormFieldHelper } from './common/helpers.js';
 
 class CreateAccountForm extends Component {
@@ -64,7 +68,16 @@ class CreateAccountForm extends Component {
 
   handleCreateAccount() {
     //TODO: implement
-    alert('you clicked the create account button');
+    console.log('creating account');
+
+    this.props.signup(this.state).then(
+      () => {
+        this.props.history.push('/');
+      },
+      (err) => {
+        console.error(err);
+      }
+    )
   }
 
   render() {
@@ -83,4 +96,8 @@ class CreateAccountForm extends Component {
   }
 }
 
-export default CreateAccountForm;
+CreateAccountForm.propTypes = {
+  signup: PropTypes.func.isRequired,
+}
+
+export default withRouter(connect(null, { signup })(CreateAccountForm));
