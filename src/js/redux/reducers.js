@@ -1,5 +1,6 @@
 import { SELECT_TODO } from './actions';
 import { SELECT_USER } from './actions';
+import { SET_CURRENT_USER } from "./actions";
 
 const initialState = {
   selectedToDoId: null,
@@ -33,7 +34,7 @@ export const toDos = (state = initialState, action) => {
   }
 }
 
-export const auth = (state = DEFAULT_STATE, action) => {
+export const auth = (state = initialState, action) => {
   switch (action.type) {
     case SET_CURRENT_USER:
       return {

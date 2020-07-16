@@ -18,6 +18,7 @@ class LoginForm extends Component {
 
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
   }
 
   handleEmailChange(event) {

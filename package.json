@@ -56,7 +56,7 @@
   },
   "scripts": {
     "start-two": "webpack-dev-server --open --mode development",
-    "build-production": "webpack --mode production",
+    "build-production": "rm -rf dist/ && webpack --mode production",
     "start": "node server/server.js"
   }
 }

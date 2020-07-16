@@ -7,7 +7,7 @@ import { persistStore } from 'redux-persist';
 import { persistGate, PersistGate} from 'redux-persist/lib/integration/react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import 'jwtDecode' from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 
 import CreateAccountPage from './js/CreateAccountPage.js';
 import LoginPage from './js/Loginpage.js';
@@ -15,7 +15,7 @@ import HomePage from './js/HomePage.js';
 import SettingsPage from './js/SettingsPage';
 import TeamOverviewPage from './js/TeamOverviewPage';
 import { configureStore } from './js/redux/store.js';
-import requireAuth from './RequireAuth';
+import requireAuth from './js/components/RequireAuth';
 import { auth } from './js/redux/reducers';
 import { setCurrentUser, setAuthorizationToken } from './js/redux/actions';
 
