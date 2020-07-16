@@ -27,7 +27,7 @@ const App = () => {
       <div className="App">
         <Switch>
           <Route exact path="/" component={LoginPage} />
-          <Route exact path="/home" component={requireAuth(HomePage)} />
+          <Route exact path="/home" component={HomePage} />
           <Route exact path="/create-account" component={CreateAccountPage} />
           <Route exact path="/settings" component={requireAuth(SettingsPage)} />
           <Route
