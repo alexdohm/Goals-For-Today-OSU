@@ -8,6 +8,8 @@ const jwt = require("jsonwebtoken");
 const jwtKey = "my_secret_key";
 const jwtExpirySeconds = 300;
 
+const MISSING_ATTRIBUTE_TEXT = "The request object is missing at least one of the required attributes";
+
 let failedResponseMatch = new Map();
 failedResponseMatch.set('400', "The request object is missing at least one of the required attributes");
 failedResponseMatch.set('403', "Provided email address is already registered");
@@ -50,7 +52,7 @@ router.post("/signup", function (req, res) {
             expiresIn: jwtExpirySeconds,
           });
 
-         // res.cookie("token", token, { maxAge: jwtExpirySeconds * 1000 });
+          res.cookie("token", token, { maxAge: jwtExpirySeconds * 1000 });
           res.status(201).json(newUser);
         }
       })
