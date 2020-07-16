@@ -4,7 +4,7 @@ import jwtDecode from "jwt-decode";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 // const BASE_URL = {process.env.BASE_URL}; //how do we handle the case where we aren't serving locally?
 // const BASE_URL = "http://localhost:8080"; //how do we handle the case where we aren't serving locally?
-const BASE_URL = "goals-for-today-osu.herokuapp.com"; //how do we handle the case where we aren't serving locally?
+const BASE_URL = "http://goals-for-today-osu.herokuapp.com"; //how do we handle the case where we aren't serving locally?
 
 export function setAuthorizationToken(token) {
   console.log(token);
@@ -20,7 +20,6 @@ export function signup(userData) {
     return axios.post(`${BASE_URL}/auth/signup`, userData);
   };
 }
-
 export function logout() {
   return (dispatch) => {
     localStorage.removeItem("jwtToken");

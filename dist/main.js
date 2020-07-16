@@ -20180,22 +20180,23 @@ object-assign
       (Ra.propTypes = {});
     var Da = Ra,
       Ia = n(49),
-      Aa = n.n(Ia);
-    function Ma(e) {
+      Aa = n.n(Ia),
+      Ma = "http://goals-for-today-osu.herokuapp.com";
+    function La(e) {
       console.log(e),
         e
           ? (Aa.a.defaults.headers.common.Authorization = "Bearer ".concat(e))
           : delete Aa.a.defaults.headers.common.Authorization;
     }
-    function La() {
+    function za() {
       return function (e) {
-        localStorage.removeItem("jwtToken"), Ma(!1), e(za({}));
+        localStorage.removeItem("jwtToken"), La(!1), e(Fa({}));
       };
     }
-    function za(e) {
+    function Fa(e) {
       return { type: "SET_CURRENT_USER", user: e };
     }
-    var Fa = function (e) {
+    var Ua = function (e) {
       var t = "".concat(e.baseClass, "-field"),
         n = "".concat(e.baseClass, "-label"),
         r = "".concat(e.idPrefix, "-").concat(e.name.replace(" ", "-")),
@@ -20212,8 +20213,8 @@ object-assign
         })
       );
     };
-    function Ua(e) {
-      return (Ua =
+    function Ba(e) {
+      return (Ba =
         "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
           ? function (e) {
               return typeof e;
@@ -20227,7 +20228,7 @@ object-assign
                 : typeof e;
             })(e);
     }
-    function Ba(e, t) {
+    function Ha(e, t) {
       var n = Object.keys(e);
       if (Object.getOwnPropertySymbols) {
         var r = Object.getOwnPropertySymbols(e);
@@ -20239,16 +20240,16 @@ object-assign
       }
       return n;
     }
-    function Ha(e) {
+    function Va(e) {
       for (var t = 1; t < arguments.length; t++) {
         var n = null != arguments[t] ? arguments[t] : {};
         t % 2
-          ? Ba(Object(n), !0).forEach(function (t) {
-              Va(e, t, n[t]);
+          ? Ha(Object(n), !0).forEach(function (t) {
+              Wa(e, t, n[t]);
             })
           : Object.getOwnPropertyDescriptors
           ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(n))
-          : Ba(Object(n)).forEach(function (t) {
+          : Ha(Object(n)).forEach(function (t) {
               Object.defineProperty(
                 e,
                 t,
@@ -20258,7 +20259,7 @@ object-assign
       }
       return e;
     }
-    function Va(e, t, n) {
+    function Wa(e, t, n) {
       return (
         t in e
           ? Object.defineProperty(e, t, {
@@ -20271,7 +20272,7 @@ object-assign
         e
       );
     }
-    function Wa(e, t) {
+    function $a(e, t) {
       for (var n = 0; n < t.length; n++) {
         var r = t[n];
         (r.enumerable = r.enumerable || !1),
@@ -20280,14 +20281,14 @@ object-assign
           Object.defineProperty(e, r.key, r);
       }
     }
-    function $a(e, t) {
-      return ($a =
+    function qa(e, t) {
+      return (qa =
         Object.setPrototypeOf ||
         function (e, t) {
           return (e.__proto__ = t), e;
         })(e, t);
     }
-    function qa(e) {
+    function Ka(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -20305,32 +20306,32 @@ object-assign
       })();
       return function () {
         var n,
-          r = Ga(e);
+          r = Ya(e);
         if (t) {
-          var o = Ga(this).constructor;
+          var o = Ya(this).constructor;
           n = Reflect.construct(r, arguments, o);
         } else n = r.apply(this, arguments);
-        return Ka(this, n);
+        return Qa(this, n);
       };
     }
-    function Ka(e, t) {
-      return !t || ("object" !== Ua(t) && "function" != typeof t) ? Qa(e) : t;
+    function Qa(e, t) {
+      return !t || ("object" !== Ba(t) && "function" != typeof t) ? Ga(e) : t;
     }
-    function Qa(e) {
+    function Ga(e) {
       if (void 0 === e)
         throw new ReferenceError(
           "this hasn't been initialised - super() hasn't been called"
         );
       return e;
     }
-    function Ga(e) {
-      return (Ga = Object.setPrototypeOf
+    function Ya(e) {
+      return (Ya = Object.setPrototypeOf
         ? Object.getPrototypeOf
         : function (e) {
             return e.__proto__ || Object.getPrototypeOf(e);
           })(e);
     }
-    var Ya = (function (e) {
+    var Xa = (function (e) {
       !(function (e, t) {
         if ("function" != typeof t && null !== t)
           throw new TypeError(
@@ -20339,12 +20340,12 @@ object-assign
         (e.prototype = Object.create(t && t.prototype, {
           constructor: { value: e, writable: !0, configurable: !0 },
         })),
-          t && $a(e, t);
+          t && qa(e, t);
       })(i, e);
       var t,
         n,
         r,
-        o = qa(i);
+        o = Ka(i);
       function i(e) {
         var t;
         return (
@@ -20359,14 +20360,14 @@ object-assign
             password: "",
             passwordConfirm: "",
           }),
-          (t.handleFirstNameChange = t.handleFirstNameChange.bind(Qa(t))),
-          (t.handleLastNameChange = t.handleLastNameChange.bind(Qa(t))),
-          (t.handleEmailChange = t.handleEmailChange.bind(Qa(t))),
-          (t.handlePasswordChange = t.handlePasswordChange.bind(Qa(t))),
+          (t.handleFirstNameChange = t.handleFirstNameChange.bind(Ga(t))),
+          (t.handleLastNameChange = t.handleLastNameChange.bind(Ga(t))),
+          (t.handleEmailChange = t.handleEmailChange.bind(Ga(t))),
+          (t.handlePasswordChange = t.handlePasswordChange.bind(Ga(t))),
           (t.handlePasswordConfirmChange = t.handlePasswordConfirmChange.bind(
-            Qa(t)
+            Ga(t)
           )),
-          (t.handleCreateAccount = t.handleCreateAccount.bind(Qa(t))),
+          (t.handleCreateAccount = t.handleCreateAccount.bind(Ga(t))),
           t
         );
       }
@@ -20378,7 +20379,7 @@ object-assign
             value: function (e) {
               var t = e.target.value;
               this.setState(function (e) {
-                return Ha(Ha({}, e), {}, { firstName: t });
+                return Va(Va({}, e), {}, { firstName: t });
               });
             },
           },
@@ -20387,7 +20388,7 @@ object-assign
             value: function (e) {
               var t = e.target.value;
               this.setState(function (e) {
-                return Ha(Ha({}, e), {}, { lastName: t });
+                return Va(Va({}, e), {}, { lastName: t });
               });
             },
           },
@@ -20396,7 +20397,7 @@ object-assign
             value: function (e) {
               var t = e.target.value;
               this.setState(function (e) {
-                return Ha(Ha({}, e), {}, { email: t });
+                return Va(Va({}, e), {}, { email: t });
               });
             },
           },
@@ -20405,7 +20406,7 @@ object-assign
             value: function (e) {
               var t = e.target.value;
               this.setState(function (e) {
-                return Ha(Ha({}, e), {}, { password: t });
+                return Va(Va({}, e), {}, { password: t });
               });
             },
           },
@@ -20414,7 +20415,7 @@ object-assign
             value: function (e) {
               var t = e.target.value;
               this.setState(function (e) {
-                return Ha(Ha({}, e), {}, { passwordConfirm: t });
+                return Va(Va({}, e), {}, { passwordConfirm: t });
               });
             },
           },
@@ -20442,33 +20443,33 @@ object-assign
                 a.a.createElement(
                   "div",
                   { className: "CreateAccount-nameFields" },
-                  a.a.createElement(Fa, {
+                  a.a.createElement(Ua, {
                     baseClass: "CreateAccount",
                     idPrefix: "create-account",
                     name: "first name",
                     onChange: this.handleFirstNameChange,
                   }),
-                  a.a.createElement(Fa, {
+                  a.a.createElement(Ua, {
                     baseClass: "CreateAccount",
                     idPrefix: "create-account",
                     name: "last name",
                     onChange: this.handleLastNameChange,
                   })
                 ),
-                a.a.createElement(Fa, {
+                a.a.createElement(Ua, {
                   baseClass: "CreateAccount",
                   idPrefix: "create-account",
                   name: "email",
                   onChange: this.handleEmailChange,
                 }),
-                a.a.createElement(Fa, {
+                a.a.createElement(Ua, {
                   baseClass: "CreateAccount",
                   idPrefix: "create-account",
                   name: "password",
                   type: "text",
                   onChange: this.handlePasswordChange,
                 }),
-                a.a.createElement(Fa, {
+                a.a.createElement(Ua, {
                   baseClass: "CreateAccount",
                   idPrefix: "create-account",
                   name: "confirm password",
@@ -20488,25 +20489,22 @@ object-assign
               );
             },
           },
-        ]) && Wa(t.prototype, n),
-        r && Wa(t, r),
+        ]) && $a(t.prototype, n),
+        r && $a(t, r),
         i
       );
     })(o.Component);
-    Ya.propTypes = { signup: Ct.a.func.isRequired };
-    var Xa = J(
+    Xa.propTypes = { signup: Ct.a.func.isRequired };
+    var Ja = J(
         Ye(null, {
           signup: function (e) {
             return function (t) {
-              return Aa.a.post(
-                "".concat("http://localhost:8080", "/auth/signup"),
-                e
-              );
+              return Aa.a.post("".concat(Ma, "/auth/signup"), e);
             };
           },
-        })(Ya)
+        })(Xa)
       ),
-      Ja = function () {
+      Za = function () {
         return a.a.createElement(
           "div",
           { className: "CreateAccount" },
@@ -20520,10 +20518,10 @@ object-assign
             { baseClass: "CreateAccount" },
             "Create Account"
           ),
-          a.a.createElement(Xa, null)
+          a.a.createElement(Ja, null)
         );
       },
-      Za = function (e) {
+      ei = function (e) {
         var t = e.modifiers ? " ".concat(e.modifiers) : "",
           n = "".concat(e.baseClass, "-link").concat(t);
         return a.a.createElement(
@@ -20532,8 +20530,8 @@ object-assign
           e.children
         );
       };
-    function ei(e) {
-      return (ei =
+    function ti(e) {
+      return (ti =
         "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
           ? function (e) {
               return typeof e;
@@ -20547,7 +20545,7 @@ object-assign
                 : typeof e;
             })(e);
     }
-    function ti(e, t) {
+    function ni(e, t) {
       var n = Object.keys(e);
       if (Object.getOwnPropertySymbols) {
         var r = Object.getOwnPropertySymbols(e);
@@ -20559,16 +20557,16 @@ object-assign
       }
       return n;
     }
-    function ni(e) {
+    function ri(e) {
       for (var t = 1; t < arguments.length; t++) {
         var n = null != arguments[t] ? arguments[t] : {};
         t % 2
-          ? ti(Object(n), !0).forEach(function (t) {
-              ri(e, t, n[t]);
+          ? ni(Object(n), !0).forEach(function (t) {
+              oi(e, t, n[t]);
             })
           : Object.getOwnPropertyDescriptors
           ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(n))
-          : ti(Object(n)).forEach(function (t) {
+          : ni(Object(n)).forEach(function (t) {
               Object.defineProperty(
                 e,
                 t,
@@ -20578,7 +20576,7 @@ object-assign
       }
       return e;
     }
-    function ri(e, t, n) {
+    function oi(e, t, n) {
       return (
         t in e
           ? Object.defineProperty(e, t, {
@@ -20591,7 +20589,7 @@ object-assign
         e
       );
     }
-    function oi(e, t) {
+    function ai(e, t) {
       for (var n = 0; n < t.length; n++) {
         var r = t[n];
         (r.enumerable = r.enumerable || !1),
@@ -20600,14 +20598,14 @@ object-assign
           Object.defineProperty(e, r.key, r);
       }
     }
-    function ai(e, t) {
-      return (ai =
+    function ii(e, t) {
+      return (ii =
         Object.setPrototypeOf ||
         function (e, t) {
           return (e.__proto__ = t), e;
         })(e, t);
     }
-    function ii(e) {
+    function ui(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -20625,32 +20623,32 @@ object-assign
       })();
       return function () {
         var n,
-          r = ci(e);
+          r = si(e);
         if (t) {
-          var o = ci(this).constructor;
+          var o = si(this).constructor;
           n = Reflect.construct(r, arguments, o);
         } else n = r.apply(this, arguments);
-        return ui(this, n);
+        return li(this, n);
       };
     }
-    function ui(e, t) {
-      return !t || ("object" !== ei(t) && "function" != typeof t) ? li(e) : t;
+    function li(e, t) {
+      return !t || ("object" !== ti(t) && "function" != typeof t) ? ci(e) : t;
     }
-    function li(e) {
+    function ci(e) {
       if (void 0 === e)
         throw new ReferenceError(
           "this hasn't been initialised - super() hasn't been called"
         );
       return e;
     }
-    function ci(e) {
-      return (ci = Object.setPrototypeOf
+    function si(e) {
+      return (si = Object.setPrototypeOf
         ? Object.getPrototypeOf
         : function (e) {
             return e.__proto__ || Object.getPrototypeOf(e);
           })(e);
     }
-    var si = (function (e) {
+    var fi = (function (e) {
       !(function (e, t) {
         if ("function" != typeof t && null !== t)
           throw new TypeError(
@@ -20659,12 +20657,12 @@ object-assign
         (e.prototype = Object.create(t && t.prototype, {
           constructor: { value: e, writable: !0, configurable: !0 },
         })),
-          t && ai(e, t);
+          t && ii(e, t);
       })(i, e);
       var t,
         n,
         r,
-        o = ii(i);
+        o = ui(i);
       function i(e) {
         var t;
         return (
@@ -20673,9 +20671,9 @@ object-assign
               throw new TypeError("Cannot call a class as a function");
           })(this, i),
           ((t = o.call(this, e)).state = { emailInput: "", passwordInput: "" }),
-          (t.handleEmailChange = t.handleEmailChange.bind(li(t))),
-          (t.handlePasswordChange = t.handlePasswordChange.bind(li(t))),
-          (t.handleLogin = t.handleLogin.bind(li(t))),
+          (t.handleEmailChange = t.handleEmailChange.bind(ci(t))),
+          (t.handlePasswordChange = t.handlePasswordChange.bind(ci(t))),
+          (t.handleLogin = t.handleLogin.bind(ci(t))),
           t
         );
       }
@@ -20687,7 +20685,7 @@ object-assign
             value: function (e) {
               var t = e.target.value;
               this.setState(function (e) {
-                return ni(ni({}, e), {}, { emailInput: t });
+                return ri(ri({}, e), {}, { emailInput: t });
               });
             },
           },
@@ -20696,7 +20694,7 @@ object-assign
             value: function (e) {
               var t = e.target.value;
               this.setState(function (e) {
-                return ni(ni({}, e), {}, { passwordInput: t });
+                return ri(ri({}, e), {}, { passwordInput: t });
               });
             },
           },
@@ -20721,13 +20719,13 @@ object-assign
               return a.a.createElement(
                 Da,
                 { className: "Login-form" },
-                a.a.createElement(Fa, {
+                a.a.createElement(Ua, {
                   baseClass: "Login",
                   idPrefix: "login",
                   name: "email",
                   onChange: this.handleEmailChange,
                 }),
-                a.a.createElement(Fa, {
+                a.a.createElement(Ua, {
                   baseClass: "Login",
                   idPrefix: "login",
                   name: "password",
@@ -20747,27 +20745,27 @@ object-assign
               );
             },
           },
-        ]) && oi(t.prototype, n),
-        r && oi(t, r),
+        ]) && ai(t.prototype, n),
+        r && ai(t, r),
         i
       );
     })(o.Component);
-    si.propTypes = { login: Ct.a.func.isRequired };
-    var fi = J(
+    fi.propTypes = { login: Ct.a.func.isRequired };
+    var pi = J(
         Ye(null, {
           login: function (e) {
             return function (t) {
               return Aa.a
-                .post("".concat("http://localhost:8080", "/auth/login"), e)
+                .post("".concat(Ma, "/auth/login"), e)
                 .then(function (e) {
                   var n = e.data;
-                  localStorage.setItem("jwtToken", n), Ma(n), t(za(Tt()(n)));
+                  localStorage.setItem("jwtToken", n), La(n), t(Fa(Tt()(n)));
                 });
             };
           },
-        })(si)
+        })(fi)
       ),
-      pi = function () {
+      di = function () {
         return a.a.createElement(
           "div",
           { className: "Login" },
@@ -20781,16 +20779,16 @@ object-assign
             { baseClass: "Login" },
             "Login to Your Account"
           ),
-          a.a.createElement(fi, null),
+          a.a.createElement(pi, null),
           a.a.createElement(
-            Za,
+            ei,
             { baseClass: "Login", href: "/create-account" },
             "New? Create an account!"
           )
         );
       };
-    function di(e) {
-      return (di =
+    function hi(e) {
+      return (hi =
         "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
           ? function (e) {
               return typeof e;
@@ -20804,7 +20802,7 @@ object-assign
                 : typeof e;
             })(e);
     }
-    function hi(e, t) {
+    function mi(e, t) {
       for (var n = 0; n < t.length; n++) {
         var r = t[n];
         (r.enumerable = r.enumerable || !1),
@@ -20813,14 +20811,14 @@ object-assign
           Object.defineProperty(e, r.key, r);
       }
     }
-    function mi(e, t) {
-      return (mi =
+    function vi(e, t) {
+      return (vi =
         Object.setPrototypeOf ||
         function (e, t) {
           return (e.__proto__ = t), e;
         })(e, t);
     }
-    function vi(e) {
+    function yi(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -20838,16 +20836,16 @@ object-assign
       })();
       return function () {
         var n,
-          r = gi(e);
+          r = bi(e);
         if (t) {
-          var o = gi(this).constructor;
+          var o = bi(this).constructor;
           n = Reflect.construct(r, arguments, o);
         } else n = r.apply(this, arguments);
-        return yi(this, n);
+        return gi(this, n);
       };
     }
-    function yi(e, t) {
-      return !t || ("object" !== di(t) && "function" != typeof t)
+    function gi(e, t) {
+      return !t || ("object" !== hi(t) && "function" != typeof t)
         ? (function (e) {
             if (void 0 === e)
               throw new ReferenceError(
@@ -20857,14 +20855,14 @@ object-assign
           })(e)
         : t;
     }
-    function gi(e) {
-      return (gi = Object.setPrototypeOf
+    function bi(e) {
+      return (bi = Object.setPrototypeOf
         ? Object.getPrototypeOf
         : function (e) {
             return e.__proto__ || Object.getPrototypeOf(e);
           })(e);
     }
-    var bi = [
+    var wi = [
         {
           toDoID: 0,
           user: "Alexandra",
@@ -20903,7 +20901,7 @@ object-assign
           body: "One more set of comments for the third item",
         },
       ],
-      wi = (function (e) {
+      xi = (function (e) {
         !(function (e, t) {
           if ("function" != typeof t && null !== t)
             throw new TypeError(
@@ -20912,12 +20910,12 @@ object-assign
           (e.prototype = Object.create(t && t.prototype, {
             constructor: { value: e, writable: !0, configurable: !0 },
           })),
-            t && mi(e, t);
+            t && vi(e, t);
         })(i, e);
         var t,
           n,
           r,
-          o = vi(i);
+          o = yi(i);
         function i(e) {
           return (
             (function (e, t) {
@@ -20951,10 +20949,10 @@ object-assign
                     "div",
                     { className: "Comments-list" },
                     null != this.props.selectedToDoId &&
-                      this.props.selectedToDoId < bi.length
-                      ? bi.map(function (t, n) {
+                      this.props.selectedToDoId < wi.length
+                      ? wi.map(function (t, n) {
                           if (t.toDoID == e.props.selectedToDoId)
-                            return a.a.createElement(xi, {
+                            return a.a.createElement(Ei, {
                               key: n,
                               user: t.user,
                               body: t.body,
@@ -20962,16 +20960,16 @@ object-assign
                         })
                       : null
                   ),
-                  a.a.createElement(Ei, null)
+                  a.a.createElement(ki, null)
                 );
               },
             },
-          ]) && hi(t.prototype, n),
-          r && hi(t, r),
+          ]) && mi(t.prototype, n),
+          r && mi(t, r),
           i
         );
       })(o.Component),
-      xi = function (e) {
+      Ei = function (e) {
         return a.a.createElement(
           "div",
           { className: "Comment" },
@@ -20997,7 +20995,7 @@ object-assign
           )
         );
       },
-      Ei = function (e) {
+      ki = function (e) {
         return a.a.createElement(
           Da,
           { className: "Comment-form", reply: !0 },
@@ -21010,10 +21008,10 @@ object-assign
           })
         );
       },
-      ki = Ye(function (e) {
+      Oi = Ye(function (e) {
         return { selectedToDoId: e.toDos.selectedToDoId };
-      })(wi),
-      Oi = function (e) {
+      })(xi),
+      Ti = function (e) {
         var t =
             e.size &&
             [
@@ -21038,14 +21036,14 @@ object-assign
           a.a.createElement(ar, { name: e.icon, size: t, color: n })
         );
       };
-    Oi.propTypes = {
+    Ti.propTypes = {
       baseClass: Ct.a.string.isRequired,
       icon: Ct.a.string.isRequired,
       onClick: Ct.a.func.isRequired,
     };
-    var Ti = Oi;
-    function Si(e) {
-      return (Si =
+    var Si = Ti;
+    function Ci(e) {
+      return (Ci =
         "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
           ? function (e) {
               return typeof e;
@@ -21059,7 +21057,7 @@ object-assign
                 : typeof e;
             })(e);
     }
-    function Ci(e, t) {
+    function Pi(e, t) {
       for (var n = 0; n < t.length; n++) {
         var r = t[n];
         (r.enumerable = r.enumerable || !1),
@@ -21068,14 +21066,14 @@ object-assign
           Object.defineProperty(e, r.key, r);
       }
     }
-    function Pi(e, t) {
-      return (Pi =
+    function _i(e, t) {
+      return (_i =
         Object.setPrototypeOf ||
         function (e, t) {
           return (e.__proto__ = t), e;
         })(e, t);
     }
-    function _i(e) {
+    function ji(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -21093,37 +21091,37 @@ object-assign
       })();
       return function () {
         var n,
-          r = Ri(e);
+          r = Di(e);
         if (t) {
-          var o = Ri(this).constructor;
+          var o = Di(this).constructor;
           n = Reflect.construct(r, arguments, o);
         } else n = r.apply(this, arguments);
-        return ji(this, n);
+        return Ni(this, n);
       };
     }
-    function ji(e, t) {
-      return !t || ("object" !== Si(t) && "function" != typeof t) ? Ni(e) : t;
+    function Ni(e, t) {
+      return !t || ("object" !== Ci(t) && "function" != typeof t) ? Ri(e) : t;
     }
-    function Ni(e) {
+    function Ri(e) {
       if (void 0 === e)
         throw new ReferenceError(
           "this hasn't been initialised - super() hasn't been called"
         );
       return e;
     }
-    function Ri(e) {
-      return (Ri = Object.setPrototypeOf
+    function Di(e) {
+      return (Di = Object.setPrototypeOf
         ? Object.getPrototypeOf
         : function (e) {
             return e.__proto__ || Object.getPrototypeOf(e);
           })(e);
     }
-    var Di = [
+    var Ii = [
         { id: 0, name: "Emre" },
         { id: 1, name: "Kelly" },
         { id: 2, name: "Alexandra" },
       ],
-      Ii = (function (e) {
+      Ai = (function (e) {
         !(function (e, t) {
           if ("function" != typeof t && null !== t)
             throw new TypeError(
@@ -21132,12 +21130,12 @@ object-assign
           (e.prototype = Object.create(t && t.prototype, {
             constructor: { value: e, writable: !0, configurable: !0 },
           })),
-            t && Pi(e, t);
+            t && _i(e, t);
         })(i, e);
         var t,
           n,
           r,
-          o = _i(i);
+          o = ji(i);
         function i(e) {
           var t;
           return (
@@ -21145,7 +21143,7 @@ object-assign
               if (!(e instanceof t))
                 throw new TypeError("Cannot call a class as a function");
             })(this, i),
-            ((t = o.call(this, e)).handleLogout = t.handleLogout.bind(Ni(t))),
+            ((t = o.call(this, e)).handleLogout = t.handleLogout.bind(Ri(t))),
             t
           );
         }
@@ -21176,9 +21174,9 @@ object-assign
                   a.a.createElement(
                     "div",
                     { className: "TeamTaskbar-members" },
-                    Di.map(function (t, n) {
+                    Ii.map(function (t, n) {
                       return a.a.createElement(
-                        Ai,
+                        Mi,
                         {
                           key: n,
                           onClick: function () {
@@ -21194,16 +21192,16 @@ object-assign
                   a.a.createElement(
                     "div",
                     { className: "TeamTaskbar-bottom" },
-                    a.a.createElement(Ai, { icon: "group" }, "Team Quasar"),
+                    a.a.createElement(Mi, { icon: "group" }, "Team Quasar"),
                     a.a.createElement(
                       "div",
                       { className: "TeamTaskbar-buttons" },
-                      a.a.createElement(Ti, {
+                      a.a.createElement(Si, {
                         baseClass: "TeamTaskbar",
                         onClick: this.handleLogout,
                         icon: "sign-out",
                       }),
-                      a.a.createElement(Ti, {
+                      a.a.createElement(Si, {
                         baseClass: "TeamTaskbar",
                         onClick: this.handleSettings,
                         icon: "setting",
@@ -21213,12 +21211,12 @@ object-assign
                 );
               },
             },
-          ]) && Ci(t.prototype, n),
-          r && Ci(t, r),
+          ]) && Pi(t.prototype, n),
+          r && Pi(t, r),
           i
         );
       })(o.Component),
-      Ai = function (e) {
+      Mi = function (e) {
         var t = "TaskbarItem".concat(
           e.isSelected ? " TaskbarItem--selected" : ""
         );
@@ -21233,7 +21231,7 @@ object-assign
           a.a.createElement(Nt, { baseClass: "TaskbarItem" }, e.children)
         );
       },
-      Mi = Ye(
+      Li = Ye(
         function (e) {
           return {
             selectedUserId: e.toDos.selectedUserId,
@@ -21249,12 +21247,12 @@ object-assign
                 })(t)
               );
             },
-            logout: La,
+            logout: za,
           };
         }
-      )(Ii);
-    function Li(e) {
-      return (Li =
+      )(Ai);
+    function zi(e) {
+      return (zi =
         "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
           ? function (e) {
               return typeof e;
@@ -21268,7 +21266,7 @@ object-assign
                 : typeof e;
             })(e);
     }
-    function zi(e, t) {
+    function Fi(e, t) {
       for (var n = 0; n < t.length; n++) {
         var r = t[n];
         (r.enumerable = r.enumerable || !1),
@@ -21277,14 +21275,14 @@ object-assign
           Object.defineProperty(e, r.key, r);
       }
     }
-    function Fi(e, t) {
-      return (Fi =
+    function Ui(e, t) {
+      return (Ui =
         Object.setPrototypeOf ||
         function (e, t) {
           return (e.__proto__ = t), e;
         })(e, t);
     }
-    function Ui(e) {
+    function Bi(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -21302,32 +21300,32 @@ object-assign
       })();
       return function () {
         var n,
-          r = Vi(e);
+          r = Wi(e);
         if (t) {
-          var o = Vi(this).constructor;
+          var o = Wi(this).constructor;
           n = Reflect.construct(r, arguments, o);
         } else n = r.apply(this, arguments);
-        return Bi(this, n);
+        return Hi(this, n);
       };
     }
-    function Bi(e, t) {
-      return !t || ("object" !== Li(t) && "function" != typeof t) ? Hi(e) : t;
+    function Hi(e, t) {
+      return !t || ("object" !== zi(t) && "function" != typeof t) ? Vi(e) : t;
     }
-    function Hi(e) {
+    function Vi(e) {
       if (void 0 === e)
         throw new ReferenceError(
           "this hasn't been initialised - super() hasn't been called"
         );
       return e;
     }
-    function Vi(e) {
-      return (Vi = Object.setPrototypeOf
+    function Wi(e) {
+      return (Wi = Object.setPrototypeOf
         ? Object.getPrototypeOf
         : function (e) {
             return e.__proto__ || Object.getPrototypeOf(e);
           })(e);
     }
-    var Wi = (function (e) {
+    var $i = (function (e) {
       !(function (e, t) {
         if ("function" != typeof t && null !== t)
           throw new TypeError(
@@ -21336,12 +21334,12 @@ object-assign
         (e.prototype = Object.create(t && t.prototype, {
           constructor: { value: e, writable: !0, configurable: !0 },
         })),
-          t && Fi(e, t);
+          t && Ui(e, t);
       })(i, e);
       var t,
         n,
         r,
-        o = Ui(i);
+        o = Bi(i);
       function i(e) {
         var t;
         return (
@@ -21349,8 +21347,8 @@ object-assign
             if (!(e instanceof t))
               throw new TypeError("Cannot call a class as a function");
           })(this, i),
-          ((t = o.call(this, e)).handleEdit = t.handleEdit.bind(Hi(t))),
-          (t.handleDelete = t.handleDelete.bind(Hi(t))),
+          ((t = o.call(this, e)).handleEdit = t.handleEdit.bind(Vi(t))),
+          (t.handleDelete = t.handleDelete.bind(Vi(t))),
           t
         );
       }
@@ -21405,13 +21403,13 @@ object-assign
                 a.a.createElement(
                   "div",
                   { className: "ToDoItem-buttons" },
-                  a.a.createElement(Ti, {
+                  a.a.createElement(Si, {
                     baseClass: "ToDoItem",
                     onClick: this.handleEdit,
                     icon: "edit",
                     size: "large",
                   }),
-                  a.a.createElement(Ti, {
+                  a.a.createElement(Si, {
                     baseClass: "ToDoItem",
                     onClick: this.handleDelete,
                     icon: "trash alternate",
@@ -21421,13 +21419,13 @@ object-assign
               );
             },
           },
-        ]) && zi(t.prototype, n),
-        r && zi(t, r),
+        ]) && Fi(t.prototype, n),
+        r && Fi(t, r),
         i
       );
     })(o.Component);
-    function $i(e) {
-      return ($i =
+    function qi(e) {
+      return (qi =
         "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
           ? function (e) {
               return typeof e;
@@ -21441,7 +21439,7 @@ object-assign
                 : typeof e;
             })(e);
     }
-    function qi(e, t) {
+    function Ki(e, t) {
       var n = Object.keys(e);
       if (Object.getOwnPropertySymbols) {
         var r = Object.getOwnPropertySymbols(e);
@@ -21453,16 +21451,16 @@ object-assign
       }
       return n;
     }
-    function Ki(e) {
+    function Qi(e) {
       for (var t = 1; t < arguments.length; t++) {
         var n = null != arguments[t] ? arguments[t] : {};
         t % 2
-          ? qi(Object(n), !0).forEach(function (t) {
-              Qi(e, t, n[t]);
+          ? Ki(Object(n), !0).forEach(function (t) {
+              Gi(e, t, n[t]);
             })
           : Object.getOwnPropertyDescriptors
           ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(n))
-          : qi(Object(n)).forEach(function (t) {
+          : Ki(Object(n)).forEach(function (t) {
               Object.defineProperty(
                 e,
                 t,
@@ -21472,7 +21470,7 @@ object-assign
       }
       return e;
     }
-    function Qi(e, t, n) {
+    function Gi(e, t, n) {
       return (
         t in e
           ? Object.defineProperty(e, t, {
@@ -21485,7 +21483,7 @@ object-assign
         e
       );
     }
-    function Gi(e, t) {
+    function Yi(e, t) {
       for (var n = 0; n < t.length; n++) {
         var r = t[n];
         (r.enumerable = r.enumerable || !1),
@@ -21494,14 +21492,14 @@ object-assign
           Object.defineProperty(e, r.key, r);
       }
     }
-    function Yi(e, t) {
-      return (Yi =
+    function Xi(e, t) {
+      return (Xi =
         Object.setPrototypeOf ||
         function (e, t) {
           return (e.__proto__ = t), e;
         })(e, t);
     }
-    function Xi(e) {
+    function Ji(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -21519,32 +21517,32 @@ object-assign
       })();
       return function () {
         var n,
-          r = eu(e);
+          r = tu(e);
         if (t) {
-          var o = eu(this).constructor;
+          var o = tu(this).constructor;
           n = Reflect.construct(r, arguments, o);
         } else n = r.apply(this, arguments);
-        return Ji(this, n);
+        return Zi(this, n);
       };
     }
-    function Ji(e, t) {
-      return !t || ("object" !== $i(t) && "function" != typeof t) ? Zi(e) : t;
+    function Zi(e, t) {
+      return !t || ("object" !== qi(t) && "function" != typeof t) ? eu(e) : t;
     }
-    function Zi(e) {
+    function eu(e) {
       if (void 0 === e)
         throw new ReferenceError(
           "this hasn't been initialised - super() hasn't been called"
         );
       return e;
     }
-    function eu(e) {
-      return (eu = Object.setPrototypeOf
+    function tu(e) {
+      return (tu = Object.setPrototypeOf
         ? Object.getPrototypeOf
         : function (e) {
             return e.__proto__ || Object.getPrototypeOf(e);
           })(e);
     }
-    var tu = [
+    var nu = [
         { id: 0, userID: 0, description: "Create a component hierarchy" },
         { id: 1, userID: 0, description: "Create a react layout" },
         { id: 2, userID: 0, description: "add redux to app" },
@@ -21561,7 +21559,7 @@ object-assign
           description: "integrate frontend with the database",
         },
       ],
-      nu = (function (e) {
+      ru = (function (e) {
         !(function (e, t) {
           if ("function" != typeof t && null !== t)
             throw new TypeError(
@@ -21570,12 +21568,12 @@ object-assign
           (e.prototype = Object.create(t && t.prototype, {
             constructor: { value: e, writable: !0, configurable: !0 },
           })),
-            t && Yi(e, t);
+            t && Xi(e, t);
         })(i, e);
         var t,
           n,
           r,
-          o = Xi(i);
+          o = Ji(i);
         function i(e) {
           var t;
           return (
@@ -21589,13 +21587,13 @@ object-assign
               newTaskName: "",
               newTaskDescription: "",
             }),
-            (t.selectItem = t.selectItem.bind(Zi(t))),
-            (t.handleNewTaskNameChange = t.handleNewTaskNameChange.bind(Zi(t))),
+            (t.selectItem = t.selectItem.bind(eu(t))),
+            (t.handleNewTaskNameChange = t.handleNewTaskNameChange.bind(eu(t))),
             (t.handleNewTaskDescriptionChange = t.handleNewTaskDescriptionChange.bind(
-              Zi(t)
+              eu(t)
             )),
-            (t.openAddModal = t.openAddModal.bind(Zi(t))),
-            (t.handleCancel = t.handleCancel.bind(Zi(t))),
+            (t.openAddModal = t.openAddModal.bind(eu(t))),
+            (t.handleCancel = t.handleCancel.bind(eu(t))),
             t
           );
         }
@@ -21612,8 +21610,8 @@ object-assign
               key: "openAddModal",
               value: function () {
                 this.setState(function (e) {
-                  return Ki(
-                    Ki({}, e),
+                  return Qi(
+                    Qi({}, e),
                     {},
                     {
                       showAddModal: !0,
@@ -21629,7 +21627,7 @@ object-assign
               value: function (e) {
                 var t = e.target.value;
                 this.setState(function (e) {
-                  return Ki(Ki({}, e), {}, { newTaskName: t });
+                  return Qi(Qi({}, e), {}, { newTaskName: t });
                 });
               },
             },
@@ -21638,7 +21636,7 @@ object-assign
               value: function (e) {
                 var t = e.target.value;
                 this.setState(function (e) {
-                  return Ki(Ki({}, e), {}, { newTaskDescription: t });
+                  return Qi(Qi({}, e), {}, { newTaskDescription: t });
                 });
               },
             },
@@ -21652,7 +21650,7 @@ object-assign
               key: "handleCancel",
               value: function () {
                 this.setState(function (e) {
-                  return Ki(Ki({}, e), {}, { showAddModal: !1 });
+                  return Qi(Qi({}, e), {}, { showAddModal: !1 });
                 });
               },
             },
@@ -21671,9 +21669,9 @@ object-assign
                   a.a.createElement(
                     "div",
                     { className: "ToDoList-items" },
-                    tu.map(function (t, n) {
+                    nu.map(function (t, n) {
                       if (t.userID == e.props.selectedUserId)
-                        return a.a.createElement(Wi, {
+                        return a.a.createElement($i, {
                           key: n,
                           id: n,
                           selected: e.props.selectedToDoId == n,
@@ -21684,14 +21682,14 @@ object-assign
                         });
                     })
                   ),
-                  a.a.createElement(Ti, {
+                  a.a.createElement(Si, {
                     baseClass: "ToDoList",
                     color: "green",
                     icon: "add",
                     onClick: this.openAddModal,
                   }),
                   this.state.showAddModal
-                    ? a.a.createElement(ru, {
+                    ? a.a.createElement(ou, {
                         handleAddTask: this.handleAddTask,
                         handleNewTaskNameChange: this.handleNewTaskNameChange,
                         handleNewTaskDescriptionChange: this
@@ -21702,12 +21700,12 @@ object-assign
                 );
               },
             },
-          ]) && Gi(t.prototype, n),
-          r && Gi(t, r),
+          ]) && Yi(t.prototype, n),
+          r && Yi(t, r),
           i
         );
       })(o.Component),
-      ru = function (e) {
+      ou = function (e) {
         return a.a.createElement(
           "div",
           { className: "ToDoList-overlay" },
@@ -21722,7 +21720,7 @@ object-assign
                 { hLevel: 2, baseClass: "ToDoList" },
                 "Add New Task"
               ),
-              a.a.createElement(Fa, {
+              a.a.createElement(Ua, {
                 baseClass: "ToDoList",
                 idPrefix: "todo",
                 name: "task name",
@@ -21761,7 +21759,7 @@ object-assign
           )
         );
       },
-      ou = Ye(
+      au = Ye(
         function (e) {
           return {
             selectedToDoId: e.toDos.selectedToDoId,
@@ -21779,27 +21777,27 @@ object-assign
             },
           };
         }
-      )(nu),
-      au = function () {
+      )(ru),
+      iu = function () {
         return a.a.createElement(
           "div",
           { className: "Home" },
-          a.a.createElement(Mi, null),
-          a.a.createElement(ou, null),
-          a.a.createElement(ki, null)
+          a.a.createElement(Li, null),
+          a.a.createElement(au, null),
+          a.a.createElement(Oi, null)
         );
       },
-      iu = function (e) {
+      uu = function (e) {
         return a.a.createElement("h1", null, "Settings Page");
       },
-      uu = function (e) {
+      lu = function (e) {
         return a.a.createElement("h1", null, "Team Overview Page");
       },
-      lu = n(163),
-      cu = n.n(lu),
-      su = n(164),
-      fu = n.n(su);
-    function pu(e, t) {
+      cu = n(163),
+      su = n.n(cu),
+      fu = n(164),
+      pu = n.n(fu);
+    function du(e, t) {
       var n = Object.keys(e);
       if (Object.getOwnPropertySymbols) {
         var r = Object.getOwnPropertySymbols(e);
@@ -21811,16 +21809,16 @@ object-assign
       }
       return n;
     }
-    function du(e) {
+    function hu(e) {
       for (var t = 1; t < arguments.length; t++) {
         var n = null != arguments[t] ? arguments[t] : {};
         t % 2
-          ? pu(Object(n), !0).forEach(function (t) {
-              hu(e, t, n[t]);
+          ? du(Object(n), !0).forEach(function (t) {
+              mu(e, t, n[t]);
             })
           : Object.getOwnPropertyDescriptors
           ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(n))
-          : pu(Object(n)).forEach(function (t) {
+          : du(Object(n)).forEach(function (t) {
               Object.defineProperty(
                 e,
                 t,
@@ -21830,7 +21828,7 @@ object-assign
       }
       return e;
     }
-    function hu(e, t, n) {
+    function mu(e, t, n) {
       return (
         t in e
           ? Object.defineProperty(e, t, {
@@ -21843,29 +21841,29 @@ object-assign
         e
       );
     }
-    var mu = {
+    var vu = {
         selectedToDoId: null,
         selectedUserId: null,
         isAuthenticated: !1,
         user: {},
       },
-      vu = {
+      yu = {
         toDos: function () {
           var e =
               arguments.length > 0 && void 0 !== arguments[0]
                 ? arguments[0]
-                : mu,
+                : vu,
             t = arguments.length > 1 ? arguments[1] : void 0,
             n = t.type,
             r = t.payload;
           switch (n) {
             case "SELECT_TODO":
               var o = r.toDoID,
-                a = du(du({}, e), {}, { selectedToDoId: o });
+                a = hu(hu({}, e), {}, { selectedToDoId: o });
               return a;
             case "SELECT_USER":
               var i = r.userID,
-                u = du(du({}, e), {}, { selectedUserId: i });
+                u = hu(hu({}, e), {}, { selectedUserId: i });
               return u;
             default:
               return e;
@@ -21875,12 +21873,12 @@ object-assign
           var e =
               arguments.length > 0 && void 0 !== arguments[0]
                 ? arguments[0]
-                : mu,
+                : vu,
             t = arguments.length > 1 ? arguments[1] : void 0;
           switch (t.type) {
             case "SET_CURRENT_USER":
-              return du(
-                du({}, e),
+              return hu(
+                hu({}, e),
                 {},
                 { isAuthenticated: !!Object.keys(t.user).length, user: t.user }
               );
@@ -21889,9 +21887,9 @@ object-assign
           }
         },
       },
-      yu = dt({ key: "root", storage: cu.a, stateReconciler: fu.a }, Ne(vu));
-    function gu(e) {
-      return (gu =
+      gu = dt({ key: "root", storage: su.a, stateReconciler: pu.a }, Ne(yu));
+    function bu(e) {
+      return (bu =
         "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
           ? function (e) {
               return typeof e;
@@ -21905,11 +21903,11 @@ object-assign
                 : typeof e;
             })(e);
     }
-    function bu(e, t) {
+    function wu(e, t) {
       if (!(e instanceof t))
         throw new TypeError("Cannot call a class as a function");
     }
-    function wu(e, t) {
+    function xu(e, t) {
       for (var n = 0; n < t.length; n++) {
         var r = t[n];
         (r.enumerable = r.enumerable || !1),
@@ -21918,14 +21916,14 @@ object-assign
           Object.defineProperty(e, r.key, r);
       }
     }
-    function xu(e, t) {
-      return (xu =
+    function Eu(e, t) {
+      return (Eu =
         Object.setPrototypeOf ||
         function (e, t) {
           return (e.__proto__ = t), e;
         })(e, t);
     }
-    function Eu(e) {
+    function ku(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -21943,16 +21941,16 @@ object-assign
       })();
       return function () {
         var n,
-          r = Ou(e);
+          r = Tu(e);
         if (t) {
-          var o = Ou(this).constructor;
+          var o = Tu(this).constructor;
           n = Reflect.construct(r, arguments, o);
         } else n = r.apply(this, arguments);
-        return ku(this, n);
+        return Ou(this, n);
       };
     }
-    function ku(e, t) {
-      return !t || ("object" !== gu(t) && "function" != typeof t)
+    function Ou(e, t) {
+      return !t || ("object" !== bu(t) && "function" != typeof t)
         ? (function (e) {
             if (void 0 === e)
               throw new ReferenceError(
@@ -21962,14 +21960,14 @@ object-assign
           })(e)
         : t;
     }
-    function Ou(e) {
-      return (Ou = Object.setPrototypeOf
+    function Tu(e) {
+      return (Tu = Object.setPrototypeOf
         ? Object.getPrototypeOf
         : function (e) {
             return e.__proto__ || Object.getPrototypeOf(e);
           })(e);
     }
-    var Tu = function (e) {
+    var Su = function (e) {
       var t = (function (t) {
         !(function (e, t) {
           if ("function" != typeof t && null !== t)
@@ -21979,14 +21977,14 @@ object-assign
           (e.prototype = Object.create(t && t.prototype, {
             constructor: { value: e, writable: !0, configurable: !0 },
           })),
-            t && xu(e, t);
+            t && Eu(e, t);
         })(u, t);
         var n,
           r,
           o,
-          i = Eu(u);
+          i = ku(u);
         function u() {
-          return bu(this, u), i.apply(this, arguments);
+          return wu(this, u), i.apply(this, arguments);
         }
         return (
           (n = u),
@@ -22009,8 +22007,8 @@ object-assign
                 return a.a.createElement(e, this.props);
               },
             },
-          ]) && wu(n.prototype, r),
-          o && wu(n, o),
+          ]) && xu(n.prototype, r),
+          o && xu(n, o),
           u
         );
       })(o.Component);
@@ -22021,16 +22019,16 @@ object-assign
       );
     };
     n(175);
-    var Su,
-      Cu,
+    var Cu,
       Pu,
       _u,
       ju,
       Nu,
       Ru,
       Du,
-      Iu = document.querySelector("#container"),
-      Au = function () {
+      Iu,
+      Au = document.querySelector("#container"),
+      Mu = function () {
         return a.a.createElement(
           Z,
           null,
@@ -22040,22 +22038,22 @@ object-assign
             a.a.createElement(
               X,
               null,
-              a.a.createElement($, { exact: !0, path: "/", component: pi }),
-              a.a.createElement($, { exact: !0, path: "/home", component: au }),
+              a.a.createElement($, { exact: !0, path: "/", component: di }),
+              a.a.createElement($, { exact: !0, path: "/home", component: iu }),
               a.a.createElement($, {
                 exact: !0,
                 path: "/create-account",
-                component: Ja,
+                component: Za,
               }),
               a.a.createElement($, {
                 exact: !0,
                 path: "/settings",
-                component: Tu(iu),
+                component: Su(uu),
               }),
               a.a.createElement($, {
                 exact: !0,
                 path: "/team-overview",
-                component: Tu(uu),
+                component: Su(lu),
               }),
               a.a.createElement($, {
                 render: function () {
@@ -22070,8 +22068,8 @@ object-assign
           )
         );
       },
-      Mu = _e(
-        yu,
+      Lu = _e(
+        gu,
         Me(
           (function () {
             for (var e = arguments.length, t = new Array(e), n = 0; n < e; n++)
@@ -22103,24 +22101,24 @@ object-assign
             window.__REDUX_DEVTOOLS_EXTENSION__()
         )
       ),
-      Lu =
-        ((Su = Mu),
-        (_u = Pu || !1),
-        (ju = _e(bt, gt, Cu && Cu.enhancer ? Cu.enhancer : void 0)),
-        (Nu = function (e) {
-          ju.dispatch({ type: Ze, key: e });
+      zu =
+        ((Cu = Lu),
+        (ju = _u || !1),
+        (Nu = _e(bt, gt, Pu && Pu.enhancer ? Pu.enhancer : void 0)),
+        (Ru = function (e) {
+          Nu.dispatch({ type: Ze, key: e });
         }),
-        (Ru = function (e, t, n) {
+        (Du = function (e, t, n) {
           var r = { type: Je, payload: t, err: n, key: e };
-          Su.dispatch(r),
-            ju.dispatch(r),
-            _u && Du.getState().bootstrapped && (_u(), (_u = !1));
+          Cu.dispatch(r),
+            Nu.dispatch(r),
+            ju && Iu.getState().bootstrapped && (ju(), (ju = !1));
         }),
-        (Du = vt({}, ju, {
+        (Iu = vt({}, Nu, {
           purge: function () {
             var e = [];
             return (
-              Su.dispatch({
+              Cu.dispatch({
                 type: "persist/PURGE",
                 result: function (t) {
                   e.push(t);
@@ -22132,7 +22130,7 @@ object-assign
           flush: function () {
             var e = [];
             return (
-              Su.dispatch({
+              Cu.dispatch({
                 type: "persist/FLUSH",
                 result: function (t) {
                   e.push(t);
@@ -22142,41 +22140,41 @@ object-assign
             );
           },
           pause: function () {
-            Su.dispatch({ type: "persist/PAUSE" });
+            Cu.dispatch({ type: "persist/PAUSE" });
           },
           persist: function () {
-            Su.dispatch({
+            Cu.dispatch({
               type: "persist/PERSIST",
-              register: Nu,
-              rehydrate: Ru,
+              register: Ru,
+              rehydrate: Du,
             });
           },
         })),
-        (Cu && Cu.manualPersist) || Du.persist(),
-        Du);
+        (Pu && Pu.manualPersist) || Iu.persist(),
+        Iu);
     if (localStorage.jwtToken) {
-      Ma(localStorage.jwtToken);
+      La(localStorage.jwtToken);
       try {
-        Mu.dispatch(za(Tt()(localStorage.jwtToken)));
+        Lu.dispatch(Fa(Tt()(localStorage.jwtToken)));
       } catch (e) {
-        Mu.dispatch(za({}));
+        Lu.dispatch(Fa({}));
       }
     }
-    Iu &&
+    Au &&
       u.a.render(
         a.a.createElement(
           de,
-          { store: Mu },
+          { store: Lu },
           a.a.createElement(
             wt.PersistGate,
             {
               loading: a.a.createElement("div", null, "Loading..."),
-              persistor: Lu,
+              persistor: zu,
             },
-            a.a.createElement(Au, null)
+            a.a.createElement(Mu, null)
           )
         ),
-        Iu
+        Au
       );
   },
 ]);
