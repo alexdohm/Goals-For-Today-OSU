@@ -1,13 +1,13 @@
-import { SELECT_TODO } from './actions';
-import { SELECT_USER } from './actions';
+import { SELECT_TODO } from "./actions";
+import { SELECT_USER } from "./actions";
 import { SET_CURRENT_USER } from "./actions";
 
 const initialState = {
   selectedToDoId: null,
   selectedUserId: null,
   isAuthenticated: false,
-  user: {}
-}
+  user: {},
+};
 
 export const toDos = (state = initialState, action) => {
   const { type, payload } = action;
@@ -17,7 +17,7 @@ export const toDos = (state = initialState, action) => {
       const { toDoID } = payload;
       const newState = {
         ...state,
-        selectedToDoId: toDoID
+        selectedToDoId: toDoID,
       };
       return newState;
     }
@@ -25,14 +25,14 @@ export const toDos = (state = initialState, action) => {
       const { userID } = payload;
       const newState = {
         ...state,
-        selectedUserId: userID
+        selectedUserId: userID,
       };
       return newState;
     }
     default:
       return state;
   }
-}
+};
 
 export const auth = (state = initialState, action) => {
   switch (action.type) {

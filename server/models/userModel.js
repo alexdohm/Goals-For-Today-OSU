@@ -33,7 +33,7 @@ const addUser = async function (firstName, lastName, email, password, req) {
     };
 
     // don't really need this but temporarily putting to see how it works
-   // const mailoutcome = await Mail.send(mailOptions);
+    // const mailoutcome = await Mail.send(mailOptions);
 
     //console.log(mailoutcome);
   }
@@ -46,10 +46,9 @@ const addUser = async function (firstName, lastName, email, password, req) {
 const getUser = async function (userEmail, userPass) {
   const queryString = `SELECT member_id, email FROM team_member WHERE member_password = crypt($1, member_password) AND email = $2`;
   const filter = [userPass, userEmail];
-  const user = await Helpers.runQuery(queryString, filter);
 
+  const user = await Helpers.runQuery(queryString, filter);
   if (user) {
-    console.log(user);
     return user;
   } else {
     return "404";

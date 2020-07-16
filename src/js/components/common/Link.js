@@ -1,8 +1,7 @@
-import React from 'react';
+import React from "react";
 
 const Link = (props) => {
-
-  const modifiers = props.modifiers ? ` ${props.modifiers}` : '';
+  const modifiers = props.modifiers ? ` ${props.modifiers}` : "";
   const classes = `${props.baseClass}-link${modifiers}`;
 
   return (
@@ -10,6 +9,6 @@ const Link = (props) => {
       {props.children}
     </a>
   );
-}
+};
 
 export default Link;
