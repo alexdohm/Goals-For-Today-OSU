@@ -1,12 +1,10 @@
 require("./styles/main.scss");
-import React, { Component } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import { persistStore } from "redux-persist";
-import { persistGate, PersistGate } from "redux-persist/lib/integration/react";
-import { createStore, applyMiddleware, compose } from "redux";
-import thunk from "redux-thunk";
+import { PersistGate } from "redux-persist/lib/integration/react";
 import jwtDecode from "jwt-decode";
 
 import CreateAccountPage from "./js/CreateAccountPage.js";
@@ -16,7 +14,6 @@ import SettingsPage from "./js/SettingsPage";
 import TeamOverviewPage from "./js/TeamOverviewPage";
 import { configureStore } from "./js/redux/store.js";
 import requireAuth from "./js/components/RequireAuth";
-import { auth } from "./js/redux/reducers";
 import { setCurrentUser, setAuthorizationToken } from "./js/redux/actions";
 
 const wrapper = document.querySelector("#container");
@@ -27,14 +24,10 @@ const App = () => {
       <div className="App">
         <Switch>
           <Route exact path="/" component={LoginPage} />
-          <Route exact path="/home" component={HomePage} />
+          <Route exact path="/home" component={requireAuth(HomePage)} />
           <Route exact path="/create-account" component={CreateAccountPage} />
           <Route exact path="/settings" component={requireAuth(SettingsPage)} />
-          <Route
-            exact
-            path="/team-overview"
-            component={requireAuth(TeamOverviewPage)}
-          />
+          <Route exact path="/team-overview" component={requireAuth(TeamOverviewPage)} />
           <Route render={() => <h3>Goals for today 404 page</h3>} />
         </Switch>
       </div>
