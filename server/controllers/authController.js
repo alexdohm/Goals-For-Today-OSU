@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const passport = require("passport");
 const User = require("../models/userModel");
 const Helpers = require("../handlers/helpers");
 const jwt = require("jsonwebtoken");
@@ -19,17 +18,6 @@ failedResponseMatch.set(
 failedResponseMatch.set("403", "Provided email address is already registered");
 failedResponseMatch.set("404", "No user found");
 
-/* !!!!!!!!!!! WORK IN PROGRESS !!!!!!!!!!! */
-
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser((id, cb) => {
-  User.getUserById(id).then((results) => {
-    cb(null, results);
-  });
-});
 
 // login
 const users = {
