@@ -39,14 +39,14 @@ const users = {
 
 router.post("/signup", function (req, res) {
   if (
-    req.body.first_name &&
-    req.body.last_name &&
+    req.body.firstName &&
+    req.body.lastName &&
     req.body.email &&
     req.body.password
   ) {
     User.addUser(
-      req.body.first_name,
-      req.body.last_name,
+      req.body.firstName,
+      req.body.lastName,
       req.body.email,
       req.body.password,
       req
