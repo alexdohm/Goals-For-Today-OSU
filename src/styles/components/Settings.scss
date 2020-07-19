@@ -1,0 +1,30 @@
+.Settings
+{
+  @include form-styling;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &-teamSelect
+  {
+    margin-bottom: 24px;
+  }
+
+  &-teamSelect,
+  &-teamUpdate
+  {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-userWrapper
+  {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  button
+  {
+    height: fit-content;
+  }
+}
