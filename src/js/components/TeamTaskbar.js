@@ -10,8 +10,7 @@ import {
 } from "./common/constants";
 import IconButton from "./common/IconButton";
 import Text from "./common/Text";
-import { selectUser } from "../redux/actions";
-import { logout } from "../redux/actions";
+import { selectUser, setAuthorizationToken, setCurrentUser } from "../redux/actions";
 
 const testUsers = [
   //TODO: replace with real data from database
@@ -104,7 +103,11 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onUserSelected: (userID) => dispatch(selectUser(userID)),
-  logout,
+  logout: () => {
+    localStorage.removeItem("jwtToken");
+    setAuthorizationToken(false);
+    dispatch(setCurrentUser({}));
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamTaskbar);
