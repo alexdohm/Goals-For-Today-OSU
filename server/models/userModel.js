@@ -86,16 +86,25 @@ const updateUser = async function (userId, userInfoObject) {
     active: userInfoObject.active || existingUser.active,
     morning_time: userInfoObject.morning_time || existingUser.morning_time,
     evening_time: userInfoObject.evening_time || existingUser.evening_time,
-    avatar: userInfoObject.avatar || existingUser.avatar
+    avatar: userInfoObject.avatar || existingUser.avatar,
     //password -- should probably keep this separate ✔
   };
 
-  const filter = [`${updatedUser.first_name}`, `${updatedUser.last_name}`, `${updatedUser.email}`, `${updatedUser.time_zone}` ,
-  `${updatedUser.verified}`, `${updatedUser.user_name}`, `${updatedUser.active}`, `${updatedUser.morning_time}`,
-  `${updatedUser.evening_time}`, `${updatedUser.avatar}`, userId ];
+  const filter = [
+    `${updatedUser.first_name}`,
+    `${updatedUser.last_name}`,
+    `${updatedUser.email}`,
+    `${updatedUser.time_zone}`,
+    `${updatedUser.verified}`,
+    `${updatedUser.user_name}`,
+    `${updatedUser.active}`,
+    `${updatedUser.morning_time}`,
+    `${updatedUser.evening_time}`,
+    `${updatedUser.avatar}`,
+    userId,
+  ];
 
-  const updateQuery =
-  `UPDATE team_member 
+  const updateQuery = `UPDATE team_member 
    SET first_name = $1, 
       last_name = $2, 
       email = $3, 
@@ -201,18 +210,20 @@ const getAllUsers = async function () {
 /**
  * deletes a user and inactivates team memberships
  * @param {number} userId unique id of user
- * @param {number} teamId 
+ * @param {number} teamId
  * @param {date} date current date
  */
 const deleteUser = async function (userId, teamId, date) {
   //TODO what happens if a user is a member of more than 1 team?
   // also I'm not sure which #s are the variables (member id is 1 or 3?)
   // can do later just wanted to get it filled out
-  
-  
+
+  // TODO For Kelly: Basically if this query below spits out anything, it means that the user can't delete their account
+  // until they make someone else an admin of the teams this query returns. All you need below is member_id
+  // where it states member_id = 3
+
   // user deletes personal account [ member_id, team_id, date ]
-  const deleteQuery = 
-  `SELECT n1.team_name
+  const deleteQuery = `SELECT n1.team_name
   FROM (SELECT t.team_name, count(*) AS totalRows
         FROM team AS t
                  INNER JOIN member_of AS mo ON mo.team_id = t.team_id
@@ -250,12 +261,10 @@ const deleteUser = async function (userId, teamId, date) {
 
 /**
  * Returns formatted json object with array of teams that a user is a member of
- * @param {number} userId 
+ * @param {number} userId
  */
 const getAllTeamsForUser = async function (userId) {
-  
-  const teamQuery = 
-  `SELECT t.team_id, t.team_name
+  const teamQuery = `SELECT t.team_id, t.team_name
    FROM team as t
            INNER JOIN member_of AS mo ON mo.team_id = t.team_id
            INNER JOIN team_member as tm on tm.member_id = mo.member_id
@@ -263,17 +272,33 @@ const getAllTeamsForUser = async function (userId) {
     AND mo.approved = TRUE
     AND mo.date_left IS NULL;`;
 
-    const filter = [userId];
+  const filter = [userId];
 
-    const teams = await Helpers.runQuery(teamQuery, filter);
+  const teams = await Helpers.runQuery(teamQuery, filter);
 
-    console.log(teams);
+  console.log(teams);
 
-    const jsonResponse = {number_of_items: teams.length};
+  const jsonResponse = { number_of_items: teams.length };
 
-    jsonResponse.items = [...teams];
+  jsonResponse.items = [...teams];
 
-    return jsonResponse;
+  return jsonResponse;
+};
+
+/**
+ * Returns all information for users in each team [ their team, goals for the day and whether they are completed or not]
+ * @param {number} id
+ */
+const getAllEmailTimesForUsers = async function (id) {
+  //TODO Alex to query the data needed for user email, as well as for team
+  // const queryString = `UPDATE team_member SET user_name = $1 WHERE member_id = $2`;
+  // const filter = [userName, userId];
+  // const user = await Helpers.runQuery(queryString, filter);
+  // if (user) {
+  //   return user;
+  // } else {
+  //   return "404";
+  // }
 };
 
 module.exports = {
@@ -288,5 +313,6 @@ module.exports = {
   updateUserTimeZone,
   updateUserAvatar,
   getUserById,
-  updateUser
+  updateUser,
+  getAllEmailTimesForUsers,
 };

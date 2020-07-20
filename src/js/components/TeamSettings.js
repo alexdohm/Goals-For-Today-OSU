@@ -1,21 +1,20 @@
-import React, { Component } from 'react';
-import { Button, Form, Select } from 'semantic-ui-react';
+import React, { Component } from "react";
+import { Button, Form, Select } from "semantic-ui-react";
 
-import { FormFieldHelper } from './common/helpers';
+import { FormFieldHelper } from "./common/helpers";
 
 const teamOptions = [
-  { key: '1', value: '1', text: 'Neutron' },
-  { key: '2', value: '2', text: 'Proton' }
-]
+  { key: "1", value: "1", text: "Neutron" },
+  { key: "2", value: "2", text: "Proton" },
+];
 
 class TeamSettings extends Component {
-
   constructor(props) {
     super(props);
-    
+
     this.state = {
-      teamRequest: ''
-    }
+      teamRequest: "",
+    };
 
     this.handleTeamCreateChange = this.handleTeamCreateChange.bind(this);
     this.handleTeamRequest = this.handleTeamRequest.bind(this);
@@ -32,36 +31,40 @@ class TeamSettings extends Component {
 
   handleTeamCreate() {
     //TODO: implement
-    alert('you created a team');
+    alert("you created a team");
   }
 
   handleTeamRequest() {
     //TODO: implement
-    alert('you requested to join a team');
+    alert("you requested to join a team");
   }
 
   render() {
     return (
-      <div className='Settings-teamSettings Settings-form'>
-        <div className='Settings-teamWrapper'>
+      <div className="Settings-teamSettings Settings-form">
+        <div className="Settings-teamWrapper">
           <Form className="Settings-teamForm">
             <div className="Settings-teamSelect">
-              <Select placeholder='Teams' options={teamOptions} />
-              <Button primary onClick={this.handleTeamRequest}>Request</Button>
+              <Select placeholder="Teams" options={teamOptions} />
+              <Button primary onClick={this.handleTeamRequest}>
+                Request
+              </Button>
             </div>
-            <div className='Settings-teamUpdate'>
+            <div className="Settings-teamUpdate">
               <FormFieldHelper
                 baseClass="Settings"
                 idPrefix="settings"
                 name="teamRequest"
                 onChange={this.handleTeamCreateChange}
               />
-              <Button primary onClick={this.handleTeamCreate}>Create</Button>
+              <Button primary onClick={this.handleTeamCreate}>
+                Create
+              </Button>
             </div>
           </Form>
         </div>
       </div>
-    )
+    );
   }
 }
 

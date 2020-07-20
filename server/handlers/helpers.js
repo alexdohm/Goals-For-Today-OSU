@@ -39,7 +39,6 @@ async function runQuery(queryText, queryValues) {
 
   // get response
   if (queryResult.rowCount) {
-
     return queryResult.rows;
   } else {
     return 0;
@@ -73,10 +72,7 @@ async function deleteData(deleteText, filterValues) {
   console.log(deleteResult);
 
   return deleteResult;
-
 }
-
-
 
 async function updateData(updateText, updateValues) {
   // format query
@@ -86,8 +82,7 @@ async function updateData(updateText, updateValues) {
 
   if (updateText.indexOf("RETURNING") === -1) {
     return queryResult.rowCount;
-  }
-  else {
+  } else {
     // get response
     if (queryResult.rowCount) {
       return queryResult.rows[0];
@@ -107,17 +102,20 @@ function addSelf(req, id, type) {
   if (Array.isArray(id)) {
     let unique_id;
     switch (type) {
-      case "users": unique_id = "member_id";
+      case "users":
+        unique_id = "member_id";
         break;
-      case "teams": unique_id = "team_id";
+      case "teams":
+        unique_id = "team_id";
         break;
     }
     id.forEach((obj) => {
-      obj.self = `${req.protocol}://${req.get("host")}/${type}/${obj[unique_id]}`;
-    })
+      obj.self = `${req.protocol}://${req.get("host")}/${type}/${
+        obj[unique_id]
+      }`;
+    });
     return id;
-  }
-  else {
+  } else {
     return `${req.protocol}://${req.get("host")}/${type}/${id}`;
   }
 }

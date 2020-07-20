@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { Form, Button, Icon } from "semantic-ui-react";
 
-import { FormFieldHelper } from './common/helpers';
-import { USER_ICON } from './common/constants';
+import { FormFieldHelper } from "./common/helpers";
+import { USER_ICON } from "./common/constants";
 
 class UserSettings extends Component {
-
   constructor(props) {
     super(props);
 
@@ -27,13 +26,13 @@ class UserSettings extends Component {
 
   handleUpdate() {
     //TODO: implement
-    alert('you clicked the update button');
+    alert("you clicked the update button");
   }
 
   render() {
     return (
-      <div className='Settings-userSettings Settings-form'>
-        <div className='Settings-userWrapper'>
+      <div className="Settings-userSettings Settings-form">
+        <div className="Settings-userWrapper">
           <Form className="Settings-username">
             <FormFieldHelper
               baseClass="Settings"
@@ -50,12 +49,12 @@ class UserSettings extends Component {
               Update
             </Button>
           </Form>
-          <div className='Settings-userAvatar'>
-            <Icon name={USER_ICON} size='massive' />
+          <div className="Settings-userAvatar">
+            <Icon name={USER_ICON} size="massive" />
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 

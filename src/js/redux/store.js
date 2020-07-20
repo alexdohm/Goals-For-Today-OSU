@@ -19,4 +19,5 @@ const persistConfig = {
 const rootReducer = combineReducers(reducers);
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export const configureStore = () => createStore(persistedReducer, compose(applyMiddleware(thunk)))
+export const configureStore = () =>
+  createStore(persistedReducer, compose(applyMiddleware(thunk)));

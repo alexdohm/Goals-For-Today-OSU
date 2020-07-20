@@ -27,7 +27,11 @@ const App = () => {
           <Route exact path="/home" component={requireAuth(HomePage)} />
           <Route exact path="/create-account" component={CreateAccountPage} />
           <Route exact path="/settings" component={requireAuth(SettingsPage)} />
-          <Route exact path="/team-overview" component={requireAuth(TeamOverviewPage)} />
+          <Route
+            exact
+            path="/team-overview"
+            component={requireAuth(TeamOverviewPage)}
+          />
           <Route render={() => <h3>Goals for today 404 page</h3>} />
         </Switch>
       </div>

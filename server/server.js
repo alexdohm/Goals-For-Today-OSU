@@ -1,14 +1,25 @@
 const express = require("express");
 const app = express();
-var session = require("express-session"); //
 const path = require(`path`);
 const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser"); // not needed
 app.enable("trust proxy");
 require("dotenv").config();
+let schedule = require("node-schedule");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// let user = ["alex", "leo", "mom", "dad"];
+// let morningTime = [2, 10, 20, 30];
+//
+// for (let i = 0; i < user.length; i++) {
+//   let rule = new schedule.RecurrenceRule();
+//   rule.second = new schedule.Range(0, 59, morningTime[i]);
+//
+//   let j = schedule.scheduleJob(rule, function () {
+//     console.log("Message from " + user[i] + " " + morningTime[i]);
+//   });
+// }
 
 // future use - app.use(passport.initialize())
 // future use - app.use(passport.session())

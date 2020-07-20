@@ -18,7 +18,6 @@ failedResponseMatch.set(
 failedResponseMatch.set("403", "Provided email address is already registered");
 failedResponseMatch.set("404", "No user found");
 
-
 // login
 const users = {
   "alexdohm11@gmail.com": "goalsfortoday10",
