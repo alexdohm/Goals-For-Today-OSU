@@ -65,7 +65,16 @@ async function insertData(insertText, insertValues, key_field_name) {
   return insertResult.rows[0][key_field_name];
 }
 
-async function deleteData(deleteText) {}
+async function deleteData(deleteText, filterValues) {
+  const query = { text: deleteText, values: filterValues };
+
+  const deleteResult = await pool.query(query);
+
+  console.log(deleteResult);
+
+  return deleteResult;
+
+}
 
 
 

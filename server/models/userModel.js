@@ -206,6 +206,9 @@ const getAllUsers = async function () {
  */
 const deleteUser = async function (userId, teamId, date) {
   //TODO what happens if a user is a member of more than 1 team?
+  // also I'm not sure which #s are the variables (member id is 1 or 3?)
+  // can do later just wanted to get it filled out
+  
   
   // user deletes personal account [ member_id, team_id, date ]
   const deleteQuery = 
@@ -234,10 +237,21 @@ const deleteUser = async function (userId, teamId, date) {
   UPDATE member_of
   SET date_left = '2020-07-09'
   WHERE member_id = 1
-    AND team_id = 1;
-  `
+    AND team_id = 1;`;
+
+  const filter = [userId, teamId, date];
+
+  const outcome = await Helpers.deleteData(deleteQuery, filter);
+
+  console.log(outcome);
+
+  return outcome;
 };
 
+/**
+ * Returns formatted json object with array of teams that a user is a member of
+ * @param {number} userId 
+ */
 const getAllTeamsForUser = async function (userId) {
   
   const teamQuery = 

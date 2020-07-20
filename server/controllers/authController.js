@@ -49,12 +49,6 @@ router.post("/signup", function (req, res) {
         } else {
           newUser.self = Helpers.addSelf(req, newUser.member_id, "users");
 
-          const token = jwt.sign({ newUser }, jwtKey, {
-            algorithm: "HS256",
-            expiresIn: jwtExpirySeconds,
-          });
-
-          res.cookie("token", token, { maxAge: jwtExpirySeconds * 1000 });
           res.status(201).json(newUser);
         }
       })
@@ -90,8 +84,6 @@ router.post("/login", function (req, res) {
 
         // set the cookie as the token string, with a similar max age as the token
         // here, the max age is in milliseconds, so we multiply by 1000
-        //TODO: i dont really understand the role of cookies here,
-        // maybe you can give some insight here kelly, maybe we just dont use it for this project, would complicate
         // https://dev.to/mr_cea/remaining-stateless-jwt-cookies-in-node-js-3lle
         res.cookie("token", token, { maxAge: jwtExpirySeconds * 1000 });
         res.status(200);
@@ -102,7 +94,7 @@ router.post("/login", function (req, res) {
     .catch((err) => {
       console.log(err);
       return res
-        .status(401)
+        .status(404)
         .json({ Error: `${failedResponseMatch.get("404")}` })
         .end();
     });

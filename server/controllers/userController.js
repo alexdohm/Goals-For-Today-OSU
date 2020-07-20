@@ -139,4 +139,26 @@ router.get('/:user_id/teams', function (req, res) {
     })
 });
 
+
+// delete a user
+router.delete("/:member_id", function (req, res) {
+
+    if (!isNaN(member_id) && req.query.date) {
+        User.deleteUser(req.params.member_id, req.query.date)
+        .then( (result)=> {
+            console.log(result);
+            res.status(204).end();
+        })
+        .catch( (err)=>{
+            console.log(err);
+            res.status(500).json({"Error": err.message}).end();
+    
+        })
+    } else {
+        req.status(400).json({"Error": "Bad request."}).end();
+    }
+
+
+});
+
 module.exports = router;
