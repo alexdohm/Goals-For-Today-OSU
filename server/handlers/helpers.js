@@ -39,7 +39,8 @@ async function runQuery(queryText, queryValues) {
 
   // get response
   if (queryResult.rowCount) {
-    return queryResult.rows[0];
+
+    return queryResult.rows;
   } else {
     return 0;
   }
@@ -66,7 +67,26 @@ async function insertData(insertText, insertValues, key_field_name) {
 
 async function deleteData(deleteText) {}
 
-async function updateData(updateText) {}
+
+
+async function updateData(updateText, updateValues) {
+  // format query
+  const query = { text: updateText, values: updateValues };
+  // connect and run
+  const queryResult = await pool.query(query);
+
+  if (updateText.indexOf("RETURNING") === -1) {
+    return queryResult.rowCount;
+  }
+  else {
+    // get response
+    if (queryResult.rowCount) {
+      return queryResult.rows[0];
+    } else {
+      return 0;
+    }
+  }
+}
 
 /**
  * Adds resource location to object based on environment and entity
@@ -75,7 +95,22 @@ async function updateData(updateText) {}
  * @param {string} type base URL of entity ex: users
  */
 function addSelf(req, id, type) {
-  return `${req.protocol}://${req.get("host")}/${type}/${id}`;
+  if (Array.isArray(id)) {
+    let unique_id;
+    switch (type) {
+      case "users": unique_id = "member_id";
+        break;
+      case "teams": unique_id = "team_id";
+        break;
+    }
+    id.forEach((obj) => {
+      obj.self = `${req.protocol}://${req.get("host")}/${type}/${obj[unique_id]}`;
+    })
+    return id;
+  }
+  else {
+    return `${req.protocol}://${req.get("host")}/${type}/${id}`;
+  }
 }
 
 module.exports = { insertData, runQuery, deleteData, updateData, addSelf };

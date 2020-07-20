@@ -82,7 +82,6 @@ router.post("/login", function (req, res) {
           .status(Number(user))
           .json({ Error: `${failedResponseMatch.get(user)}` });
       } else {
-        //TODO: get the response from the database and put it into payload
         const token = jwt.sign({ user }, jwtKey, {
           algorithm: "HS256",
           expiresIn: jwtExpirySeconds,

@@ -64,6 +64,7 @@ const getUser = async function (userEmail, userPass) {
  *                 not guaranteed to have all fields (PATCH) so retrieve existing user settings
  *                 first
  */
+
 const updateUser = async function (userId, userInfoObject) {
   // first, get the user make sure it exists
   const existingUser = await getUserById(userId);
@@ -85,20 +86,39 @@ const updateUser = async function (userId, userInfoObject) {
     active: userInfoObject.active || existingUser.active,
     morning_time: userInfoObject.morning_time || existingUser.morning_time,
     evening_time: userInfoObject.evening_time || existingUser.evening_time,
-    avatar: userInfoObject.avatar || existingUser.avatar,
+    avatar: userInfoObject.avatar || existingUser.avatar
     //password -- should probably keep this separate ✔
   };
 
-  // third, send update statement to database
-  // I will leave the rest for you
+  const filter = [`${updatedUser.first_name}`, `${updatedUser.last_name}`, `${updatedUser.email}`, `${updatedUser.time_zone}` ,
+  `${updatedUser.verified}`, `${updatedUser.user_name}`, `${updatedUser.active}`, `${updatedUser.morning_time}`,
+  `${updatedUser.evening_time}`, `${updatedUser.avatar}`, userId ];
 
-  const filter = [`${updatedUser.first_name}` /*etc etc etc*/];
+  const updateQuery =
+  `UPDATE team_member 
+   SET first_name = $1, 
+      last_name = $2, 
+      email = $3, 
+      time_zone = $4, 
+      verified = $5, 
+      user_name = $6, 
+      active = $7, 
+      morning_time = $8, 
+      evening_time = $9, 
+      avatar = $10 
+   WHERE member_id = $11
+   
+   RETURNING * `;
+
+  //console.log(updateQuery);
+
+  return Helpers.updateData(updateQuery, filter);
 };
 
 //admin approves user to be a member of a team
 const updateUserApprovedStatus = async function (userId, teamId) {
   //TODO
-  const queryString = `UPDATE member_of SET approved = true WHERE member_id = $1 AND team_id = $2`;
+  const queryString = `UPDATE team_member () SET VALUE`;
   const filter = [userId, teamId];
   const user = await Helpers.runQuery(queryString, filter);
 
@@ -150,8 +170,8 @@ const getUserByEmail = async function (userEmail) {
     [userEmail]
   );
   if (user) {
-    delete user.member_password;
-    return user;
+    delete user[0].member_password;
+    return user[0];
   } else {
     return "404";
   }
@@ -167,8 +187,8 @@ const getUserById = async function (id) {
     [id]
   );
   if (user) {
-    delete user.member_password;
-    return user;
+    delete user[0].member_password;
+    return user[0];
   } else {
     return "404";
   }
@@ -178,12 +198,68 @@ const getAllUsers = async function () {
   //TODO implement
 };
 
-const deleteUser = async function (userId) {
-  //TODO implement
+/**
+ * deletes a user and inactivates team memberships
+ * @param {number} userId unique id of user
+ * @param {number} teamId 
+ * @param {date} date current date
+ */
+const deleteUser = async function (userId, teamId, date) {
+  //TODO what happens if a user is a member of more than 1 team?
+  
+  // user deletes personal account [ member_id, team_id, date ]
+  const deleteQuery = 
+  `SELECT n1.team_name
+  FROM (SELECT t.team_name, count(*) AS totalRows
+        FROM team AS t
+                 INNER JOIN member_of AS mo ON mo.team_id = t.team_id
+        WHERE mo.approved = true
+        GROUP BY t.team_name
+        HAVING count(*) > 1) AS n1
+           INNER JOIN (SELECT q1.team_name
+                       FROM (SELECT t.team_name, count(*) AS totalRows
+                             FROM team AS t
+                                      INNER JOIN manages m ON m.team_id = t.team_id
+                             GROUP BY t.team_name
+                             HAVING count(*) = 1) AS q1
+                                INNER JOIN (SELECT t.team_name
+                                            FROM team AS t
+                                                     INNER JOIN manages m ON m.team_id = t.team_id
+                                            WHERE member_id = 3) AS q2
+                                           ON (q2.team_name = q1.team_name)) AS n2
+                      ON n1.team_name = n2.team_name;
+  UPDATE team_member
+  SET active = false
+  WHERE member_id = 1;
+  UPDATE member_of
+  SET date_left = '2020-07-09'
+  WHERE member_id = 1
+    AND team_id = 1;
+  `
 };
 
 const getAllTeamsForUser = async function (userId) {
-  //TODO implement
+  
+  const teamQuery = 
+  `SELECT t.team_id, t.team_name
+   FROM team as t
+           INNER JOIN member_of AS mo ON mo.team_id = t.team_id
+           INNER JOIN team_member as tm on tm.member_id = mo.member_id
+  WHERE tm.member_id = $1
+    AND mo.approved = TRUE
+    AND mo.date_left IS NULL;`;
+
+    const filter = [userId];
+
+    const teams = await Helpers.runQuery(teamQuery, filter);
+
+    console.log(teams);
+
+    const jsonResponse = {number_of_items: teams.length};
+
+    jsonResponse.items = [...teams];
+
+    return jsonResponse;
 };
 
 module.exports = {
@@ -198,4 +274,5 @@ module.exports = {
   updateUserTimeZone,
   updateUserAvatar,
   getUserById,
+  updateUser
 };
