@@ -56,10 +56,6 @@ async function insertData(insertText, insertValues, key_field_name) {
 
   const insertResult = await pool.query(query);
 
-  // uncomment to check out what is returned
-  //console.log(insertResult.rows[0][key_name])
-  //console.log(insertResult.rows);
-
   // return id so it can be added to entity and formatted after insert
   return insertResult.rows[0][key_field_name];
 }
@@ -102,10 +98,10 @@ function addSelf(req, id, type) {
   if (Array.isArray(id)) {
     let unique_id;
     switch (type) {
-      case "users":
+      case "user":
         unique_id = "member_id";
         break;
-      case "teams":
+      case "team":
         unique_id = "team_id";
         break;
     }

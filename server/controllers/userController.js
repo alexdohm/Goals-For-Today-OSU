@@ -51,7 +51,21 @@ router.get("/:identifier", function (req, res) {
         console.log(err);
         res.status(500).json({ Error: err.message }).end();
       });
+  } else {
+    res.status("400").json({ Error: "No type defined to get usere by" }).end();
   }
+});
+
+// get user by email or member id
+router.get("/login/:email", function (req, res) {
+  User.loadUserInfoOnLogin(req.params.email)
+    .then((data) => {
+      res.status(200).json(data).end();
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ Error: err.message });
+    });
 });
 
 // add a user

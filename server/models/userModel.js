@@ -5,6 +5,8 @@
 const Helpers = require("../handlers/helpers");
 const crypto = require("crypto");
 const Mail = require("../handlers/email");
+const Team = require("./teamModel");
+const Goal = require("./goalModel");
 
 const addUser = async function (firstName, lastName, email, password, req) {
   const queryString = `INSERT INTO team_member (first_name, last_name, email, member_password) VALUES ($1, $2, $3, crypt($4, gen_salt('bf'))) returning member_id`;
@@ -119,8 +121,6 @@ const updateUser = async function (userId, userInfoObject) {
    
    RETURNING * `;
 
-  //console.log(updateQuery);
-
   return Helpers.updateData(updateQuery, filter);
 };
 
@@ -205,6 +205,62 @@ const getUserById = async function (id) {
 
 const getAllUsers = async function () {
   //TODO implement
+};
+
+const loadUserInfoOnLogin = async function (userEmail) {
+  const userDataJson = {};
+
+  // get basic user info and at least one team if they are on one
+
+  const userInfo = await getUserByEmail(userEmail);
+
+  const userTeams = await getAllTeamsForUser(userInfo.member_id);
+
+  let teamMembers;
+  if (userTeams.number_of_items) {
+    // just get first one
+    teamMembers = await Team.getAllUsersOnTeam(userTeams.items[0].team_id);
+    const adminStatus = await Team.isUserTeamAdmin(
+      userInfo.member_id,
+      userTeams.items[0].team_id
+    );
+
+    userDataJson.team = {
+      team_id: userTeams.items[0].team_id,
+      team_name: userTeams.items[0].team_name,
+      team_members: [...teamMembers.items],
+      team_admin: adminStatus[0].exists,
+    };
+  } else {
+    // user has no teams
+    userDataJson.team = {};
+  }
+
+  // get goals and comments on those goals
+
+  const userGoals = await Goal.getAllGoalsForUser(
+    userInfo.member_id,
+    userTeams.items[0].team_id
+  );
+
+  userDataJson.goals = [...userGoals.items];
+
+  userDataJson.member_id = userInfo.member_id;
+  userDataJson.first_name = userInfo.first_name;
+  userDataJson.last_name = userInfo.last_name;
+  userDataJson.email = userInfo.email;
+  userDataJson.morning_time = userInfo.morning_time;
+  userDataJson.evening_time = userInfo.evening_time;
+  userDataJson.time_zone = userInfo.time_zone;
+  userDataJson.time_zone = userInfo.time_zone;
+  userDataJson.verified = userInfo.verified;
+  userDataJson.active = userInfo.active;
+  userDataJson.avatar = userInfo.avatar;
+  userDataJson.evening_time = userInfo.evening_time;
+
+  console.log(userDataJson);
+
+  return userDataJson;
 };
 
 /**
@@ -315,4 +371,5 @@ module.exports = {
   getUserById,
   updateUser,
   getAllEmailTimesForUsers,
+  loadUserInfoOnLogin,
 };

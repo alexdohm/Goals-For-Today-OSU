@@ -40,7 +40,11 @@ const getAllGoalsForUser = async function (memberId, teamId) {
       }
     }
   }
-  return goalList;
+  return {
+    number_of_items: goalList.length,
+    items: [...goalList],
+  };
+  //return goalList;
 };
 
 const updateGoal = async function (goalInfoOjbect) {
