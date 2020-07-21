@@ -7,7 +7,7 @@ import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import jwtDecode from "jwt-decode";
 
-import AdminPage from './js/AdminPage';
+import AdminPage from "./js/AdminPage";
 import CreateAccountPage from "./js/CreateAccountPage.js";
 import LoginPage from "./js/Loginpage.js";
 import HomePage from "./js/HomePage.js";

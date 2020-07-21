@@ -38,26 +38,28 @@ class ToDoItem extends Component {
         <div className="ToDoItem-container">
           <Checkbox />
           <div className="ToDoItem-info">
-            <Heading hlevel={3} baseClass="ToDoItem">{this.props.title}</Heading>
+            <Heading hlevel={3} baseClass="ToDoItem">
+              {this.props.title}
+            </Heading>
             <Text baseClass="ToDoItem">{this.props.description}</Text>
           </div>
         </div>
-        {this.props.showButtons
-          ? <div className="ToDoItem-buttons">
-              <IconButton
-                baseClass="ToDoItem"
-                onClick={this.handleEdit}
-                icon={EDIT_ICON}
-                size="large"
-              />
-              <IconButton
-                baseClass="ToDoItem"
-                onClick={this.handleDelete}
-                icon={TRASH_ICON}
-                size="large"
-              />
-            </div>
-          : null }
+        {this.props.showButtons ? (
+          <div className="ToDoItem-buttons">
+            <IconButton
+              baseClass="ToDoItem"
+              onClick={this.handleEdit}
+              icon={EDIT_ICON}
+              size="large"
+            />
+            <IconButton
+              baseClass="ToDoItem"
+              onClick={this.handleDelete}
+              icon={TRASH_ICON}
+              size="large"
+            />
+          </div>
+        ) : null}
       </div>
     );
   }

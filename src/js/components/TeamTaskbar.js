@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Icon } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 
 import {
   ADMIN_ICON,
@@ -53,25 +53,25 @@ class TeamTaskbar extends Component {
   }
 
   navigateToSettings() {
-    this.props.history.push('/settings');
+    this.props.history.push("/settings");
   }
 
   navigateToTeamOverview() {
-    this.props.history.push('/team-overview');
+    this.props.history.push("/team-overview");
   }
 
   navigateToAdmin() {
-    this.props.history.push('/admin');
+    this.props.history.push("/admin");
   }
 
   render() {
-    const { currentUserId, currentUserFirstName, team } = this.props
+    const { currentUserId, currentUserFirstName, team } = this.props;
 
     return (
       <div className="TeamTaskbar">
         <div className="TeamTaskbar-members">
           {/* render current user's card first */}
-          <TaskbarItem 
+          <TaskbarItem
             key={currentUserId}
             onClick={() => this.props.onUserSelected(currentUserId)}
             icon={USER_ICON}
@@ -96,7 +96,9 @@ class TeamTaskbar extends Component {
           <TaskbarItem icon={GROUP_ICON} onClick={this.navigateToTeamOverview}>
             {team.team_name}
           </TaskbarItem>
-          <TaskbarItem icon={ADMIN_ICON} onClick={this.navigateToAdmin}>Admin</TaskbarItem>
+          <TaskbarItem icon={ADMIN_ICON} onClick={this.navigateToAdmin}>
+            Admin
+          </TaskbarItem>
           <div className="TeamTaskbar-buttons">
             <IconButton
               baseClass="TeamTaskbar"
@@ -142,4 +144,6 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TeamTaskbar));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(TeamTaskbar)
+);

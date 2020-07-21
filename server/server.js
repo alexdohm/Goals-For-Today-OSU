@@ -9,9 +9,39 @@ let schedule = require("node-schedule");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// const User = require("./models/userModel.js");
+// const Email = require("./handlers/email.js");
+//
+// //midnight and midday '0 0 0,12 * *'
+// let j = schedule.scheduleJob("*/10 * * * * *", function () {
+//   // Email.sendMorningMail()
+//   //   .then((res) => {})
+//   //   .catch((err) => {});
+//
+//   User.getAllEmailTimesForUsers()
+//     .then((users) => {
+//       users.forEach(function (userItem) {
+//         //schedule job for morning time for user
+//         let res = userItem.morning_time.split(":");
+//         let rule = new schedule.RecurrenceRule();
+//         rule.hour = res[0];
+//         rule.minute = res[1];
+//         rule.second = res[2];
+//         //schedule job for evening time for user
+//         let res_afternoon = userItem.evening_time.split(":");
+//         let rule_afternoon = new schedule.RecurrenceRule();
+//         rule_afternoon.hour = res_afternoon[0];
+//         rule_afternoon.minute = res_afternoon[1];
+//         rule_afternoon.second = res_afternoon[2];
+//       });
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// });
+
 // let user = ["alex", "leo", "mom", "dad"];
 // let morningTime = [2, 10, 20, 30];
-//
 // for (let i = 0; i < user.length; i++) {
 //   let rule = new schedule.RecurrenceRule();
 //   rule.second = new schedule.Range(0, 59, morningTime[i]);

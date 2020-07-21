@@ -61,7 +61,9 @@ class ToDoList extends Component {
 
     this.selectItem = this.selectItem.bind(this);
     this.handleNewTaskNameChange = this.handleNewTaskNameChange.bind(this);
-    this.handleNewTaskDescriptionChange = this.handleNewTaskDescriptionChange.bind(this);
+    this.handleNewTaskDescriptionChange = this.handleNewTaskDescriptionChange.bind(
+      this
+    );
     this.openAddModal = this.openAddModal.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
   }
@@ -123,22 +125,25 @@ class ToDoList extends Component {
           To do list for today
         </Heading>
         <div className="ToDoList-items">
-          
-          {Object.keys(memberToGoalsMap).map( key => memberToGoalsMap[key].map(goal => {
-            if (key == this.props.selectedUserId) {
-              return (
-                <ToDoItem
-                  key={goal.goal_id}
-                  id={goal.goal_id}
-                  selected={this.props.selectedToDoId == goal.goal_id}
-                  title={goal.task_name}
-                  description={goal.task_description}
-                  showButtons={currentUserId == key}
-                  onClick={() => this.props.onToDoSelected(goal.goal_id)}
-                />
-              );
-            }
-          })).flat()}
+          {Object.keys(memberToGoalsMap)
+            .map((key) =>
+              memberToGoalsMap[key].map((goal) => {
+                if (key == this.props.selectedUserId) {
+                  return (
+                    <ToDoItem
+                      key={goal.goal_id}
+                      id={goal.goal_id}
+                      selected={this.props.selectedToDoId == goal.goal_id}
+                      title={goal.task_name}
+                      description={goal.task_description}
+                      showButtons={currentUserId == key}
+                      onClick={() => this.props.onToDoSelected(goal.goal_id)}
+                    />
+                  );
+                }
+              })
+            )
+            .flat()}
         </div>
         <IconButton
           baseClass="ToDoList"

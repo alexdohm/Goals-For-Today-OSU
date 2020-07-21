@@ -426,19 +426,17 @@ const getAllTeamsForUser = async function (userId) {
 };
 
 /**
- * Returns all information for users in each team [ their team, goals for the day and whether they are completed or not]
- * @param {number} id
+ * Returns all active users in system for user email reminders
  */
-const getAllEmailTimesForUsers = async function (id) {
-  //TODO Alex to query the data needed for user email, as well as for team
-  // const queryString = `UPDATE team_member SET user_name = $1 WHERE member_id = $2`;
-  // const filter = [userName, userId];
-  // const user = await Helpers.runQuery(queryString, filter);
-  // if (user) {
-  //   return user;
-  // } else {
-  //   return "404";
-  // }
+const getAllEmailTimesForUsers = async function () {
+  const queryString = `SELECT first_name, last_name, email, morning_time, evening_time FROM team_member WHERE active = true;`;
+  const filter = [];
+  const user = await Helpers.runQuery(queryString, filter);
+  if (user) {
+    return user;
+  } else {
+    return "404";
+  }
 };
 
 module.exports = {

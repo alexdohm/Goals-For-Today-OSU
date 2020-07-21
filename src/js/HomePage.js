@@ -7,21 +7,20 @@ import TeamTaskbar from "./components/TeamTaskbar";
 import ToDoList from "./components/ToDoList";
 
 class HomePage extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      data: null
-    }
+      data: null,
+    };
   }
 
   componentDidMount() {
-    fetch('/users/login/' + this.props.userEmail)
-      .then(response => response.json())
-      .then(data => {
+    fetch("/users/login/" + this.props.userEmail)
+      .then((response) => response.json())
+      .then((data) => {
         console.log(data);
         this.setState({
-          data: data
+          data: data,
         });
       });
   }
@@ -31,15 +30,12 @@ class HomePage extends Component {
       const { data } = this.state;
       return (
         <div className="Home">
-          <TeamTaskbar 
+          <TeamTaskbar
             currentUserId={data.member_id}
             currentUserFirstName={data.first_name}
-            team={data.team} 
+            team={data.team}
           />
-          <ToDoList
-            currentUserId={data.member_id}
-            team={data.team} 
-          />
+          <ToDoList currentUserId={data.member_id} team={data.team} />
           <Comments />
         </div>
       );
@@ -47,16 +43,16 @@ class HomePage extends Component {
       return (
         <div className="Loader">
           <Dimmer active inverted>
-            <Loader inverted content='Loading' />
+            <Loader inverted content="Loading" />
           </Dimmer>
         </div>
-      ) 
+      );
     }
   }
 }
 
 const mapStateToProps = (state) => ({
-  userEmail: state.auth.user.user[0].email
+  userEmail: state.auth.user.user[0].email,
 });
 
 export default connect(mapStateToProps)(HomePage);
