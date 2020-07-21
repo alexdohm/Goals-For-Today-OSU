@@ -36,14 +36,21 @@ const getAllGoalsForUser = async function (memberId, teamId) {
 
       if (c.length) {
         goal.comments = [...c];
-        console.log(goal.comments);
       }
     }
   }
-  return {
-    number_of_items: goalList.length,
-    items: [...goalList],
-  };
+  if (goalList.length) {
+    return {
+      number_of_items: goalList.length,
+      items: [...goalList],
+    };
+  } else {
+    return {
+      number_of_items: 0,
+      items: [],
+    };
+  }
+
   //return goalList;
 };
 

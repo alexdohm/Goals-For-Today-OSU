@@ -19,7 +19,6 @@ const getAllCommentsForEntity = async function (entityType, entityObj) {
 
   switch (entityType) {
     case "GOAL":
-      console.log(entityObj.goal_id);
       entityQuery = `SELECT c.comment_id, c.date_time::time, c.message, tm.first_name, tm.last_name, tm.avatar
                                     FROM team_member AS tm
                                             INNER JOIN goal AS g ON g.member_id = tm.member_id

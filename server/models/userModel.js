@@ -252,11 +252,29 @@ const getUserTeamGoalsComments = async function (userId, teamId) {
   const adminStatus = await Team.isUserTeamAdmin(userId, teamId);
 
   // build team json
-
   teamInfo.team_id = teamId;
   teamInfo.team_name = teamDetails.team_name;
   teamInfo.team_members = [...teamMembers.items];
   teamInfo.team_admin = adminStatus[0].exists;
+
+  let teamMap = new Map(
+    teamInfo.team_members.map((member, idx) => [member.member_id, idx])
+  );
+
+  // get goals and comments for every team member
+  for (member of teamInfo.team_members) {
+    const memberGoals = await getAllGoalsForUser(member.member_id, teamId);
+    if (memberGoals.number_of_items) {
+      teamInfo.team_members[teamMap.get(member.member_id)].goals = [
+        ...memberGoals.items,
+      ];
+    } else {
+      teamInfo.team_members[teamMap.get(member.member_id)].goals = [];
+    }
+  }
+  // get index of current user
+  const curUser = teamMap.get(userId);
+  teamInfo.team_members.splice(curUser, 1);
 
   // get goals for this user and this team
   const userGoals = await Goal.getAllGoalsForUser(userId, teamId);
