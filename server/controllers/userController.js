@@ -15,7 +15,9 @@ failedResponseMatch.set(
 failedResponseMatch.set("403", "Provided email address is already registered");
 failedResponseMatch.set("404", "No user found");
 
-// get user by email or member id
+/**********************************************************************
+ * GET a user by email OR member_id
+ *********************************************************************/
 router.get("/:identifier", function (req, res) {
   if (req.query.type === "id") {
     User.getUserById(req.params.identifier)
@@ -56,7 +58,9 @@ router.get("/:identifier", function (req, res) {
   }
 });
 
-// return full data set for user when they log in
+/**********************************************************************
+ * GET dataset for a user upon login
+ *********************************************************************/
 router.get("/login/:email", function (req, res) {
   User.loadUserInfoOnLogin(req.params.email)
     .then((data) => {
@@ -68,7 +72,9 @@ router.get("/login/:email", function (req, res) {
     });
 });
 
-// return full data set for user when they log in
+/**********************************************************************
+ * GET all team info when a user switches teams in settings page
+ *********************************************************************/
 router.get("/:user_id/load_team/:team_id", function (req, res) {
   User.getUserTeamGoalsComments(req.params.user_id, req.params.team_id)
     .then((data) => {
@@ -80,7 +86,9 @@ router.get("/:user_id/load_team/:team_id", function (req, res) {
     });
 });
 
-// add a user
+/**********************************************************************
+ * POST add a user
+ *********************************************************************/
 router.post("/", async function (req, res) {
   if (
     req.body.first_name &&
@@ -120,7 +128,9 @@ router.post("/", async function (req, res) {
   }
 });
 
-// PATCH modify a user
+/**********************************************************************
+ * PATCH modify a user
+ *********************************************************************/
 router.patch("/:user_id", async function (req, res) {
   if (
     req.body.firstName ||
@@ -153,7 +163,9 @@ router.patch("/:user_id", async function (req, res) {
   }
 });
 
-// get all teams for a user
+/**********************************************************************
+ * GET all teams for a user
+ *********************************************************************/
 router.get("/:user_id/teams", function (req, res) {
   User.getAllTeamsForUser(req.params.user_id)
     .then((result) => {
@@ -173,7 +185,9 @@ router.get("/:user_id/teams", function (req, res) {
     });
 });
 
-// delete a user
+/**********************************************************************
+ * DELETE a user
+ *********************************************************************/
 router.delete("/:member_id", function (req, res) {
   if (!isNaN(member_id) && req.query.date) {
     User.deleteUser(req.params.member_id, req.query.date)

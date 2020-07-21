@@ -18,12 +18,9 @@ failedResponseMatch.set(
 failedResponseMatch.set("403", "Provided email address is already registered");
 failedResponseMatch.set("404", "No user found");
 
-// login
-const users = {
-  "alexdohm11@gmail.com": "goalsfortoday10",
-  user2: "password2",
-};
-
+/**********************************************************************
+ * POST register a new user
+ *********************************************************************/
 router.post("/signup", function (req, res) {
   if (
     req.body.firstName &&
@@ -66,6 +63,9 @@ router.post("/signup", function (req, res) {
   }
 });
 
+/**********************************************************************
+ * POST log in an existing user
+ *********************************************************************/
 router.post("/login", function (req, res) {
   User.getUser(req.body.emailInput, req.body.passwordInput)
     .then((user) => {

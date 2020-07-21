@@ -16,9 +16,9 @@ failedResponseMatch.set("404", "No team found");
 
 /* ------------- Begin Controller Functions ------------- */
 
-/**
- * getAllTeams
- */
+/**********************************************************************
+ * GET all teams in the system
+ *********************************************************************/
 router.get("/", function (req, res) {
   Team.getAllTeams(req)
     .then((teams) => {
@@ -35,9 +35,9 @@ router.get("/", function (req, res) {
     });
 });
 
-/**
- * get team by id
- */
+/**********************************************************************
+ * GET a team by team_id
+ *********************************************************************/
 router.get("/:team_id", function (req, res) {
   Team.getTeamById(req.params.team_id)
     .then((team) => {
@@ -56,7 +56,9 @@ router.get("/:team_id", function (req, res) {
     });
 });
 
-// add a team
+/**********************************************************************
+ * POST add a goal
+ *********************************************************************/
 router.post("/", async function (req, res) {
   if (req.body.name && req.body.date) {
     Team.addTeam(req.body.name, req.body.date)
@@ -80,7 +82,9 @@ router.post("/", async function (req, res) {
   }
 });
 
-// PATCH modify a team
+/**********************************************************************
+ * PATCH modify a team
+ *********************************************************************/
 router.patch("/:team_id", async function (req, res) {
   if (
     req.body.team_name ||
@@ -108,7 +112,9 @@ router.patch("/:team_id", async function (req, res) {
   }
 });
 
-//get all members on a team
+/**********************************************************************
+ * GET all members of a team
+ *********************************************************************/
 router.get("/:team_id/users", function (req, res) {
   Team.getAllUsersOnTeam(req.params.team_id)
     .then((teamMembers) => {
