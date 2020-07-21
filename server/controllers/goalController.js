@@ -31,6 +31,21 @@ router.get("/teams/:team_id/users/:member_id", function (req, res) {
 });
 
 /**********************************************************************
+ * GET all comments for a goal
+ *********************************************************************/
+router.get("/:goal_id/comments", function (req, res) {
+  Goal.getAllCommentsOnGoal(req.params.goal_id)
+    .then((goals) => {
+      // TODO result checking
+      res.status(200).json(goals);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ Error: err.message });
+    });
+});
+
+/**********************************************************************
  * GET a goal by goal_id
  *********************************************************************/
 router.get("/:goal_id", function (req, res) {

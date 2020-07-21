@@ -43,6 +43,21 @@ const getGoalById = async function (goalId) {
 };
 
 /**
+ * Return all goal fields from goal table
+ * @param {number} goalId
+ */
+const getAllCommentsOnGoal = async function (goalId) {
+  const goalObj = {};
+  goalObj.goal_id = goalId;
+  const goalComments = await Comment.getAllCommentsForEntity("GOAL", goalObj);
+
+  if (goalComments) {
+    return goalComments;
+  } else {
+    return "404";
+  }
+};
+/**
  * Get all goals and comments on those goals for a user
  * @param {date} date
  * @param {number} memberId
@@ -135,4 +150,5 @@ module.exports = {
   updateGoal,
   deleteGoal,
   getGoalById,
+  getAllCommentsOnGoal,
 };
