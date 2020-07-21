@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { Icon } from "semantic-ui-react";
 import { connect } from "react-redux";
+import { withRouter } from 'react-router-dom';
 
 import {
+  ADMIN_ICON,
   GROUP_ICON,
   SETTING_ICON,
   SIGN_OUT_ICON,
@@ -39,6 +41,9 @@ class TeamTaskbar extends Component {
     super(props);
 
     this.handleLogout = this.handleLogout.bind(this);
+    this.navigateToSettings = this.navigateToSettings.bind(this);
+    this.navigateToTeamOverview = this.navigateToTeamOverview.bind(this);
+    this.navigateToAdmin = this.navigateToAdmin.bind(this);
   }
 
   handleLogout(e) {
@@ -47,28 +52,51 @@ class TeamTaskbar extends Component {
     this.props.logout();
   }
 
-  handleSettings() {
-    //TODO: implement
-    alert("You clicked the settings button");
+  navigateToSettings() {
+    this.props.history.push('/settings');
+  }
+
+  navigateToTeamOverview() {
+    this.props.history.push('/team-overview');
+  }
+
+  navigateToAdmin() {
+    this.props.history.push('/admin');
   }
 
   render() {
+    const { currentUserId, currentUserFirstName, team } = this.props
+
     return (
       <div className="TeamTaskbar">
         <div className="TeamTaskbar-members">
-          {testUsers.map((user, index) => (
+          {/* render current user's card first */}
+          <TaskbarItem 
+            key={currentUserId}
+            onClick={() => this.props.onUserSelected(currentUserId)}
+            icon={USER_ICON}
+            isSelected={currentUserId == this.props.selectedUserId}
+          >
+            {currentUserFirstName}
+          </TaskbarItem>
+
+          {/* then render rest of teammates */}
+          {team.team_members.map((user, index) => (
             <TaskbarItem
-              key={index}
-              onClick={() => this.props.onUserSelected(user.id)}
+              key={user.member_id}
+              onClick={() => this.props.onUserSelected(user.member_id)}
               icon={USER_ICON}
-              isSelected={user.id == this.props.selectedUserId}
+              isSelected={user.member_id == this.props.selectedUserId}
             >
-              {user.name}
+              {user.first_name}
             </TaskbarItem>
           ))}
         </div>
         <div className="TeamTaskbar-bottom">
-          <TaskbarItem icon={GROUP_ICON}>{testTeamName}</TaskbarItem>
+          <TaskbarItem icon={GROUP_ICON} onClick={this.navigateToTeamOverview}>
+            {team.team_name}
+          </TaskbarItem>
+          <TaskbarItem icon={ADMIN_ICON} onClick={this.navigateToAdmin}>Admin</TaskbarItem>
           <div className="TeamTaskbar-buttons">
             <IconButton
               baseClass="TeamTaskbar"
@@ -77,7 +105,7 @@ class TeamTaskbar extends Component {
             />
             <IconButton
               baseClass="TeamTaskbar"
-              onClick={this.handleSettings}
+              onClick={this.navigateToSettings}
               icon={SETTING_ICON}
             />
           </div>
@@ -114,4 +142,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TeamTaskbar);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TeamTaskbar));

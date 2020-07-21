@@ -7,6 +7,7 @@ import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import jwtDecode from "jwt-decode";
 
+import AdminPage from './js/AdminPage';
 import CreateAccountPage from "./js/CreateAccountPage.js";
 import LoginPage from "./js/Loginpage.js";
 import HomePage from "./js/HomePage.js";
@@ -32,6 +33,7 @@ const App = () => {
             path="/team-overview"
             component={requireAuth(TeamOverviewPage)}
           />
+          <Route exact path="/admin" component={requireAuth(AdminPage)} />
           <Route render={() => <h3>Goals for today 404 page</h3>} />
         </Switch>
       </div>
