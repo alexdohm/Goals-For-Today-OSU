@@ -266,7 +266,7 @@ const getUserTeamGoalsComments = async function (userId, teamId) {
   // if they are on a team, see if there are user comments from team members
   const userComment = await getUserComments(userId, teamId);
 
-  teamInfo.users_comments = [...userComment.items];
+  teamInfo.user_comments = [...userComment.items];
 
   return teamInfo;
 };
