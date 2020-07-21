@@ -131,5 +131,23 @@ router.get("/:team_id/users", function (req, res) {
     });
 });
 
+/**********************************************************************
+ * DELETE a team
+ *********************************************************************/
+router.delete("/:team_id", async function (req, res) {
+  Team.deleteTeam(req.params.team_id)
+    .then((t) => {
+      if (failedResponseMatch.get(t)) {
+        res.status(Number(t)).json({ Error: `${failedResponseMatch.get(t)}` });
+      } else {
+        res.status(204).end();
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ Error: err.message });
+    });
+});
+
 /* ------------- End Controller Functions ------------- */
 module.exports = router;

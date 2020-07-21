@@ -41,7 +41,11 @@ const getTeamById = async function (teamId) {
     return "404";
   }
 };
-
+/**
+ *
+ * @param {string} name Unique name of team
+ * @param {date} date date team was created
+ */
 const addTeam = async function (name, date) {
   const newTeamQuery = `INSERT INTO team (team_name, date_created)
   VALUES ($1, $2)
@@ -53,7 +57,11 @@ const addTeam = async function (name, date) {
 
   return getTeamById(newTeamId);
 };
-
+/**
+ * Update an existing team
+ * @param {number} teamId
+ * @param {object} teamInfoObject
+ */
 const updateTeam = async function (teamId, teamInfoObject) {
   const existingTeam = await getTeamById(teamId);
 
@@ -90,6 +98,7 @@ const updateTeam = async function (teamId, teamInfoObject) {
 
 const deleteTeam = async function (teamId) {
   //TODO implement
+  console.log("NOT IMPLEMENTED YET!!");
 };
 
 const adduserToTeam = async function (userId, teamId) {
