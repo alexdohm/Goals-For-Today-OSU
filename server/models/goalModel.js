@@ -5,8 +5,41 @@
 const Helpers = require("../handlers/helpers");
 const Comment = require("./commentModel");
 
-const addGoal = async function (goalInfoOjbect) {
-  //TODO implement
+/**
+ *
+ * @param {number} teamId unique id of team
+ * @param {number} userId unique id of user
+ * @param {string} name name of task from user
+ * @param {string} description description from user
+ * @param {date} createDate date goal was enteredd
+ */
+const addGoal = async function (teamId, userId, name, description, createDate) {
+  const goalQuery = `INSERT INTO goal (member_id, team_id, task_name, task_description, date_time)
+   VALUES ($1,$2, $3, $4, $5) RETURNING goal_id;`;
+
+  const filter = [teamId, userId, name, description, createDate];
+
+  const newId = await Helpers.insertData(goalQuery, filter, "goal_id");
+
+  return getGoalById(newId);
+};
+
+/**
+ * Return all goal fields from goal table
+ * @param {number} goalId
+ */
+const getGoalById = async function (goalId) {
+  const goalQuery = `SELECT * FROM goal WHERE goal_id = $1;`;
+
+  const filter = [goalId];
+
+  const goal = await Helpers.runQuery(goalQuery, filter);
+
+  if (goal) {
+    return goal[0];
+  } else {
+    return "404";
+  }
 };
 
 /**
@@ -50,16 +83,56 @@ const getAllGoalsForUser = async function (memberId, teamId) {
       items: [],
     };
   }
-
-  //return goalList;
 };
+/**
+ * update an existing goal
+ * @param {number} goalId unique id of existing goal
+ * @param {object} goalInfo object with new goal attributes
+ */
+const updateGoal = async function (goalId, goalInfo) {
+  // get existing goal
+  const existingGoal = await Helpers.runQuery(
+    "SELECT * FROM goal WHERE goal_id = $1;",
+    [goalId]
+  );
 
-const updateGoal = async function (goalInfoOjbect) {
-  //TODO implement
+  if (!existingGoal) {
+    return "404";
+  }
+
+  const updatedGoal = {
+    task_name: goalInfo.name || existingGoal.task_name,
+    task_description: goalInfo.description || existingGoal.task_description,
+    status: goalInfo.status || existingGoal.status,
+  };
+
+  const updatedGoalQuery = `UPDATE goal SET task_name = $1,
+  task_description = $2, status = $3`;
+
+  return Helpers.updateData(updatedGoalQuery, [
+    updatedGoal.task_name,
+    updatedGoal.task_description,
+    updatedGoal.status,
+  ]);
 };
-
+/**
+ * delete an existing goal
+ * @param {number} goalId unique id of goal to be deleted
+ */
 const deleteGoal = async function (goalId) {
-  //TODO implement
+  const deleteGoalQuery = `DELETE FROM goal WHERE goal_id = $1`;
+
+  const deleteResult = await Helpers.runQuery(deleteGoalQuery, [goalId]);
+
+  console.log(deleteResult);
+
+  return deleteResult;
 };
 
-module.exports = { addGoal, getAllGoalsForUser, updateGoal, deleteGoal };
+module.exports = {
+  addGoal,
+  getAllGoalsForUser,
+  updateGoal,
+  deleteGoal,
+  getGoalById,
+};
