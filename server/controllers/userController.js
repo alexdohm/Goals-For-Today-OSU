@@ -56,9 +56,21 @@ router.get("/:identifier", function (req, res) {
   }
 });
 
-// get user by email or member id
+// return full data set for user when they log in
 router.get("/login/:email", function (req, res) {
   User.loadUserInfoOnLogin(req.params.email)
+    .then((data) => {
+      res.status(200).json(data).end();
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ Error: err.message });
+    });
+});
+
+// return full data set for user when they log in
+router.get("/:user_id/load_team/:team_id", function (req, res) {
+  User.getUserTeamGoalsComments(req.params.user_id, req.params.team_id)
     .then((data) => {
       res.status(200).json(data).end();
     })

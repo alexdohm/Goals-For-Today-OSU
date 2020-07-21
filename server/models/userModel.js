@@ -264,12 +264,22 @@ const getUserTeamGoalsComments = async function (userId, teamId) {
   // get goals and comments for every team member
   for (member of teamInfo.team_members) {
     const memberGoals = await getAllGoalsForUser(member.member_id, teamId);
+    const memberComments = await getUserComments(member.member_id, teamId);
+
     if (memberGoals.number_of_items) {
       teamInfo.team_members[teamMap.get(member.member_id)].goals = [
         ...memberGoals.items,
       ];
     } else {
       teamInfo.team_members[teamMap.get(member.member_id)].goals = [];
+    }
+
+    if (memberComments.number_of_items) {
+      teamInfo.team_members[teamMap.get(member.member_id)].user_comments = [
+        ...memberComments.items,
+      ];
+    } else {
+      teamInfo.team_members[teamMap.get(member.member_id)].user_comments = [];
     }
   }
   // get index of current user
