@@ -87,6 +87,20 @@ router.get("/:user_id/load_team/:team_id", function (req, res) {
 });
 
 /**********************************************************************
+ * GET all general comments for a user
+ *********************************************************************/
+router.get("/:user_id/teams/:team_id/comments", function (req, res) {
+  User.getUserComments(req.params.user_id, req.params.team_id)
+    .then((data) => {
+      res.status(200).json(data).end();
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ Error: err.message });
+    });
+});
+
+/**********************************************************************
  * POST add a user
  *********************************************************************/
 router.post("/", async function (req, res) {

@@ -457,4 +457,5 @@ module.exports = {
   getAllEmailTimesForUsers,
   loadUserInfoOnLogin,
   getUserTeamGoalsComments,
+  getUserComments,
 };
