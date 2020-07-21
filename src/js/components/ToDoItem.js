@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 
 import IconButton from "./common/IconButton";
 import Text from "./common/Text";
+import Heading from "./common/Heading";
 import { EDIT_ICON, TRASH_ICON } from "./common/constants";
 
 class ToDoItem extends Component {
@@ -36,22 +37,27 @@ class ToDoItem extends Component {
       >
         <div className="ToDoItem-container">
           <Checkbox />
-          <Text baseClass="ToDoItem">{this.props.description}</Text>
+          <div className="ToDoItem-info">
+            <Heading hlevel={3} baseClass="ToDoItem">{this.props.title}</Heading>
+            <Text baseClass="ToDoItem">{this.props.description}</Text>
+          </div>
         </div>
-        <div className="ToDoItem-buttons">
-          <IconButton
-            baseClass="ToDoItem"
-            onClick={this.handleEdit}
-            icon={EDIT_ICON}
-            size="large"
-          />
-          <IconButton
-            baseClass="ToDoItem"
-            onClick={this.handleDelete}
-            icon={TRASH_ICON}
-            size="large"
-          />
-        </div>
+        {this.props.showButtons
+          ? <div className="ToDoItem-buttons">
+              <IconButton
+                baseClass="ToDoItem"
+                onClick={this.handleEdit}
+                icon={EDIT_ICON}
+                size="large"
+              />
+              <IconButton
+                baseClass="ToDoItem"
+                onClick={this.handleDelete}
+                icon={TRASH_ICON}
+                size="large"
+              />
+            </div>
+          : null }
       </div>
     );
   }

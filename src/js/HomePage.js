@@ -34,8 +34,12 @@ class HomePage extends Component {
           <TeamTaskbar 
             currentUserId={data.member_id}
             currentUserFirstName={data.first_name}
-            team={data.team} />
-          <ToDoList />
+            team={data.team} 
+          />
+          <ToDoList
+            currentUserId={data.member_id}
+            team={data.team} 
+          />
           <Comments />
         </div>
       );

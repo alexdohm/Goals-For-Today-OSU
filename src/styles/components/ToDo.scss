@@ -85,14 +85,18 @@
     flex-grow: 1;
     border: $border-black-2;
     border-radius: 16px;
-    padding-left: 16px;
-    padding-right: 16px;
+    padding: 16px;
     margin-right: 12px;
   }
 
-  &-text
+  &-info
   {
     margin-left: 12px;
+  }
+
+  &-heading
+  {
+    margin-bottom: 8px !important;
   }
 
   &-buttons

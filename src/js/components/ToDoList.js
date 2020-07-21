@@ -61,9 +61,7 @@ class ToDoList extends Component {
 
     this.selectItem = this.selectItem.bind(this);
     this.handleNewTaskNameChange = this.handleNewTaskNameChange.bind(this);
-    this.handleNewTaskDescriptionChange = this.handleNewTaskDescriptionChange.bind(
-      this
-    );
+    this.handleNewTaskDescriptionChange = this.handleNewTaskDescriptionChange.bind(this);
     this.openAddModal = this.openAddModal.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
   }
@@ -112,25 +110,35 @@ class ToDoList extends Component {
   }
 
   render() {
+    const { currentUserId, team } = this.props;
+    const memberToGoalsMap = {};
+    memberToGoalsMap[currentUserId] = team.goals;
+
+    for (const member of team.team_members) {
+      memberToGoalsMap[member.member_id] = member.goals;
+    }
     return (
       <div className="ToDoList">
         <Heading baseClass="ToDoList" hLevel={1}>
           To do list for today
         </Heading>
         <div className="ToDoList-items">
-          {testTodos.map((item, index) => {
-            if (item.userID == this.props.selectedUserId) {
+          
+          {Object.keys(memberToGoalsMap).map( key => memberToGoalsMap[key].map(goal => {
+            if (key == this.props.selectedUserId) {
               return (
                 <ToDoItem
-                  key={index}
-                  id={index}
-                  selected={this.props.selectedToDoId == index}
-                  description={item.description}
-                  onClick={() => this.props.onToDoSelected(item.id)}
+                  key={goal.goal_id}
+                  id={goal.goal_id}
+                  selected={this.props.selectedToDoId == goal.goal_id}
+                  title={goal.task_name}
+                  description={goal.task_description}
+                  showButtons={currentUserId == key}
+                  onClick={() => this.props.onToDoSelected(goal.goal_id)}
                 />
               );
             }
-          })}
+          })).flat()}
         </div>
         <IconButton
           baseClass="ToDoList"
