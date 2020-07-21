@@ -7,6 +7,7 @@ const crypto = require("crypto");
 const Mail = require("../handlers/email");
 const Team = require("./teamModel");
 const Goal = require("./goalModel");
+const { getAllGoalsForUser } = require("./goalModel");
 
 const addUser = async function (firstName, lastName, email, password, req) {
   const queryString = `INSERT INTO team_member (first_name, last_name, email, member_password) VALUES ($1, $2, $3, crypt($4, gen_salt('bf'))) returning member_id`;
@@ -207,44 +208,82 @@ const getAllUsers = async function () {
   //TODO implement
 };
 
+const getUserComments = async function (userId, teamId) {
+  const userCommentQuery = `SELECT c.comment_id, c.date_time::time, c.message, tm.first_name, tm.last_name, tm.avatar
+  FROM team_member AS tm
+           INNER JOIN comment as c on c.member_id = tm.member_id
+  WHERE c.goal_id IS NULL
+    AND c.member_id = $1
+    AND c.team_id = $2
+    AND c.team_page = false;`;
+
+  const filter = [userId, teamId];
+
+  const allComments = await Helpers.runQuery(userCommentQuery, filter);
+
+  if (allComments) {
+    return {
+      number_of_items: allComments.length || 0,
+      items: [...allComments] || [],
+    };
+  } else {
+    return {
+      number_of_items: 0,
+      items: [],
+    };
+  }
+};
+
+/**
+ * Returns all necessary information when user clicks to load dashboard
+ * for a team after they have already logged in
+ * @param {number} userId
+ * @param {number} teamId
+ */
+const getUserTeamGoalsComments = async function (userId, teamId) {
+  const teamInfo = {};
+
+  const teamDetails = await Team.getTeamById(teamId);
+
+  // get fellow team members
+  const teamMembers = await Team.getAllUsersOnTeam(teamId);
+
+  // determine if user is admin of the team
+  const adminStatus = await Team.isUserTeamAdmin(userId, teamId);
+
+  // build team json
+
+  teamInfo.team_id = teamId;
+  teamInfo.team_name = teamDetails.team_name;
+  teamInfo.team_members = [...teamMembers.items];
+  teamInfo.team_admin = adminStatus[0].exists;
+
+  // get goals for this user and this team
+  const userGoals = await Goal.getAllGoalsForUser(userId, teamId);
+
+  teamInfo.goals = [...userGoals.items];
+
+  // if they are on a team, see if there are user comments from team members
+  const userComment = await getUserComments(userId, teamId);
+
+  teamInfo.users_comments = [...userComment.items];
+
+  return teamInfo;
+};
+
+/**
+ * Function to load user data based on first team
+ * returned (if they have team) for initial login
+ * @param {string} userEmail
+ */
 const loadUserInfoOnLogin = async function (userEmail) {
   const userDataJson = {};
-
-  // get basic user info and at least one team if they are on one
 
   const userInfo = await getUserByEmail(userEmail);
 
   const userTeams = await getAllTeamsForUser(userInfo.member_id);
 
-  let teamMembers;
-  if (userTeams.number_of_items) {
-    // just get first one
-    teamMembers = await Team.getAllUsersOnTeam(userTeams.items[0].team_id);
-    const adminStatus = await Team.isUserTeamAdmin(
-      userInfo.member_id,
-      userTeams.items[0].team_id
-    );
-
-    userDataJson.team = {
-      team_id: userTeams.items[0].team_id,
-      team_name: userTeams.items[0].team_name,
-      team_members: [...teamMembers.items],
-      team_admin: adminStatus[0].exists,
-    };
-  } else {
-    // user has no teams
-    userDataJson.team = {};
-  }
-
-  // get goals and comments on those goals
-
-  const userGoals = await Goal.getAllGoalsForUser(
-    userInfo.member_id,
-    userTeams.items[0].team_id
-  );
-
-  userDataJson.goals = [...userGoals.items];
-
+  // set basic user data
   userDataJson.member_id = userInfo.member_id;
   userDataJson.first_name = userInfo.first_name;
   userDataJson.last_name = userInfo.last_name;
@@ -258,9 +297,22 @@ const loadUserInfoOnLogin = async function (userEmail) {
   userDataJson.avatar = userInfo.avatar;
   userDataJson.evening_time = userInfo.evening_time;
 
-  console.log(userDataJson);
+  if (!userTeams.number_of_items) {
+    // user has no teams
+    userDataJson.team = {};
+    userDataJson.goals = [];
+    userDataJson.comments = [];
 
-  return userDataJson;
+    return userDataJson;
+  } else {
+    // get team info for the first team in the list
+    userDataJson.team = await getUserTeamGoalsComments(
+      userInfo.member_id,
+      userTeams.items[0].team_id
+    );
+
+    return userDataJson;
+  }
 };
 
 /**
@@ -334,6 +386,10 @@ const getAllTeamsForUser = async function (userId) {
 
   console.log(teams);
 
+  if (!teams) {
+    return teams;
+  }
+
   const jsonResponse = { number_of_items: teams.length };
 
   jsonResponse.items = [...teams];
@@ -372,4 +428,5 @@ module.exports = {
   updateUser,
   getAllEmailTimesForUsers,
   loadUserInfoOnLogin,
+  getUserTeamGoalsComments,
 };
