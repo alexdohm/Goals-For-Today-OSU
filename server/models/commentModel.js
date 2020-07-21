@@ -4,10 +4,73 @@
  */
 const Helpers = require("../handlers/helpers");
 
-const addComment = async function (commentInfoObject) {
+const addComment = async function (entityType, entityObj) {
   //TODO implement
-};
+  let commentInsert;
+  let filter = [];
+  switch (entityType) {
+    case "GOAL":
+      commentInsert = `INSERT INTO comment (member_id, team_id, goal_id, team_page, date_time, message)
+    VALUES ($1, $2, $3, false, $4, $5) RETURNING comment_id;
+      `;
+      filter.push(
+        entityObj.member_id,
+        entityObj.team_id,
+        entityObj.goal_id,
+        entityObj.date,
+        entityObj.message
+      );
+      break;
+    case "USER":
+      commentInsert = `INSERT INTO comment (member_id, team_id, team_page, date_time, message)
+      VALUES ( $1, $2, false, $3, $4) RETURNING comment_id;`;
 
+      filter.push(
+        entityObj.member_id,
+        entityObj.team_id,
+        entityObj.date,
+        entityObj.message
+      );
+      break;
+    case "TEAM":
+      commentInsert = `INSERT INTO comment (member_id, team_id, team_page, date_time, message)
+              VALUES ($1, $2, true, $4, $5) RETURNING comment_id;`;
+
+      filter.push(
+        entityObj.member_id,
+        entityObj.team_id,
+        entityObj.date,
+        entityObj.message
+      );
+      break;
+  }
+
+  const newCommentId = await Helpers.insertData(
+    commentInsert,
+    filter,
+    "comment_id"
+  );
+
+  return getCommentById(newCommentId);
+};
+/**
+ * Return a comment and metadata based on unique comment id
+ * @param {number} commentId  unique id of comment
+ */
+const getCommentById = async function (commentId) {
+  const commentQuery = `SELECT c.comment_id, c.date_time::time, c.message, tm.first_name, tm.last_name, tm.avatar
+  FROM team_member AS tm
+           INNER JOIN comment as c on c.comment_id = tm.member_id
+  WHERE c.comment_id = $1;`;
+
+  const commentReturned = await Helpers.runQuery(commentQuery, [commentId]);
+
+  if (!commentReturned) {
+    return "404";
+  }
+
+  return commentReturned[0];
+};
 /**
  * Builds query and filters based on what type of comment is requested.
  * @param {string} entityType what the comment is on: USER, GOAL, TEAM
