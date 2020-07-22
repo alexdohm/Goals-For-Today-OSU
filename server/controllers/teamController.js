@@ -57,7 +57,7 @@ router.get("/:team_id", function (req, res) {
 });
 
 /**********************************************************************
- * POST add a goal
+ * POST add a team
  *********************************************************************/
 router.post("/", async function (req, res) {
   if (req.body.name && req.body.date) {
@@ -149,5 +149,95 @@ router.delete("/:team_id", async function (req, res) {
     });
 });
 
+/**********************************************************************
+ * POST add a comment to a team
+ *********************************************************************/
+router.post("/:team_id/comments", async function (req, res) {
+  if (req.body.author && req.body.comment_date && req.body.comment_text) {
+    Team.addTeamComment(
+      req.params.team_id,
+      req.body.author,
+      req.body.comment_date,
+      req.body.comment_text
+    )
+      .then((newComment) => {
+        newComment.self = Helpers.addSelf(
+          req,
+          newComment.comment_id,
+          "comments"
+        );
+        res.status(201).json(newComment);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ Error: err.message });
+      });
+  } else {
+    res.status(400).json({ Error: MISSING_ATTRIBUTE_TEXT }).end();
+  }
+});
+
+/**********************************************************************
+ * PUT add a user to a team/user requests to join team
+ *********************************************************************/
+router.put("/:team_id/users/:user_id", async function (req, res) {
+  if (!req.body.date_added) {
+    res.status(400).json({ Error: MISSING_ATTRIBUTE_TEXT }).end();
+  } else {
+    Team.addUserToTeam(req.params.team_id, req.params.user_id, req.body)
+      .then((t) => {
+        if (failedResponseMatch.get(t)) {
+          res
+            .status(Number(t))
+            .json({ Error: `${failedResponseMatch.get(t)}` });
+        } else {
+          res.status(204).end();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        // PUT is idempotent so if they violate a constraint they are already on the team
+        // so just send back success
+        if (err.constraint) {
+          res.status(204).end();
+        } else {
+          res.status(500).json({ Error: err.message });
+        }
+      });
+  }
+});
+
+/**********************************************************************
+ * PATCH admin approves user request to join team
+ *********************************************************************/
+router.patch("/:team_id/users/:user_id", async function (req, res) {
+  if (!req.body.approved_ind) {
+    res.status(400).json({ Error: MISSING_ATTRIBUTE_TEXT }).end();
+  } else {
+    Team.approveUserRequest(req.params.user_id, req.params.team_id)
+      .then((t) => {
+        if (failedResponseMatch.get(t)) {
+          res
+            .status(Number(t))
+            .json({ Error: `${failedResponseMatch.get(t)}` });
+        } else {
+          if (!t) {
+            res.status(500).json({ Error: "FAILED TO UPDATE" });
+          }
+          res.status(204).end();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        // PUT is idempotent so if they violate a constraint they are already on the team
+        // so just send back success
+        if (err.constraint) {
+          res.status(204).end();
+        } else {
+          res.status(500).json({ Error: err.message });
+        }
+      });
+  }
+});
 /* ------------- End Controller Functions ------------- */
 module.exports = router;

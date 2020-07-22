@@ -57,6 +57,33 @@ const getAllCommentsOnGoal = async function (goalId) {
     return "404";
   }
 };
+
+/**
+ * Add a new comment to a goal
+ * @param {number} teamId unique id of team
+ * @param {number} userId unique id of author of comment
+ * @param {number} goalId unique id of goal that is being commented on
+ * @param {string} comment_text text of comment
+ * @param {date} comment_date date of comment
+ */
+const addGoalComment = async function (
+  teamId,
+  userId,
+  goalId,
+  comment_text,
+  comment_date
+) {
+  const goalComment = {
+    member_id: userId,
+    team_id: teamId,
+    goal_id: goalId,
+    date: comment_date,
+    message: comment_text,
+  };
+
+  return Comment.addComment("GOAL", goalComment);
+};
+
 /**
  * Get all goals and comments on those goals for a user
  * @param {date} date
@@ -116,19 +143,22 @@ const updateGoal = async function (goalId, goalInfo) {
   }
 
   const updatedGoal = {
-    task_name: goalInfo.name || existingGoal.task_name,
-    task_description: goalInfo.description || existingGoal.task_description,
-    status: goalInfo.status || existingGoal.status,
+    task_name: goalInfo.name || existingGoal[0].task_name,
+    task_description: goalInfo.description || existingGoal[0].task_description,
+    status: goalInfo.status || existingGoal[0].status,
   };
 
   const updatedGoalQuery = `UPDATE goal SET task_name = $1,
-  task_description = $2, status = $3`;
+  task_description = $2, status = $3 WHERE goal_id = $4`;
 
-  return Helpers.updateData(updatedGoalQuery, [
+  const updatedGoalInd = await Helpers.updateData(updatedGoalQuery, [
     updatedGoal.task_name,
     updatedGoal.task_description,
     updatedGoal.status,
+    goalId,
   ]);
+
+  return getGoalById(goalId);
 };
 /**
  * delete an existing goal
@@ -151,4 +181,5 @@ module.exports = {
   deleteGoal,
   getGoalById,
   getAllCommentsOnGoal,
+  addGoalComment,
 };

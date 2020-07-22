@@ -46,6 +46,40 @@ router.get("/:goal_id/comments", function (req, res) {
 });
 
 /**********************************************************************
+ * POST add a comment to a goal
+ *********************************************************************/
+router.post("/:goal_id/comments", async function (req, res) {
+  if (
+    req.body.author &&
+    req.body.team_id &&
+    req.body.comment_date &&
+    req.body.comment_text
+  ) {
+    Goal.addGoalComment(
+      req.body.team_id,
+      req.body.author,
+      req.params.goal_id,
+      req.body.comment_text,
+      req.body.comment_date
+    )
+      .then((newComment) => {
+        newComment.self = Helpers.addSelf(
+          req,
+          newComment.comment_id,
+          "comments"
+        );
+        res.status(201).json(newComment);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ Error: err.message });
+      });
+  } else {
+    res.status(400).json({ Error: MISSING_ATTRIBUTE_TEXT }).end();
+  }
+});
+
+/**********************************************************************
  * GET a goal by goal_id
  *********************************************************************/
 router.get("/:goal_id", function (req, res) {
@@ -100,8 +134,8 @@ router.post("/", async function (req, res) {
  * PATCH modify a goal
  *********************************************************************/
 router.patch("/:goal_id", async function (req, res) {
-  if (req.body.name || req.body.description) {
-    Goal.updateGoal(req.params.team_id, req.body)
+  if (req.body.name || req.body.description || req.body.status) {
+    Goal.updateGoal(req.params.goal_id, req.body)
       .then((g) => {
         if (failedResponseMatch.get(g)) {
           res

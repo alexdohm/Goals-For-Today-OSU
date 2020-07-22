@@ -101,6 +101,28 @@ router.get("/:user_id/teams/:team_id/comments", function (req, res) {
 });
 
 /**********************************************************************
+ * POST add general user comment
+ *********************************************************************/
+/*router.post("/:user_id/comments", async function (req, res) {
+  if (req.body.author && req.body.comment_text && req.body.comment_date) {
+    
+    
+      .catch((err) => {
+        // database throws an error because of constraint and populates which one is violated.
+        // Catch it and send proper response status & message
+        if (err.constraint) {
+          res.status(403).json({ Error: `${failedResponseMatch.get("403")}` });
+        } else {
+          res.status(500).json({ Error: err.message });
+        }
+      });
+  } else {
+    res.status(400).json({ Error: MISSING_ATTRIBUTE_TEXT }).end();
+  }
+});
+*/
+
+/**********************************************************************
  * POST add a user
  *********************************************************************/
 router.post("/", async function (req, res) {

@@ -7,7 +7,7 @@ const crypto = require("crypto");
 const Mail = require("../handlers/email");
 const Team = require("./teamModel");
 const Goal = require("./goalModel");
-const { getAllGoalsForUser } = require("./goalModel");
+const Comment = require("./commentModel");
 
 const addUser = async function (firstName, lastName, email, password, req) {
   const queryString = `INSERT INTO team_member (first_name, last_name, email, member_password) VALUES ($1, $2, $3, crypt($4, gen_salt('bf'))) returning member_id`;
@@ -235,6 +235,31 @@ const getUserComments = async function (userId, teamId) {
 };
 
 /**
+ *
+ * @param {number} teamId unique id of team
+ * @param {number} userId unique id of user whos being commented on
+ * @param {number} author unique id of author of comment
+ * @param {string} comment_text comment text
+ * @param {date} comment_date date comment was written
+ */
+const addUserComment = async function (
+  teamId,
+  userId,
+  author,
+  comment_text,
+  comment_date
+) {
+  const userComment = {
+    member_id: author,
+    team_id: teamId,
+    date: comment_date,
+    message: comment_text,
+  };
+
+  return Comment.addComment("USER", userComment);
+};
+
+/**
  * Returns all necessary information when user clicks to load dashboard
  * for a team after they have already logged in
  * @param {number} userId
@@ -263,7 +288,7 @@ const getUserTeamGoalsComments = async function (userId, teamId) {
 
   // get goals and comments for every team member
   for (member of teamInfo.team_members) {
-    const memberGoals = await getAllGoalsForUser(member.member_id, teamId);
+    const memberGoals = await Goal.getAllGoalsForUser(member.member_id, teamId);
     const memberComments = await getUserComments(member.member_id, teamId);
 
     if (memberGoals.number_of_items) {

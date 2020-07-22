@@ -3,7 +3,7 @@
  * Functions to handle interactions between data model and returned data
  */
 const Helpers = require("../handlers/helpers");
-
+const Comment = require("./commentModel");
 const moment = require("moment");
 moment().format();
 
@@ -101,28 +101,62 @@ const deleteTeam = async function (teamId) {
   console.log("NOT IMPLEMENTED YET!!");
 };
 
-const adduserToTeam = async function (userId, teamId) {
-  //TODO implement
+const addUserToTeam = async function (teamId, userId, body) {
+  const approved_ind = body.approved_ind ? true : false;
+
+  const addTeamMemberQuery = `INSERT INTO member_of (member_id, team_id, approved, date_added)
+    VALUES ($1, $2, $3, $4);`;
+
+  const filter = [userId, teamId, approved_ind, body.date_added];
+
+  const newTeamMember = await Helpers.updateData(addTeamMemberQuery, filter);
+
+  console.log(newTeamMember);
+
+  return newTeamMember;
+};
+
+/**
+ * Update membership status for user
+ * @param {number} userId unique id of user
+ * @param {number} teamId unique id of team
+ */
+const approveUserRequest = async function (userId, teamId) {
+  const approveQuery = `
+    UPDATE member_of
+    SET approved = true
+    WHERE member_id = $1
+      AND team_id = $2;`;
+
+  const filter = [userId, teamId];
+
+  return Helpers.updateData(approveQuery, filter);
 };
 
 const removeUserFromTeam = async function (userId, teamId) {
   //TODO implement
 };
 
+/**
+ * Return all users on team and their status (member, admin, requested)
+ * @param {number} teamId unique id of team
+ */
 const getAllUsersOnTeam = async function (teamId) {
-  //TODO implement
-
-  const teamMembersQuery = `SELECT tm.member_id, tm.first_name, tm.last_name, tm.user_name
+  const teamMembersQuery = `SELECT tm.member_id, tm.first_name, tm.last_name, tm.user_name,
+  CASE 
+        WHEN mo.approved is false THEN 'REQUESTED'
+		WHEN m.member_id is null THEN 'MEMBER'
+		ELSE 'ADMIN'
+	END AS STATUS
     FROM team_member AS tm
              INNER JOIN member_of AS mo ON mo.member_id = tm.member_id
              INNER JOIN team AS t ON t.team_id = mo.team_id
+             LEFT JOIN manages m ON tm.member_id = m.member_id and t.team_id = m.team_id
     WHERE t.team_id = $1;`;
 
   const filter = [teamId];
 
   const allTeamMembers = await Helpers.runQuery(teamMembersQuery, filter);
-
-  console.log(allTeamMembers);
 
   if (allTeamMembers.length) {
     const dataJson = {};
@@ -149,14 +183,32 @@ const isUserTeamAdmin = async function (userId, teamId) {
   return Helpers.runQuery(adminQuery, filter);
 };
 
+const addTeamComment = async function (
+  teamId,
+  userId,
+  comment_date,
+  comment_text
+) {
+  const teamComment = {
+    member_id: userId,
+    team_id: teamId,
+    date: comment_date,
+    message: comment_text,
+  };
+
+  return Comment.addComment("TEAM", teamComment);
+};
+
 module.exports = {
   getAllTeams,
   getTeamById,
   addTeam,
   updateTeam,
   deleteTeam,
-  adduserToTeam,
+  addUserToTeam,
   removeUserFromTeam,
   getAllUsersOnTeam,
   isUserTeamAdmin,
+  addTeamComment,
+  approveUserRequest,
 };

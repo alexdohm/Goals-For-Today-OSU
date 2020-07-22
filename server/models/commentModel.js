@@ -5,7 +5,6 @@
 const Helpers = require("../handlers/helpers");
 
 const addComment = async function (entityType, entityObj) {
-  //TODO implement
   let commentInsert;
   let filter = [];
   switch (entityType) {
@@ -34,7 +33,7 @@ const addComment = async function (entityType, entityObj) {
       break;
     case "TEAM":
       commentInsert = `INSERT INTO comment (member_id, team_id, team_page, date_time, message)
-              VALUES ($1, $2, true, $4, $5) RETURNING comment_id;`;
+              VALUES ($1, $2, true, $3, $4) RETURNING comment_id;`;
 
       filter.push(
         entityObj.member_id,
@@ -51,7 +50,7 @@ const addComment = async function (entityType, entityObj) {
     "comment_id"
   );
 
-  return getCommentById(newCommentId);
+  return await getCommentById(newCommentId);
 };
 /**
  * Return a comment and metadata based on unique comment id
@@ -60,7 +59,7 @@ const addComment = async function (entityType, entityObj) {
 const getCommentById = async function (commentId) {
   const commentQuery = `SELECT c.comment_id, c.date_time::time, c.message, tm.first_name, tm.last_name, tm.avatar
   FROM team_member AS tm
-           INNER JOIN comment as c on c.comment_id = tm.member_id
+           INNER JOIN comment as c on c.member_id = tm.member_id
   WHERE c.comment_id = $1;`;
 
   const commentReturned = await Helpers.runQuery(commentQuery, [commentId]);
