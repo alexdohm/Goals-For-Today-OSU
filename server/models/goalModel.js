@@ -92,7 +92,7 @@ const addGoalComment = async function (
  */
 const getAllGoalsForUser = async function (memberId, teamId) {
   //    --list of goals for user [ need member_id, team_id and date]
-  const goalQuery = `SELECT goal_id, task_name, task_description, date_time
+  const goalQuery = `SELECT goal_id, task_name, task_description, date_time, status
         FROM goal
         WHERE member_id = $1
         AND team_id = $2;`;
