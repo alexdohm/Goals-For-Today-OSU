@@ -205,7 +205,37 @@ const getUserById = async function (id) {
 };
 
 const getAllUsers = async function () {
-  //TODO implement
+  const allUserQuery = `
+  select
+  tm.member_id,
+  tm.first_name,
+  tm.last_name,
+  tm.user_name,
+  tm.email,
+  tm.verified,
+  tm.active,
+  CASE
+  WHEN mo.member_id is null THEN false
+  ELSE true
+  END AS HAS_TEAMS,
+  tm.avatar
+  from
+  team_member tm
+  LEFT JOIN member_of mo ON tm.member_id = mo.member_id;`;
+
+  const allUsers = await Helpers.runQuery(allUserQuery, []);
+
+  if (allUsers) {
+    return {
+      number_of_items: allUsers.length || 0,
+      items: [...allUsers] || [],
+    };
+  } else {
+    return {
+      number_of_items: 0,
+      items: [],
+    };
+  }
 };
 
 const getUserComments = async function (userId, teamId) {

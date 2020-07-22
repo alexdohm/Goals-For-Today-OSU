@@ -45,8 +45,9 @@ const getTeamById = async function (teamId) {
  *
  * @param {string} name Unique name of team
  * @param {date} date date team was created
+ * @param {date} member unique id of team member who created team
  */
-const addTeam = async function (name, date) {
+const addTeam = async function (name, date, member) {
   const newTeamQuery = `INSERT INTO team (team_name, date_created)
   VALUES ($1, $2)
   returning team_id;`;
@@ -55,6 +56,17 @@ const addTeam = async function (name, date) {
 
   const newTeamId = await Helpers.insertData(newTeamQuery, filter, "team_id");
 
+  // now add user to team
+  const addResult = await addUserToTeam(newTeamId, member, {
+    approved_ind: 1,
+    date_added: date,
+  });
+
+  // set them as admin
+  const adminResult = await updateTeamAdmin(member, newTeamId, {
+    admin_ind: 1,
+  });
+  // return new team info
   return getTeamById(newTeamId);
 };
 /**

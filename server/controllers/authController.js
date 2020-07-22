@@ -69,7 +69,6 @@ router.post("/signup", function (req, res) {
 router.post("/login", function (req, res) {
   User.getUser(req.body.emailInput, req.body.passwordInput)
     .then((user) => {
-      console.log(user);
       if (failedResponseMatch.get(user)) {
         res
           .status(Number(user))

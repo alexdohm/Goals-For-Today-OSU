@@ -28,7 +28,7 @@ router.get("/:identifier", function (req, res) {
             .status(Number(result))
             .json({ Error: `${failedResponseMatch.get(result)}` });
         } else {
-          result.self = Helpers.addSelf(req, result.member_id, "users", result);
+          result.self = Helpers.addSelf(req, result.member_id, "users");
           res.status(200).json(result);
         }
       })
@@ -44,7 +44,7 @@ router.get("/:identifier", function (req, res) {
             .status(Number(result))
             .json({ Error: `${failedResponseMatch.get(result)}` });
         } else {
-          result.self = Helpers.addSelf(req, result.member_id, "users", result);
+          result.self = Helpers.addSelf(req, result.member_id, "users");
           res.status(200).json(result);
         }
       })
@@ -122,6 +122,21 @@ router.get("/:user_id/teams/:team_id/comments", function (req, res) {
 */
 
 /**********************************************************************
+ * GET all users
+ *********************************************************************/
+router.get("/", function (req, res) {
+  User.getAllUsers()
+    .then((users) => {
+      users.items = Helpers.addSelf(req, users.items, "user");
+      res.status(200).json(users).end();
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ Error: err.message });
+    });
+});
+
+/**********************************************************************
  * POST add a user
  *********************************************************************/
 router.post("/", async function (req, res) {
@@ -135,21 +150,21 @@ router.post("/", async function (req, res) {
       req.body.first_name,
       req.body.last_name,
       req.body.email,
-      req.body.password
+      req.body.password,
+      req
     )
       .then((newUser) => {
-        console.log(newUser);
-
-        if (failedResponseMatch.get(result)) {
+        if (failedResponseMatch.get(newUser)) {
           res
-            .status(Number(result))
-            .json({ Error: `${failedResponseMatch.get(result)}` });
+            .status(Number(newUser))
+            .json({ Error: `${failedResponseMatch.get(newUser)}` });
         } else {
           newUser.self = Helpers.addSelf(req, newUser.member_id, "users");
           res.status(201).json(newUser);
         }
       })
       .catch((err) => {
+        console.log(err);
         // database throws an error because of constraint and populates which one is violated.
         // Catch it and send proper response status & message
         if (err.constraint) {
@@ -175,7 +190,8 @@ router.patch("/:user_id", async function (req, res) {
     req.body.morning_time ||
     req.body.evening_time ||
     req.body.time_zone ||
-    req.body.verified
+    req.body.verified ||
+    req.body.username
   ) {
     User.updateUser(req.params.user_id, req.body)
       .then((u) => {
@@ -209,7 +225,7 @@ router.get("/:user_id/teams", function (req, res) {
           .status(Number(result))
           .json({ Error: `${failedResponseMatch.get(result)}` });
       } else {
-        result.items = Helpers.addSelf(req, result.items, "teams", result);
+        result.items = Helpers.addSelf(req, result.items, "teams");
         res.status(200).json(result);
       }
     })
