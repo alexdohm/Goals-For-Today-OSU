@@ -437,8 +437,6 @@ const getAllTeamsForUser = async function (userId) {
 
   const teams = await Helpers.runQuery(teamQuery, filter);
 
-  console.log(teams);
-
   if (!teams) {
     return teams;
   }

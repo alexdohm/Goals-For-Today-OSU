@@ -39,7 +39,6 @@ router.get("/:identifier", function (req, res) {
   } else if (req.query.type === "email") {
     User.getUserByEmail(req.params.identifier)
       .then((result) => {
-        //console.log(result)
         if (failedResponseMatch.get(result)) {
           res
             .status(Number(result))
@@ -205,7 +204,6 @@ router.patch("/:user_id", async function (req, res) {
 router.get("/:user_id/teams", function (req, res) {
   User.getAllTeamsForUser(req.params.user_id)
     .then((result) => {
-      console.log(result);
       if (failedResponseMatch.get(result)) {
         res
           .status(Number(result))

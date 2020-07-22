@@ -132,6 +132,27 @@ const approveUserRequest = async function (userId, teamId) {
 
   return Helpers.updateData(approveQuery, filter);
 };
+/**
+ * Add or remove a user from the manages table effectively updating admin status
+ * @param {number} userId
+ * @param {number} teamId
+ * @param {objeect} updateInfo if admin_ind = 1, add user to manages table, else remove
+ */
+const updateTeamAdmin = async function (userId, teamId, updateInfo) {
+  let updateStatement;
+
+  if (updateInfo.admin_ind) {
+    updateStatement = `INSERT INTO manages (member_id, team_id)
+        VALUES ($1, $2);`;
+  } else {
+    updateStatement = `DELETE
+        FROM manages
+        WHERE member_id = $1
+          AND team_id = $2;`;
+  }
+
+  return Helpers.updateData(updateStatement, [userId, teamId]);
+};
 
 const removeUserFromTeam = async function (userId, teamId) {
   //TODO implement
@@ -150,6 +171,7 @@ const getAllUsersOnTeam = async function (teamId) {
 	END AS STATUS
     FROM team_member AS tm
              INNER JOIN member_of AS mo ON mo.member_id = tm.member_id
+             AND mo.date_left IS NULL
              INNER JOIN team AS t ON t.team_id = mo.team_id
              LEFT JOIN manages m ON tm.member_id = m.member_id and t.team_id = m.team_id
     WHERE t.team_id = $1;`;
@@ -211,4 +233,5 @@ module.exports = {
   isUserTeamAdmin,
   addTeamComment,
   approveUserRequest,
+  updateTeamAdmin,
 };

@@ -208,35 +208,46 @@ router.put("/:team_id/users/:user_id", async function (req, res) {
 });
 
 /**********************************************************************
- * PATCH admin approves user request to join team
+ * PATCH admin approves user request to join team and/or adds another team admin
  *********************************************************************/
 router.patch("/:team_id/users/:user_id", async function (req, res) {
-  if (!req.body.approved_ind) {
+  if (!req.body.approved_ind && req.body.admin_ind === undefined) {
     res.status(400).json({ Error: MISSING_ATTRIBUTE_TEXT }).end();
   } else {
-    Team.approveUserRequest(req.params.user_id, req.params.team_id)
-      .then((t) => {
-        if (failedResponseMatch.get(t)) {
-          res
-            .status(Number(t))
-            .json({ Error: `${failedResponseMatch.get(t)}` });
-        } else {
-          if (!t) {
-            res.status(500).json({ Error: "FAILED TO UPDATE" });
+    if (req.body.approved_ind) {
+      Team.approveUserRequest(req.params.user_id, req.params.team_id)
+        .then((t) => {
+          if (failedResponseMatch.get(t)) {
+            res
+              .status(Number(t))
+              .json({ Error: `${failedResponseMatch.get(t)}` });
+          } else {
+            if (!t) {
+              res.status(500).json({ Error: "FAILED TO UPDATE" });
+            }
+            res.status(204).end();
           }
-          res.status(204).end();
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        // PUT is idempotent so if they violate a constraint they are already on the team
-        // so just send back success
-        if (err.constraint) {
-          res.status(204).end();
-        } else {
+        })
+        .catch((err) => {
+          console.log(err);
+
+          if (err.constraint) {
+            res.status(204).end();
+          } else {
+            res.status(500).json({ Error: err.message });
+          }
+        });
+    } else if (req.body.admin_ind !== undefined) {
+      Team.updateTeamAdmin(req.params.user_id, req.params.team_id, req.body)
+        .then((t) => {
+          res.status(204).json().end();
+        })
+        .catch((err) => {
+          console.log(err);
+
           res.status(500).json({ Error: err.message });
-        }
-      });
+        });
+    }
   }
 });
 /* ------------- End Controller Functions ------------- */
