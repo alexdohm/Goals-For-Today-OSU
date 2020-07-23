@@ -112,7 +112,12 @@ const deleteTeam = async function (teamId) {
   //TODO implement
   console.log("NOT IMPLEMENTED YET!!");
 };
-
+/**
+ * Add user to a team
+ * @param {number} teamId unique team id
+ * @param {number} userId unique user id
+ * @param {object} body request body with approved status and date
+ */
 const addUserToTeam = async function (teamId, userId, body) {
   const approved_ind = body.approved_ind ? true : false;
 
@@ -122,8 +127,6 @@ const addUserToTeam = async function (teamId, userId, body) {
   const filter = [userId, teamId, approved_ind, body.date_added];
 
   const newTeamMember = await Helpers.updateData(addTeamMemberQuery, filter);
-
-  console.log(newTeamMember);
 
   return newTeamMember;
 };

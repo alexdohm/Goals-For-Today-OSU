@@ -24,7 +24,7 @@ router.get("/", function (req, res) {
     .then((teams) => {
       if (teams) {
         // format returned teams
-        teams.items = Helpers.addSelf(req, teams.items, "team");
+        teams.items = Helpers.addSelf(req, teams.items, "teams");
       }
       // return regardless if teams were found
       res.status(200).json(teams);
@@ -120,7 +120,7 @@ router.get("/:team_id/users", function (req, res) {
     .then((teamMembers) => {
       if (teamMembers) {
         // format returned teams
-        teamMembers.items = Helpers.addSelf(req, teamMembers.items, "user");
+        teamMembers.items = Helpers.addSelf(req, teamMembers.items, "users");
       }
       // return regardless if teams were found
       res.status(200).json(teamMembers);

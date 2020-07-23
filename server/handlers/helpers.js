@@ -98,11 +98,17 @@ function addSelf(req, id, type) {
   if (Array.isArray(id)) {
     let unique_id;
     switch (type) {
-      case "user":
+      case "users":
         unique_id = "member_id";
         break;
-      case "team":
+      case "teams":
         unique_id = "team_id";
+        break;
+      case "goals":
+        unique_id = "goal_id";
+        break;
+      case "comments":
+        unique_id = "comment_id";
         break;
     }
     id.forEach((obj) => {

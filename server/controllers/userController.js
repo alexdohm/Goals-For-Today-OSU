@@ -19,7 +19,7 @@ failedResponseMatch.set("404", "No user found");
  * GET a user by email OR member_id
  *********************************************************************/
 router.get("/:identifier", function (req, res) {
-  if (req.query.type === "id") {
+  if (req.query.type === "id" || !isNaN(req.params.identifier)) {
     User.getUserById(req.params.identifier)
       .then((result) => {
         //console.log(result)
@@ -53,7 +53,7 @@ router.get("/:identifier", function (req, res) {
         res.status(500).json({ Error: err.message }).end();
       });
   } else {
-    res.status("400").json({ Error: "No type defined to get usere by" }).end();
+    res.status("400").json({ Error: "No type defined to get user by" }).end();
   }
 });
 
@@ -136,7 +136,7 @@ router.post("/:user_id/comments", async function (req, res) {
 router.get("/", function (req, res) {
   User.getAllUsers()
     .then((users) => {
-      users.items = Helpers.addSelf(req, users.items, "user");
+      users.items = Helpers.addSelf(req, users.items, "users");
       res.status(200).json(users).end();
     })
     .catch((err) => {
