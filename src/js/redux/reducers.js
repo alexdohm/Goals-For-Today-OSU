@@ -3,7 +3,7 @@ import { SELECT_USER } from "./actions";
 import { SET_CURRENT_USER } from "./actions";
 
 const initialState = {
-  selectedToDoId: null,
+  selectedToDoId: -1,
   selectedUserId: null,
   isAuthenticated: false,
   user: {},

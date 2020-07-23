@@ -36,7 +36,7 @@ class HomePage extends Component {
             team={data.team}
           />
           <ToDoList currentUserId={data.member_id} team={data.team} />
-          <Comments />
+          <Comments team={data.team}/>
         </div>
       );
     } else {
