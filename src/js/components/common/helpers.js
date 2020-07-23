@@ -6,6 +6,7 @@ export const FormFieldHelper = (props) => {
   const labelClass = `${props.baseClass}-label`;
   const id = `${props.idPrefix}-${props.name.replace(" ", "-")}`;
   const type = props.type ? props.type : "text";
+  const placeholder = props.placeholder ? props.placeholder : props.name;
 
   return (
     <Form.Field className={fieldClass}>
@@ -13,7 +14,7 @@ export const FormFieldHelper = (props) => {
         {props.name}
       </label>
       <input
-        placeholder={props.name}
+        placeholder={placeholder}
         id={id}
         onChange={props.onChange}
         type={type}

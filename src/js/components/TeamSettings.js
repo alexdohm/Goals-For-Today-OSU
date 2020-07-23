@@ -60,6 +60,7 @@ class TeamSettings extends Component {
                 baseClass="Settings"
                 idPrefix="settings"
                 name="teamRequest"
+                placeholder="New Team Name"
                 onChange={this.handleTeamCreateChange}
               />
               <Button primary onClick={this.handleTeamCreate}>
