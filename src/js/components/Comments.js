@@ -55,6 +55,20 @@ class Comments extends Component {
   }
 
   render() {
+    const { team } = this.props;
+    const goalToCommentsMap = {};
+
+    goalToCommentsMap[-1] = team.user_comments;
+    for (const member of team.team_members) {
+      goalToCommentsMap[-1] = goalToCommentsMap[-1].concat(member.user_comments);
+    }
+
+    for (const goal of team.goals) {
+      goalToCommentsMap[goal.goal_id] = goal.comments;
+    }
+
+    console.log('goalToCommentsMap', goalToCommentsMap);
+
     return (
       <div className="Comments">
         <Heading baseClass="Comments" hLevel={2}>
@@ -64,20 +78,25 @@ class Comments extends Component {
           {testSubHeading}
         </Heading>
         <div className="Comments-list">
-          {this.props.selectedToDoId != null &&
-          this.props.selectedToDoId < testComments.length
-            ? testComments.map((comment, index) => {
-                if (comment.toDoID == this.props.selectedToDoId) {
+          {Object.keys(goalToCommentsMap)
+            .map( key => 
+              goalToCommentsMap[key].map( comment => {
+                console.log('key', key);
+                console.log(typeof key);
+                console.log('selectedToDo', this.props.selectedToDoId);
+                console.log(typeof this.props.selectedToDoId);
+                if (key == this.props.selectedToDoId) {
+                  console.log('should be returning');
                   return (
                     <Comment
-                      key={index}
-                      user={comment.user}
-                      body={comment.body}
-                    />
+                      key={comment.comment_id}
+                      firstName={comment.first_name}
+                      lastName={comment.last_name}
+                      body={comment.message}/>
                   );
                 }
               })
-            : null}
+            ).flat()}
         </div>
         <CommentForm />
       </div>
@@ -92,7 +111,7 @@ const Comment = (props) => {
       <div className="Comment-contentWrapper">
         <div className="Comment-top">
           <Heading baseClass="Comment" hLevel={5}>
-            {props.user}
+            {props.firstName} {props.lastName}
           </Heading>
           <span className="Comment-timestamp">
             {/* TODO: put timestamp here */}
