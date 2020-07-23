@@ -2,27 +2,36 @@ extends email-base
 
 block content
 
-    h2.section-header Daily #{reminder_type} Briefing
-    p Hello, #{name}!
-    - 
+    h2.section-header Daily #{reminder_type} Reminder
+    p Hello, #{first_name} #{last_name}!
+    -
         var morning = false;
         if (reminder_type === 'Morning') {
             morning = true;
         }
     div.container
         if morning
-            if goals
-                span Here are your unfinished tasks from yesterday.
-                ul
-                    each goal in goals
-                        li= goal.name
-        
-            else
-                span You have a clean slate today! Don't forget to enter your goals this morning!
+            div Good Morning, It's time to enter your goals for the day. Please click on the link below to go to Goals For Today and enter your tasks for the day.
         else
-            h3 Evening wrap up is here.
+            div Good Afternoon, I hope you've had a productive day today. Please update Goals For Today with the goals you've completed for today.
 
-            p Here are some things you did today
-            ul 
-                li item 1
-                li item 2
+        br
+        a(class='button' href='https://goals-for-today-osu.herokuapp.com/') Goals For Today
+
+
+        //if morning
+        //    if goals
+        //        span Here are your unfinished tasks from yesterday.
+        //        ul
+        //            each goal in goals
+        //                li= goal.name
+        //
+        //    else
+        //        span You have a clean slate today! Don't forget to enter your goals this morning!
+        //else
+        //    h3 Evening wrap up is here.
+        //
+        //    p Here are some things you did today
+        //    ul
+        //        li item 1
+        //        li item 2

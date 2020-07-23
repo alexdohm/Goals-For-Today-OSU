@@ -6,12 +6,11 @@ import UserSettings from "./components/UserSettings";
 import TeamSettings from "./components/TeamSettings";
 
 class SettingsPage extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      data: null
-    }
+      data: null,
+    };
   }
 
   componentDidMount() {
@@ -48,8 +47,7 @@ class SettingsPage extends Component {
         </div>
       );
     }
-    
   }
-};
+}
 
 export default SettingsPage;

@@ -21,7 +21,9 @@ class Comments extends Component {
 
     goalToCommentsMap[-1] = team.user_comments;
     for (const member of team.team_members) {
-      goalToCommentsMap[-1] = goalToCommentsMap[-1].concat(member.user_comments);
+      goalToCommentsMap[-1] = goalToCommentsMap[-1].concat(
+        member.user_comments
+      );
     }
 
     for (const goal of team.goals) {
@@ -38,20 +40,22 @@ class Comments extends Component {
         </Heading>
         <div className="Comments-list">
           {Object.keys(goalToCommentsMap)
-            .map( key => 
-              goalToCommentsMap[key].map( comment => {
+            .map((key) =>
+              goalToCommentsMap[key].map((comment) => {
                 if (key == this.props.selectedToDoId) {
-                  console.log('should be returning');
+                  console.log("should be returning");
                   return (
                     <Comment
                       key={comment.comment_id}
                       firstName={comment.first_name}
                       lastName={comment.last_name}
-                      body={comment.message}/>
+                      body={comment.message}
+                    />
                   );
                 }
               })
-            ).flat()}
+            )
+            .flat()}
         </div>
         <CommentForm />
       </div>
