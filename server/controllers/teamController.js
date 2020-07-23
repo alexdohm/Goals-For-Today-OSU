@@ -61,7 +61,7 @@ router.get("/:team_id", function (req, res) {
  *********************************************************************/
 router.post("/", async function (req, res) {
   if (req.body.name && req.body.date) {
-    Team.addTeam(req.body.name, req.body.date)
+    Team.addTeam(req.body.name, req.body.date, req.body.member_id)
       .then((newTeam) => {
         newTeam.self = Helpers.addSelf(req, newTeam.team_id, "teams");
         res.status(201).json(newTeam);
@@ -178,6 +178,20 @@ router.post("/:team_id/comments", async function (req, res) {
 });
 
 /**********************************************************************
+ * GET all comments for a team
+ *********************************************************************/
+router.get("/:team_id/comments", function (req, res) {
+  Team.getAllTeamComments(req.params.team_id)
+    .then((data) => {
+      res.status(200).json(data).end();
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ Error: err.message });
+    });
+});
+
+/**********************************************************************
  * PUT add a user to a team/user requests to join team
  *********************************************************************/
 router.put("/:team_id/users/:user_id", async function (req, res) {
@@ -195,12 +209,22 @@ router.put("/:team_id/users/:user_id", async function (req, res) {
         }
       })
       .catch((err) => {
-        console.log(err);
-        // PUT is idempotent so if they violate a constraint they are already on the team
-        // so just send back success
-        if (err.constraint) {
+        if (err.constraint === "member_of_team_id_fkey") {
+          // team id doesn't exist
+          res.status(404).json({ Error: `${failedResponseMatch.get("404")}` });
+        } else if (err.constraint === "member_of_member_id_fkey") {
+          // member id doesn't exist
+          res
+            .status(404)
+            .json({ Error: "No team member with member id found" })
+            .end();
+        } else if (err.constraint === "member_of_pkey") {
+          // member is already on team
+          // PUT is idempotent so if they violate a constraint they are already on the team
+          // so just send back success
           res.status(204).end();
         } else {
+          console.log(err);
           res.status(500).json({ Error: err.message });
         }
       });

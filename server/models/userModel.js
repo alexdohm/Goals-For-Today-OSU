@@ -203,7 +203,9 @@ const getUserById = async function (id) {
     return "404";
   }
 };
-
+/**
+ * get all users -- mostly useful for troubleshooting
+ */
 const getAllUsers = async function () {
   const allUserQuery = `
   select
@@ -238,18 +240,15 @@ const getAllUsers = async function () {
   }
 };
 
+/**
+ * Get all all user level comments
+ * @param {number} userId unique id of user
+ * @param {number} teamId unique id of team
+ */
 const getUserComments = async function (userId, teamId) {
-  const userCommentQuery = `SELECT c.comment_id, c.date_time::time, c.message, tm.first_name, tm.last_name, tm.avatar
-  FROM team_member AS tm
-           INNER JOIN comment as c on c.member_id = tm.member_id
-  WHERE c.goal_id IS NULL
-    AND c.member_id = $1
-    AND c.team_id = $2
-    AND c.team_page = false;`;
+  const userObj = { user_id: userId, team_id: teamId };
 
-  const filter = [userId, teamId];
-
-  const allComments = await Helpers.runQuery(userCommentQuery, filter);
+  const allComments = await Comment.getAllCommentsForEntity("USER", userObj);
 
   if (allComments) {
     return {
@@ -281,6 +280,7 @@ const addUserComment = async function (
 ) {
   const userComment = {
     member_id: author,
+    id_user_page: userId,
     team_id: teamId,
     date: comment_date,
     message: comment_text,
@@ -404,7 +404,7 @@ const loadUserInfoOnLogin = async function (userEmail) {
  * @param {number} teamId
  * @param {date} date current date
  */
-const deleteUser = async function (userId, teamId, date) {
+const deleteUser = async function (userId, date) {
   //TODO what happens if a user is a member of more than 1 team?
   // also I'm not sure which #s are the variables (member id is 1 or 3?)
   // can do later just wanted to get it filled out
@@ -414,7 +414,7 @@ const deleteUser = async function (userId, teamId, date) {
   // where it states member_id = 3
 
   // user deletes personal account [ member_id, team_id, date ]
-  const deleteQuery = `SELECT n1.team_name
+  const checkAdminQuery = `SELECT n1.team_name
   FROM (SELECT t.team_name, count(*) AS totalRows
         FROM team AS t
                  INNER JOIN member_of AS mo ON mo.team_id = t.team_id
@@ -430,18 +430,21 @@ const deleteUser = async function (userId, teamId, date) {
                                 INNER JOIN (SELECT t.team_name
                                             FROM team AS t
                                                      INNER JOIN manages m ON m.team_id = t.team_id
-                                            WHERE member_id = 3) AS q2
+                                            WHERE member_id = $1) AS q2
                                            ON (q2.team_name = q1.team_name)) AS n2
-                      ON n1.team_name = n2.team_name;
-  UPDATE team_member
+                      ON n1.team_name = n2.team_name;`;
+
+  const adminResult = await Helpers.runQuery(checkAdminQuery, [userId]);
+
+  console.log(adminResult);
+
+  const otherStuff = `UPDATE team_member
   SET active = false
   WHERE member_id = 1;
   UPDATE member_of
   SET date_left = '2020-07-09'
   WHERE member_id = 1
     AND team_id = 1;`;
-
-  const filter = [userId, teamId, date];
 
   const outcome = await Helpers.deleteData(deleteQuery, filter);
 
@@ -509,4 +512,5 @@ module.exports = {
   loadUserInfoOnLogin,
   getUserTeamGoalsComments,
   getUserComments,
+  addUserComment,
 };

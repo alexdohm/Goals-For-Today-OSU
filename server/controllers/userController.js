@@ -102,11 +102,21 @@ router.get("/:user_id/teams/:team_id/comments", function (req, res) {
 /**********************************************************************
  * POST add general user comment
  *********************************************************************/
-/*router.post("/:user_id/comments", async function (req, res) {
+router.post("/:user_id/comments", async function (req, res) {
   if (req.body.author && req.body.comment_text && req.body.comment_date) {
-    
-    
+    User.addUserComment(
+      req.body.team_id,
+      req.params.user_id,
+      req.body.author,
+      req.body.comment_text,
+      req.body.comment_date
+    )
+      .then((c) => {
+        c.self = Helpers.addSelf(req, c.comment_id, "comments");
+        res.status(201).json(c).end();
+      })
       .catch((err) => {
+        console.log(err);
         // database throws an error because of constraint and populates which one is violated.
         // Catch it and send proper response status & message
         if (err.constraint) {
@@ -119,7 +129,6 @@ router.get("/:user_id/teams/:team_id/comments", function (req, res) {
     res.status(400).json({ Error: MISSING_ATTRIBUTE_TEXT }).end();
   }
 });
-*/
 
 /**********************************************************************
  * GET all users
@@ -239,7 +248,7 @@ router.get("/:user_id/teams", function (req, res) {
  * DELETE a user
  *********************************************************************/
 router.delete("/:member_id", function (req, res) {
-  if (!isNaN(member_id) && req.query.date) {
+  if (!isNaN(req.params.member_id) && req.query.date) {
     User.deleteUser(req.params.member_id, req.query.date)
       .then((result) => {
         console.log(result);
