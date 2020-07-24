@@ -6,6 +6,7 @@ let schedule = require("node-schedule");
 const _ = require("lodash");
 const moment = require("moment");
 const User = require("../models/userModel");
+const Team = require("../models/teamModel");
 
 let transport = nodemailer.createTransport({
   host: process.env.MAIL_HOST,
@@ -104,10 +105,29 @@ const cancelJobs = function () {
   }
 };
 
-//midnight and midday '0 0 0,12 * *'
+//midnight and midday '0 0,12 * * *'
+//execute every 15 seconds
 const biDailyUpdate = async function () {
-  let j = schedule.scheduleJob("Update", "*/15 * * * * *", function () {
+  // Team.teamEmailSummary()
+  //   .then((res) => {
+  //     console.log(res);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+  User.getAllEmailTimesForUsers()
+    .then((users) => {
+      sendUserEmails(users);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  let j = schedule.scheduleJob("Update", "0 0,12 * * *", function () {
     console.log("Bi Daily Update - Executing");
+    let date = new Date();
+    console.log(date);
+
     cancelJobs();
     User.getAllEmailTimesForUsers()
       .then((users) => {

@@ -279,6 +279,60 @@ const getAllTeamComments = async function (teamId) {
   }
 };
 
+const getTeamTimes = async function () {
+  const allTeamQuery = `SELECT team_id, team_name, evening_time
+  from team
+  ORDER BY team_name ASC;`;
+
+  return Helpers.runQuery(allTeamQuery, []);
+};
+
+/**
+ * Get all comments on a team page
+ * @param {number} teamId
+ */
+const getGoalsSummary = async function (teamId) {
+  const query = `SELECT u1.first_name, u1.last_name, u2.totalGoals, u2.finishedGoals
+  FROM (SELECT tm.member_id, tm.first_name, tm.last_name, tm.user_name
+  FROM team_member AS tm
+  INNER JOIN member_of AS mo ON mo.member_id = tm.member_id
+  WHERE mo.team_id = $1
+  AND approved = true
+  AND (date_left IS NULL OR date_left > '2020-07-09')) AS u1
+  LEFT OUTER JOIN (SELECT member_id,
+  count(*)                                       as totalGoals,
+      sum(case when status = true then 1 else 0 end) as finishedGoals
+  FROM goal
+  WHERE team_id = $1
+  AND DATE(date_time) = '2020-07-09'
+  GROUP BY member_id) as u2
+  ON u1.member_id = u2.member_id;`;
+
+  const filter = [teamId];
+  return Helpers.runQuery(query, filter);
+};
+
+/**
+ * Get goals summary for current day for team email
+ */
+const teamEmailSummary = async function () {
+  const goalSummary = {};
+
+  const teams = await getTeamTimes();
+  goalSummary.teams = [...teams];
+  let goalMap = new Map(
+    goalSummary.teams.map((items, idx) => [items.team_id, idx])
+  );
+
+  for (team of goalSummary.teams) {
+    const memberStats = await getGoalsSummary(team.team_id);
+    goalSummary.teams[goalMap.get(team.team_id)].members =
+      [...memberStats] || [];
+  }
+  // console.log(goalSummary.teams[0].members[0].first_name);
+  return goalSummary;
+};
+
 module.exports = {
   getAllTeams,
   getTeamById,
@@ -293,4 +347,7 @@ module.exports = {
   getAllTeamComments,
   approveUserRequest,
   updateTeamAdmin,
+  getGoalsSummary,
+  teamEmailSummary,
+  getTeamTimes,
 };
