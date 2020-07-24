@@ -19,7 +19,7 @@ failedResponseMatch.set("404", "No user found");
  * GET a user by email OR member_id
  *********************************************************************/
 router.get("/:identifier", function (req, res) {
-  if (req.query.type === "id") {
+  if (req.query.type === "id" || !isNaN(req.params.identifier)) {
     User.getUserById(req.params.identifier)
       .then((result) => {
         //console.log(result)
@@ -53,7 +53,7 @@ router.get("/:identifier", function (req, res) {
         res.status(500).json({ Error: err.message }).end();
       });
   } else {
-    res.status("400").json({ Error: "No type defined to get usere by" }).end();
+    res.status("400").json({ Error: "No type defined to get user by" }).end();
   }
 });
 
@@ -102,11 +102,21 @@ router.get("/:user_id/teams/:team_id/comments", function (req, res) {
 /**********************************************************************
  * POST add general user comment
  *********************************************************************/
-/*router.post("/:user_id/comments", async function (req, res) {
+router.post("/:user_id/comments", async function (req, res) {
   if (req.body.author && req.body.comment_text && req.body.comment_date) {
-    
-    
+    User.addUserComment(
+      req.body.team_id,
+      req.params.user_id,
+      req.body.author,
+      req.body.comment_text,
+      req.body.comment_date
+    )
+      .then((c) => {
+        c.self = Helpers.addSelf(req, c.comment_id, "comments");
+        res.status(201).json(c).end();
+      })
       .catch((err) => {
+        console.log(err);
         // database throws an error because of constraint and populates which one is violated.
         // Catch it and send proper response status & message
         if (err.constraint) {
@@ -119,7 +129,6 @@ router.get("/:user_id/teams/:team_id/comments", function (req, res) {
     res.status(400).json({ Error: MISSING_ATTRIBUTE_TEXT }).end();
   }
 });
-*/
 
 /**********************************************************************
  * GET all users
@@ -127,7 +136,7 @@ router.get("/:user_id/teams/:team_id/comments", function (req, res) {
 router.get("/", function (req, res) {
   User.getAllUsers()
     .then((users) => {
-      users.items = Helpers.addSelf(req, users.items, "user");
+      users.items = Helpers.addSelf(req, users.items, "users");
       res.status(200).json(users).end();
     })
     .catch((err) => {
@@ -239,7 +248,7 @@ router.get("/:user_id/teams", function (req, res) {
  * DELETE a user
  *********************************************************************/
 router.delete("/:member_id", function (req, res) {
-  if (!isNaN(member_id) && req.query.date) {
+  if (!isNaN(req.params.member_id) && req.query.date) {
     User.deleteUser(req.params.member_id, req.query.date)
       .then((result) => {
         console.log(result);

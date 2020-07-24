@@ -37,6 +37,9 @@ router.get("/:goal_id/comments", function (req, res) {
   Goal.getAllCommentsOnGoal(req.params.goal_id)
     .then((goals) => {
       // TODO result checking
+      if (goals.number_of_items) {
+        goals.items = Helpers.addSelf(req, goals.items, "comments");
+      }
       res.status(200).json(goals);
     })
     .catch((err) => {
@@ -90,6 +93,7 @@ router.get("/:goal_id", function (req, res) {
           .status(Number(goal))
           .json({ Error: `${failedResponseMatch.get(goal)}` });
       } else {
+        goal.self = Helpers.addSelf(req, goal.goal_id, "goals");
         res.status(200).json(goal);
       }
     })

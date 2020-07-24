@@ -3,8 +3,6 @@ import { Button, Form, Select } from "semantic-ui-react";
 
 import { FormFieldHelper } from "./common/helpers";
 
-
-
 class TeamSettings extends Component {
   constructor(props) {
     super(props);
@@ -21,8 +19,8 @@ class TeamSettings extends Component {
       this.teamOptions.push({
         key: team.team_id,
         value: team.team_id,
-        text: team.team_name
-      })
+        text: team.team_name,
+      });
     }
   }
 

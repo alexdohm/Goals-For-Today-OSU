@@ -112,7 +112,12 @@ const deleteTeam = async function (teamId) {
   //TODO implement
   console.log("NOT IMPLEMENTED YET!!");
 };
-
+/**
+ * Add user to a team
+ * @param {number} teamId unique team id
+ * @param {number} userId unique user id
+ * @param {object} body request body with approved status and date
+ */
 const addUserToTeam = async function (teamId, userId, body) {
   const approved_ind = body.approved_ind ? true : false;
 
@@ -122,8 +127,6 @@ const addUserToTeam = async function (teamId, userId, body) {
   const filter = [userId, teamId, approved_ind, body.date_added];
 
   const newTeamMember = await Helpers.updateData(addTeamMemberQuery, filter);
-
-  console.log(newTeamMember);
 
   return newTeamMember;
 };
@@ -203,7 +206,11 @@ const getAllUsersOnTeam = async function (teamId) {
     return 0;
   }
 };
-
+/**
+ * Check if user is admin of given team
+ * @param {number} userId unique id of user
+ * @param {number} teamId unique id of team
+ */
 const isUserTeamAdmin = async function (userId, teamId) {
   const adminQuery = `
     SELECT EXISTS(SELECT 1
@@ -216,7 +223,13 @@ const isUserTeamAdmin = async function (userId, teamId) {
 
   return Helpers.runQuery(adminQuery, filter);
 };
-
+/**
+ *
+ * @param {number} teamId unique id of team
+ * @param {number} userId unique id of message author
+ * @param {date} comment_date date message was posted
+ * @param {string} comment_text message from user
+ */
 const addTeamComment = async function (
   teamId,
   userId,
@@ -233,6 +246,28 @@ const addTeamComment = async function (
   return Comment.addComment("TEAM", teamComment);
 };
 
+/**
+ * Get all comments on a team page
+ * @param {number} teamId
+ */
+const getAllTeamComments = async function (teamId) {
+  const teamObj = { team_id: teamId };
+
+  const allComments = await Comment.getAllCommentsForEntity("TEAM", teamObj);
+
+  if (allComments) {
+    return {
+      number_of_items: allComments.length || 0,
+      items: [...allComments] || [],
+    };
+  } else {
+    return {
+      number_of_items: 0,
+      items: [],
+    };
+  }
+};
+
 module.exports = {
   getAllTeams,
   getTeamById,
@@ -244,6 +279,7 @@ module.exports = {
   getAllUsersOnTeam,
   isUserTeamAdmin,
   addTeamComment,
+  getAllTeamComments,
   approveUserRequest,
   updateTeamAdmin,
 };

@@ -52,9 +52,15 @@ const getAllCommentsOnGoal = async function (goalId) {
   const goalComments = await Comment.getAllCommentsForEntity("GOAL", goalObj);
 
   if (goalComments) {
-    return goalComments;
+    return {
+      number_of_items: goalComments.length || 0,
+      items: [...goalComments] || [],
+    };
   } else {
-    return "404";
+    return {
+      number_of_items: 0,
+      items: [],
+    };
   }
 };
 

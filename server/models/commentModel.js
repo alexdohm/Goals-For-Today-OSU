@@ -21,12 +21,13 @@ const addComment = async function (entityType, entityObj) {
       );
       break;
     case "USER":
-      commentInsert = `INSERT INTO comment (member_id, team_id, team_page, date_time, message)
-      VALUES ( $1, $2, false, $3, $4) RETURNING comment_id;`;
+      commentInsert = `INSERT INTO comment (member_id, team_id, id_user_page, team_page, date_time, message)
+      VALUES ( $1, $2, $3, false, $4, $5) RETURNING comment_id;`;
 
       filter.push(
         entityObj.member_id,
         entityObj.team_id,
+        entityObj.id_user_page,
         entityObj.date,
         entityObj.message
       );
@@ -57,7 +58,7 @@ const addComment = async function (entityType, entityObj) {
  * @param {number} commentId  unique id of comment
  */
 const getCommentById = async function (commentId) {
-  const commentQuery = `SELECT c.comment_id, c.date_time::time, c.message, tm.first_name, tm.last_name, tm.avatar
+  const commentQuery = `SELECT c.comment_id, c.date_time, c.message, tm.first_name, tm.last_name, tm.avatar
   FROM team_member AS tm
            INNER JOIN comment as c on c.member_id = tm.member_id
   WHERE c.comment_id = $1;`;
@@ -81,33 +82,34 @@ const getAllCommentsForEntity = async function (entityType, entityObj) {
 
   switch (entityType) {
     case "GOAL":
-      entityQuery = `SELECT c.comment_id, c.date_time::time, c.message, tm.first_name, tm.last_name, tm.avatar
+      entityQuery = `SELECT c.comment_id, c.date_time, c.message, tm.first_name, tm.last_name, tm.avatar
                                     FROM team_member AS tm
                                             INNER JOIN goal AS g ON g.member_id = tm.member_id
                                             INNER JOIN comment as c on c.goal_id = g.goal_id
-                                    WHERE g.goal_id = $1;`;
+                                    WHERE g.goal_id = $1
+                                    AND c.id_user_page IS NULL;`;
       filters.push(entityObj.goal_id);
       break;
     case "USER":
-      entityQuery = `SELECT c.comment_id, c.date_time::time, c.message, tm.first_name, tm.last_name, tm.avatar
+      entityQuery = `SELECT c.comment_id, c.date_time, c.message, tm.first_name, tm.last_name, tm.avatar
                                 FROM team_member AS tm
                                         INNER JOIN comment as c on c.member_id = tm.member_id
                                 WHERE c.goal_id IS NULL
-                                AND DATE(c.date_time) = $1
-                                AND c.member_id = $2
-                                AND c.team_id = $3
+                                AND c.id_user_page = $1
+                                
+                                AND c.team_id = $2
                                 AND c.team_page = false;`;
-      filters.push(entityObj.date, entityObj.member_id, entityObj.team_id);
+      filters.push(entityObj.user_id, entityObj.team_id);
       break;
     case "TEAM":
-      entityQuery = `SELECT c.comment_id, c.date_time::time, c.message, tm.first_name, tm.last_name, tm.avatar
+      entityQuery = `SELECT c.comment_id, c.date_time, c.message, tm.first_name, tm.last_name, tm.avatar
                                 FROM team_member AS tm
                                         INNER JOIN comment as c on c.member_id = tm.member_id
                                 WHERE c.goal_id IS NULL
-                                AND DATE(c.date_time) = $1
-                                AND c.team_id = $2
+                                AND c.id_user_page IS NULL
+                                AND c.team_id = $1
                                 AND c.team_page = true;`;
-      filters.push(entityObj.date, entityObj.team_id);
+      filters.push(entityObj.team_id);
       break;
   }
 
