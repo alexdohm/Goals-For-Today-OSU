@@ -36,7 +36,6 @@ router.get("/teams/:team_id/users/:member_id", function (req, res) {
 router.get("/:goal_id/comments", function (req, res) {
   Goal.getAllCommentsOnGoal(req.params.goal_id)
     .then((goals) => {
-      // TODO result checking
       if (goals.number_of_items) {
         goals.items = Helpers.addSelf(req, goals.items, "comments");
       }

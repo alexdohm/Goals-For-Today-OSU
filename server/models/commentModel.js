@@ -58,7 +58,7 @@ const addComment = async function (entityType, entityObj) {
  * @param {number} commentId  unique id of comment
  */
 const getCommentById = async function (commentId) {
-  const commentQuery = `SELECT c.comment_id, c.date_time, c.message, tm.first_name, tm.last_name, tm.avatar
+  const commentQuery = `SELECT c.comment_id, c.date_time, c.message, tm.first_name, tm.last_name, tm.avatar, tm.active
   FROM team_member AS tm
            INNER JOIN comment as c on c.member_id = tm.member_id
   WHERE c.comment_id = $1;`;
@@ -82,7 +82,7 @@ const getAllCommentsForEntity = async function (entityType, entityObj) {
 
   switch (entityType) {
     case "GOAL":
-      entityQuery = `SELECT c.comment_id, c.date_time, c.message, tm.first_name, tm.last_name, tm.avatar
+      entityQuery = `SELECT c.comment_id, c.date_time, c.message, tm.first_name, tm.last_name, tm.avatar, tm.active
                                     FROM team_member AS tm
                                             INNER JOIN goal AS g ON g.member_id = tm.member_id
                                             INNER JOIN comment as c on c.goal_id = g.goal_id
@@ -91,7 +91,7 @@ const getAllCommentsForEntity = async function (entityType, entityObj) {
       filters.push(entityObj.goal_id);
       break;
     case "USER":
-      entityQuery = `SELECT c.comment_id, c.date_time, c.message, tm.first_name, tm.last_name, tm.avatar
+      entityQuery = `SELECT c.comment_id, c.date_time, c.message, tm.first_name, tm.last_name, tm.avatar, tm.active
                                 FROM team_member AS tm
                                         INNER JOIN comment as c on c.member_id = tm.member_id
                                 WHERE c.goal_id IS NULL
@@ -102,7 +102,7 @@ const getAllCommentsForEntity = async function (entityType, entityObj) {
       filters.push(entityObj.user_id, entityObj.team_id);
       break;
     case "TEAM":
-      entityQuery = `SELECT c.comment_id, c.date_time, c.message, tm.first_name, tm.last_name, tm.avatar
+      entityQuery = `SELECT c.comment_id, c.date_time, c.message, tm.first_name, tm.last_name, tm.avatar, tm.active
                                 FROM team_member AS tm
                                         INNER JOIN comment as c on c.member_id = tm.member_id
                                 WHERE c.goal_id IS NULL

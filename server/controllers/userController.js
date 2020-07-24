@@ -251,15 +251,27 @@ router.delete("/:member_id", function (req, res) {
   if (!isNaN(req.params.member_id) && req.query.date) {
     User.deleteUser(req.params.member_id, req.query.date)
       .then((result) => {
-        console.log(result);
-        res.status(204).end();
+        if (result) {
+          res.status(204).end();
+        } else {
+          res
+            .status(500)
+            .json({
+              Error: "Issue occured while updating rows. Please see logs.",
+            })
+            .end();
+        }
       })
       .catch((err) => {
-        console.log(err);
-        res.status(500).json({ Error: err.message }).end();
+        if (err.name === "SOLE_ADMIN") {
+          res.status(err.status).json(err).end();
+        } else {
+          console.log(err);
+          res.status(500).json({ Error: err.message }).end();
+        }
       });
   } else {
-    req.status(400).json({ Error: "Bad request." }).end();
+    res.status(400).json({ Error: "Bad request." }).end();
   }
 });
 

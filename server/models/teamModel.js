@@ -169,8 +169,19 @@ const updateTeamAdmin = async function (userId, teamId, updateInfo) {
   return Helpers.updateData(updateStatement, [userId, teamId]);
 };
 
-const removeUserFromTeam = async function (userId, teamId) {
-  //TODO implement
+/**
+ * Remove team member from group
+ * @param {number} userId
+ * @param {number} teamId
+ * @param {date} date
+ */
+const removeTeamMember = async function (userId, teamId, date) {
+  const removalQuery = `UPDATE member_of
+  SET date_left = $1
+  WHERE member_id = $2
+    AND team_id = $3;`;
+
+  return Helpers.updateData(removalQuery, [date, userId, teamId]);
 };
 
 /**
@@ -275,7 +286,7 @@ module.exports = {
   updateTeam,
   deleteTeam,
   addUserToTeam,
-  removeUserFromTeam,
+  removeTeamMember,
   getAllUsersOnTeam,
   isUserTeamAdmin,
   addTeamComment,
