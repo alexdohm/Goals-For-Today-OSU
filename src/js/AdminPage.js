@@ -3,7 +3,9 @@ import { Dimmer, Loader } from "semantic-ui-react";
 import { connect } from "react-redux"
 
 import Heading from "./components/common/Heading";
-import AdminTeamSection from "./components/AdminTeamSection"
+import AdminTeamSection from "./components/AdminTeamSection";
+import AdminEmailSection from "./components/AdminEmailSection";
+import AdminDeleteButton from "./components/AdminDeleteButton";
 
 class AdminPage extends Component {
 
@@ -12,6 +14,7 @@ class AdminPage extends Component {
     this.state = {
       data: null
     }
+    this.deleteTeam = this.deleteTeam.bind(this);
   }
 
   componentDidMount() {
@@ -25,6 +28,11 @@ class AdminPage extends Component {
       });
   }
 
+  deleteTeam() {
+    //TODO: implement
+    alert('you deleted a team');
+  }
+
   render() {
     if (this.state.data) {
       return (
@@ -33,6 +41,8 @@ class AdminPage extends Component {
             Admin Page
           </Heading>
           <AdminTeamSection team={this.state.data.team} firstName={this.state.data.first_name} />
+          <AdminEmailSection />
+          <AdminDeleteButton onClick={this.deleteTeam} />
         </div>
       );
     } else {

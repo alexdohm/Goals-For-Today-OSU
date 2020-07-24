@@ -9,45 +9,6 @@ import { FormFieldHelper } from "./common/helpers";
 import { selectToDo } from "../redux/actions";
 import ToDoItem from "./ToDoItem";
 
-const testTodos = [
-  //TODO: replace with data from database
-  {
-    id: 0,
-    userID: 0,
-    description: "Create a component hierarchy",
-  },
-  {
-    id: 1,
-    userID: 0,
-    description: "Create a react layout",
-  },
-  {
-    id: 2,
-    userID: 0,
-    description: "add redux to app",
-  },
-  {
-    id: 3,
-    userID: 1,
-    description: "create api documentation",
-  },
-  {
-    id: 4,
-    userID: 1,
-    description: "configure nodemailer",
-  },
-  {
-    id: 5,
-    userID: 2,
-    description: "write sql commands to interact with database",
-  },
-  {
-    id: 6,
-    userID: 2,
-    description: "integrate frontend with the database",
-  },
-];
-
 class ToDoList extends Component {
   constructor(props) {
     super(props);
