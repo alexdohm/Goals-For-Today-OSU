@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const Email = require("./handlers/email.js");
-Email.biDailyUpdate();
+// Email.biDailyUpdate();
 
 // future use - app.use(passport.initialize())
 // future use - app.use(passport.session())
