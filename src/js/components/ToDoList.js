@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Button, Checkbox, Form } from "semantic-ui-react";
 import { connect } from "react-redux";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import { ADD_ICON } from "./common/constants";
 import Heading from "./common/Heading";
@@ -18,6 +20,7 @@ class ToDoList extends Component {
       showAddModal: false,
       newTaskName: "",
       newTaskDescription: "",
+      date: new Date()
     };
 
     this.selectItem = this.selectItem.bind(this);
@@ -27,6 +30,7 @@ class ToDoList extends Component {
     );
     this.openAddModal = this.openAddModal.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
   }
 
   selectItem(index) {
@@ -72,6 +76,12 @@ class ToDoList extends Component {
     }));
   }
 
+  handleDateChange(date) {
+    this.setState({
+      startDate: date
+    });
+  };
+
   render() {
     const { currentUserId, team } = this.props;
     const memberToGoalsMap = {};
@@ -82,6 +92,14 @@ class ToDoList extends Component {
     }
     return (
       <div className="ToDoList">
+        <div className="ToDoList-datePickerContainer">
+          <DatePicker
+            className="ToDoList-datePicker"
+            selected={this.state.date}
+            onChange={this.handleChange}
+            placeholderText="Select Date"
+          />
+        </div>
         <Heading baseClass="ToDoList" hLevel={1}>
           To do list for today
         </Heading>

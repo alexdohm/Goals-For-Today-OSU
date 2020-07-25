@@ -14,6 +14,12 @@
     text-align: center;
   }
 
+  &-datePickerContainer
+  {
+    display: flex;
+    justify-content: center;
+  }
+
   &-items
   {
     padding-left: 16px;
