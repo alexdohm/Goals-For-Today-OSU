@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Form, Button, Icon } from "semantic-ui-react";
+import { Form, Button, Icon, Select } from "semantic-ui-react";
 
 import { FormFieldHelper } from "./common/helpers";
-import { USER_ICON } from "./common/constants";
+import { TIME_OPTIONS, USER_ICON } from "./common/constants";
 
 class UserSettings extends Component {
   constructor(props) {
@@ -14,6 +14,7 @@ class UserSettings extends Component {
 
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
+    this.timeOptions = TIME_OPTIONS;
   }
 
   handleUsernameChange() {
@@ -53,6 +54,9 @@ class UserSettings extends Component {
             <Icon name={USER_ICON} size="massive" />
           </div>
         </div>
+        <Form className="Settings-emailTime">
+          <Select placeholder="Select Reminder Email Time" options={this.timeOptions}/>
+        </Form>
       </div>
     );
   }
