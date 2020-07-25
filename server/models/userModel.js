@@ -435,22 +435,40 @@ const deleteUser = async function (userId, date) {
                       ON n1.team_name = n2.team_name;`;
 
   const adminResult = await Helpers.runQuery(checkAdminQuery, [userId]);
+  if (adminResult) {
+    const requestForbidden = {
+      message:
+        "You must first assign admin privileges to at least one team member for the following teams:",
+      teams: adminResult,
+      name: "SOLE_ADMIN",
+      status: 403,
+    };
+    throw requestForbidden;
+  }
 
-  console.log(adminResult);
+  const updateMemberOf = `UPDATE member_of
+  SET date_left = $1
+  WHERE member_id = $2
+  AND date_left IS NULL`;
+  const memberOfUpdate = await Helpers.updateData(updateMemberOf, [
+    date,
+    userId,
+  ]);
 
-  const otherStuff = `UPDATE team_member
+  const inactivate = `UPDATE team_member
   SET active = false
-  WHERE member_id = 1;
-  UPDATE member_of
-  SET date_left = '2020-07-09'
-  WHERE member_id = 1
-    AND team_id = 1;`;
+  WHERE member_id = $1;`;
 
-  const outcome = await Helpers.deleteData(deleteQuery, filter);
+  const teamMemberUpdate = await Helpers.updateData(inactivate, [userId]);
 
-  console.log(outcome);
-
-  return outcome;
+  console.log(
+    `memberOfUpdate: ${memberOfUpdate} teamMemberUpdate: ${teamMemberUpdate}`
+  );
+  if (teamMemberUpdate) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
 /**

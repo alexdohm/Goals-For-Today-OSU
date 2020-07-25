@@ -2,8 +2,31 @@ extends email-base
 
 block content
 
-    h2.section-header Daily Summary for #{team.name}
-
+    h2.section-header Daily Summary for #{team_name}
     div.container 
-        p Great job!
-        p Here is where some things will go that the team did today.
+        h3 Here is a summary of completed goals for each in your team today
+        each member in members
+            div.goal-summary #{member.first_name } #{member.last_name}
+                ul
+                    if member.totalgoals
+                        li Total Goals:  #{member.totalgoals}
+                    else
+                        li Total Goals: 0
+                    if member.finishedgoals
+                        li Goals Completed: #{member.finishedgoals}
+                    else
+                        li Goals Completed: 0
+
+
+    div.container
+        h3 And here is a more detailed list of goals for each user and their status
+        each member in members
+            div.goal-summary #{member.first_name } #{member.last_name}
+                if member.goals
+                    each goal in member.goals
+                        if goal.status
+                            p.goal [x] #{goal.task_name} : #{goal.task_description}
+                        else
+                            p.goal [ ] #{goal.task_name} : #{goal.task_description}
+                else
+                    p.goal User made no goals today

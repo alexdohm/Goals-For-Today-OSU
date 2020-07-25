@@ -36,8 +36,6 @@ router.post("/signup", function (req, res) {
       req
     )
       .then((newUser) => {
-        console.log(newUser);
-
         if (failedResponseMatch.get(newUser)) {
           res
             .status(Number(newUser))

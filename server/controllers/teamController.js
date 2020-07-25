@@ -274,5 +274,24 @@ router.patch("/:team_id/users/:user_id", async function (req, res) {
     }
   }
 });
+
+/**********************************************************************
+ * Remove a user from a team
+ *********************************************************************/
+router.delete("/:team_id/users/:user_id", async function (req, res) {
+  Team.removeTeamMember(req.params.user_id, req.params.team_id, req.query.date)
+    .then((t) => {
+      if (!t) {
+        console.log(
+          `NOTHING UPDATED FOR PARAMS ${req.params.user_id}, ${req.params.team_id}, ${req.query.date}`
+        );
+      }
+      res.status(204).end();
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ Error: err.message });
+    });
+});
 /* ------------- End Controller Functions ------------- */
 module.exports = router;

@@ -14,7 +14,7 @@ const Comment = require("./commentModel");
  * @param {date} createDate date goal was enteredd
  */
 const addGoal = async function (teamId, userId, name, description, createDate) {
-  const goalQuery = `INSERT INTO goal (member_id, team_id, task_name, task_description, date_time)
+  const goalQuery = `INSERT INTO goal (team_id, member_id, task_name, task_description, date_time)
    VALUES ($1,$2, $3, $4, $5) RETURNING goal_id;`;
 
   const filter = [teamId, userId, name, description, createDate];

@@ -169,8 +169,19 @@ const updateTeamAdmin = async function (userId, teamId, updateInfo) {
   return Helpers.updateData(updateStatement, [userId, teamId]);
 };
 
-const removeUserFromTeam = async function (userId, teamId) {
-  //TODO implement
+/**
+ * Remove team member from group
+ * @param {number} userId
+ * @param {number} teamId
+ * @param {date} date
+ */
+const removeTeamMember = async function (userId, teamId, date) {
+  const removalQuery = `UPDATE member_of
+  SET date_left = $1
+  WHERE member_id = $2
+    AND team_id = $3;`;
+
+  return Helpers.updateData(removalQuery, [date, userId, teamId]);
 };
 
 /**
@@ -268,6 +279,82 @@ const getAllTeamComments = async function (teamId) {
   }
 };
 
+const getTeamTimes = async function () {
+  const allTeamQuery = `SELECT team_id, team_name, evening_time, time_zone
+  from team
+  ORDER BY team_name ASC;`;
+
+  return Helpers.runQuery(allTeamQuery, []);
+};
+
+/**** QUERIES FOR EMAILS ****/
+
+/**
+ * Get goals for specific user for the day
+ * @param {string} email
+ * @param {number} teamId
+ */
+const getGoalsForUser = async function (email, teamId) {
+  const query = `select g.task_name, g.task_description, g.status from goal as g
+inner join team_member as tm on tm.member_id = g.member_id
+where DATE(g.date_time) = '2020-07-09' and tm.email = $1 and g.team_id = $2;`;
+
+  const filter = [email, teamId];
+  return Helpers.runQuery(query, filter);
+};
+
+/**
+ * Get all comments on a team page
+ * @param {number} teamId
+ */
+const getGoalsSummary = async function (teamId) {
+  const query = `SELECT u1.first_name, u1.last_name, u1.email, u2.totalGoals, u2.finishedGoals
+  FROM (SELECT tm.member_id, tm.first_name, tm.last_name, tm.email
+  FROM team_member AS tm
+  INNER JOIN member_of AS mo ON mo.member_id = tm.member_id
+  WHERE mo.team_id = $1
+  AND approved = true
+  AND (date_left IS NULL OR date_left > '2020-07-09')) AS u1
+  LEFT OUTER JOIN (SELECT member_id,
+  count(*)                                       as totalGoals,
+      sum(case when status = true then 1 else 0 end) as finishedGoals
+  FROM goal
+  WHERE team_id = $1
+  AND DATE(date_time) = '2020-07-09'
+  GROUP BY member_id) as u2
+  ON u1.member_id = u2.member_id;`;
+
+  const filter = [teamId];
+  return Helpers.runQuery(query, filter);
+};
+
+/**
+ * Get goals summary for current day for team email
+ */
+const teamEmailSummary = async function () {
+  const goalSummary = {};
+
+  const teams = await getTeamTimes();
+  goalSummary.teams = [...teams];
+  let goalMap = new Map(
+    goalSummary.teams.map((items, idx) => [items.team_id, idx])
+  );
+
+  for (team of goalSummary.teams) {
+    const memberStats = await getGoalsSummary(team.team_id);
+    goalSummary.teams[goalMap.get(team.team_id)].members =
+      [...memberStats] || [];
+  }
+  // console.log(goalSummary);
+  for (team of goalSummary.teams) {
+    for (member of team.members) {
+      member.goals = await getGoalsForUser(member.email, team.team_id);
+    }
+  }
+
+  return goalSummary;
+};
+
 module.exports = {
   getAllTeams,
   getTeamById,
@@ -275,11 +362,15 @@ module.exports = {
   updateTeam,
   deleteTeam,
   addUserToTeam,
-  removeUserFromTeam,
+  removeTeamMember,
   getAllUsersOnTeam,
   isUserTeamAdmin,
   addTeamComment,
   getAllTeamComments,
   approveUserRequest,
   updateTeamAdmin,
+  getGoalsSummary,
+  teamEmailSummary,
+  getTeamTimes,
+  getGoalsForUser,
 };
