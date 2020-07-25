@@ -4,6 +4,7 @@ import { Dimmer, Loader } from "semantic-ui-react";
 import Heading from "./components/common/Heading";
 import UserSettings from "./components/UserSettings";
 import TeamSettings from "./components/TeamSettings";
+import SettingsDeleteButton from './components/SettingsDeleteButton';
 
 class SettingsPage extends Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class SettingsPage extends Component {
     this.state = {
       data: null,
     };
+    this.deleteAccount = this.deleteAccount.bind(this)
   }
 
   componentDidMount() {
@@ -22,6 +24,11 @@ class SettingsPage extends Component {
           data: data,
         });
       });
+  }
+
+  deleteAccount() {
+    //TODO: implement
+    alert('delete account button');
   }
 
   render() {
@@ -36,6 +43,7 @@ class SettingsPage extends Component {
             My Teams
           </Heading>
           <TeamSettings teams={this.state.data.items} />
+          <SettingsDeleteButton onClick={this.deleteAccount}/>
         </div>
       );
     } else {
