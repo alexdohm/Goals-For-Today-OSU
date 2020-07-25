@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Dimmer, Loader } from "semantic-ui-react";
+import { connect } from "react-redux";
 
 import Heading from "./components/common/Heading";
 import UserSettings from "./components/UserSettings";
@@ -11,6 +12,7 @@ class SettingsPage extends Component {
     super(props);
     this.state = {
       data: null,
+      teams: null,
     };
     this.deleteAccount = this.deleteAccount.bind(this)
   }
@@ -22,6 +24,13 @@ class SettingsPage extends Component {
         console.log(data);
         this.setState({
           data: data,
+        });
+      });
+    fetch("/users/" + this.props.currentUserId + "/teams")
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({
+          teams: data.items,
         });
       });
   }
@@ -38,7 +47,7 @@ class SettingsPage extends Component {
           <Heading hLevel={2} baseClass="Settings">
             Settings
           </Heading>
-          <UserSettings />
+          <UserSettings teams={this.state.teams} />
           <Heading hLevel={2} baseClass="Settings">
             My Teams
           </Heading>
@@ -58,4 +67,8 @@ class SettingsPage extends Component {
   }
 }
 
-export default SettingsPage;
+const mapStateToProps = (state) => ({
+  currentUserId: state.auth.user.user[0].member_id,
+})
+
+export default connect(mapStateToProps)(SettingsPage);

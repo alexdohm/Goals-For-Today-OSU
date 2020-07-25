@@ -30,6 +30,19 @@ class UserSettings extends Component {
     alert("you clicked the update button");
   }
 
+  buildTeamOptions(teams) {
+    let teamOptions = [];
+    for (const team of teams) {
+      teamOptions.push({
+        text: team.team_name,
+        value: team.team_id,
+        key: team.team_id,
+      });
+    }
+
+    return teamOptions;
+  }
+
   render() {
     return (
       <div className="Settings-userSettings Settings-form">
@@ -57,6 +70,12 @@ class UserSettings extends Component {
         <Form className="Settings-emailTime">
           <Select placeholder="Select Reminder Email Time" options={this.timeOptions}/>
         </Form>
+        {this.props.teams 
+            ? <Form className="Settings-currentTeamSelect">
+                <Select placeholder="Select Team" options={this.buildTeamOptions(this.props.teams)} />
+              </Form>
+            : null
+          }
       </div>
     );
   }
