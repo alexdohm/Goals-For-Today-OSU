@@ -13,7 +13,9 @@ let transport = nodemailer.createTransport({
   port: process.env.MAIL_PORT,
   secureConnection: false,
   pool: true,
-  maxConnections: 3,
+  maxConnections: 1,
+  rateDelta: 20000,
+  rateLimit: 5,
   tls: {
     ciphers: "SSLv3",
   },
@@ -64,15 +66,19 @@ const buildMinutes = function (users, time, serverOffset) {
   return minutes;
 };
 
-const sendEmail = async function (users, time, serverOffset) {
+const createRule = function (hour, minute) {
+  let rule = new schedule.RecurrenceRule();
+  rule.dayOfWeek = [0, 1, 2, 3, 4, 5, 6];
+  rule.hour = hour;
+  rule.minute = minute;
+  return rule;
+};
+
+const sendEmail = function (users, time, serverOffset) {
   let hour = buildHours(users, time, serverOffset);
   let minute = buildMinutes(users, time, serverOffset);
   for (let i = 0; i < users.length; i++) {
-    let rule = new schedule.RecurrenceRule();
-    rule.dayOfWeek = [1, 2, 3, 4, 5];
-    rule.hour = hour[i];
-    rule.minute = minute[i];
-
+    let rule = createRule(hour[i], minute[i]);
     let j = schedule.scheduleJob("User" + i + time, rule, function () {
       console.log("sending email to " + users[i].first_name + " | " + time);
       users[i].filename = "user-reminder";
@@ -87,34 +93,58 @@ const sendEmail = async function (users, time, serverOffset) {
 const sendUserEmails = function (users) {
   let servertz = moment.tz.guess();
   let serverOffset = moment.tz(servertz).utcOffset();
+  sendEmail(users, "Morning", serverOffset);
+  sendEmail(users, "Evening", serverOffset);
+};
 
-  sendEmail(users, "Morning", serverOffset)
-    .then((res) => {})
-    .catch((err) => {});
-  sendEmail(users, "Evening", serverOffset)
-    .then((res) => {})
-    .catch((err) => {});
+const sendTeamEmails = function (teams) {
+  let servertz = moment.tz.guess();
+  let serverOffset = moment.tz(servertz).utcOffset();
+  let hour = buildHours(teams.teams, "Evening", serverOffset);
+  let minute = buildMinutes(teams.teams, "Evening", serverOffset);
+
+  for (let i = 0; i < teams.teams.length; i++) {
+    let rule = createRule(hour[i], minute[i]);
+    let j = schedule.scheduleJob(
+      "Team" + teams.teams[i].team_id,
+      rule,
+      function () {
+        console.log("sending team update email to " + teams.teams[i].team_name);
+        for (let j = 0; j < teams.teams[i].members.length; j++) {
+          teams.teams[i].filename = "team-summary";
+          teams.teams[i].reminder_type = "Team Summary";
+          teams.teams[i].email = teams.teams[i].members[j].email;
+          send(teams.teams[i])
+            .then((res) => {})
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      }
+    );
+  }
 };
 
 const cancelJobs = function () {
   const jobNames = _.keys(schedule.scheduledJobs);
   for (let name of jobNames) {
-    if (name.includes("User")) {
+    if (name.includes("User") || name.includes("Team")) {
       schedule.cancelJob(name);
     }
   }
 };
 
 //midnight and midday '0 0,12 * * *'
-//execute every 15 seconds
+//execute every 15 seconds '*/15 * * * * *'
 const biDailyUpdate = async function () {
-  // Team.teamEmailSummary()
-  //   .then((res) => {
-  //     console.log(res);
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
+  Team.teamEmailSummary()
+    .then((teams) => {
+      sendTeamEmails(teams);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
   User.getAllEmailTimesForUsers()
     .then((users) => {
       sendUserEmails(users);
@@ -132,17 +162,14 @@ const biDailyUpdate = async function () {
     User.getAllEmailTimesForUsers()
       .then((users) => {
         sendUserEmails(users);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
-        // keeping this here in case there is an issue with too many requests at once with outlook
-        // users.forEach(function (userItem) {
-        //   setTimeout(function () {
-        //     //timeout if for concurrent connections at same time...outlook doesn't like this
-        //     userItem.filename = "user-reminder";
-        //     userItem.reminder_type = "Morning";
-        //     send(userItem)
-        //       .then((res) => {})
-        //       .catch((err) => {});
-        //   }, 1000);
+    Team.teamEmailSummary()
+      .then((teams) => {
+        sendTeamEmails(teams);
       })
       .catch((err) => {
         console.log(err);
@@ -178,4 +205,6 @@ module.exports = {
   cancelJobs,
   buildHours,
   buildMinutes,
+  sendTeamEmails,
+  createRule,
 };

@@ -280,11 +280,27 @@ const getAllTeamComments = async function (teamId) {
 };
 
 const getTeamTimes = async function () {
-  const allTeamQuery = `SELECT team_id, team_name, evening_time
+  const allTeamQuery = `SELECT team_id, team_name, evening_time, time_zone
   from team
   ORDER BY team_name ASC;`;
 
   return Helpers.runQuery(allTeamQuery, []);
+};
+
+/**** QUERIES FOR EMAILS ****/
+
+/**
+ * Get goals for specific user for the day
+ * @param {string} email
+ * @param {number} teamId
+ */
+const getGoalsForUser = async function (email, teamId) {
+  const query = `select g.task_name, g.task_description, g.status from goal as g
+inner join team_member as tm on tm.member_id = g.member_id
+where DATE(g.date_time) = '2020-07-09' and tm.email = $1 and g.team_id = $2;`;
+
+  const filter = [email, teamId];
+  return Helpers.runQuery(query, filter);
 };
 
 /**
@@ -292,8 +308,8 @@ const getTeamTimes = async function () {
  * @param {number} teamId
  */
 const getGoalsSummary = async function (teamId) {
-  const query = `SELECT u1.first_name, u1.last_name, u2.totalGoals, u2.finishedGoals
-  FROM (SELECT tm.member_id, tm.first_name, tm.last_name, tm.user_name
+  const query = `SELECT u1.first_name, u1.last_name, u1.email, u2.totalGoals, u2.finishedGoals
+  FROM (SELECT tm.member_id, tm.first_name, tm.last_name, tm.email
   FROM team_member AS tm
   INNER JOIN member_of AS mo ON mo.member_id = tm.member_id
   WHERE mo.team_id = $1
@@ -329,7 +345,13 @@ const teamEmailSummary = async function () {
     goalSummary.teams[goalMap.get(team.team_id)].members =
       [...memberStats] || [];
   }
-  // console.log(goalSummary.teams[0].members[0].first_name);
+  // console.log(goalSummary);
+  for (team of goalSummary.teams) {
+    for (member of team.members) {
+      member.goals = await getGoalsForUser(member.email, team.team_id);
+    }
+  }
+
   return goalSummary;
 };
 
@@ -350,4 +372,5 @@ module.exports = {
   getGoalsSummary,
   teamEmailSummary,
   getTeamTimes,
+  getGoalsForUser,
 };

@@ -34,3 +34,12 @@ body {
     padding: 10px;
     width: 580px;
 }
+
+.goal-summary {
+    text-align: left !important;
+}
+
+.goal {
+    font-weight: 400;
+    margin-left: 15px;
+}
