@@ -18,11 +18,13 @@ const ToDoForm = (props) => {
             idPrefix="todo"
             name="task name"
             onChange={props.handleTaskNameChange}
+            initialValue={props.nameValue ? props.nameValue : null}
           />
           <Form.TextArea
             className="ToDoList-taskDescription"
             placeholder="task description"
             onChange={props.handleTaskDescriptionChange}
+            value={props.descriptionValue ? props.descriptionValue : null}
           />
           <div className="ToDoList-addFormButtons">
             <Button

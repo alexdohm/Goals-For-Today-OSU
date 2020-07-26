@@ -38,11 +38,8 @@ class LoginForm extends Component {
   }
 
   handleLogin() {
-    //TODO: implement
-    console.log("you clicked the login button");
     this.props.login(this.state).then(
       () => {
-        console.log("we are here");
         this.props.history.push("/home");
       },
       (err) => {

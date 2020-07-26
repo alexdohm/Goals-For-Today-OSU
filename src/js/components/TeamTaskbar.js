@@ -30,7 +30,6 @@ class TeamTaskbar extends Component {
 
   handleLogout(e) {
     e.preventDefault();
-    console.log("logging out");
     this.props.logout();
   }
 

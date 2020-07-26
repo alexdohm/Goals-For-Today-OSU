@@ -24,9 +24,7 @@ class ToDoList extends Component {
 
     this.selectItem = this.selectItem.bind(this);
     this.handleNewTaskNameChange = this.handleNewTaskNameChange.bind(this);
-    this.handleNewTaskDescriptionChange = this.handleNewTaskDescriptionChange.bind(
-      this
-    );
+    this.handleNewTaskDescriptionChange = this.handleNewTaskDescriptionChange.bind(this);
     this.openAddModal = this.openAddModal.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
@@ -147,6 +145,7 @@ class ToDoList extends Component {
                       description={goal.task_description}
                       showButtons={currentUserId == key}
                       onClick={() => this.props.onToDoSelected(goal.goal_id)}
+                      updateData={this.props.updateData}
                     />
                   );
                 }

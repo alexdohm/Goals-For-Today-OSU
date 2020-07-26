@@ -43,7 +43,6 @@ class Comments extends Component {
             .map((key) =>
               goalToCommentsMap[key].map((comment) => {
                 if (key == this.props.selectedToDoId) {
-                  console.log("should be returning");
                   return (
                     <Comment
                       key={comment.comment_id}

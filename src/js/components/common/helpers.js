@@ -7,6 +7,7 @@ export const FormFieldHelper = (props) => {
   const id = `${props.idPrefix}-${props.name.replace(" ", "-")}`;
   const type = props.type ? props.type : "text";
   const placeholder = props.placeholder ? props.placeholder : props.name;
+  const initialValue = props.initialValue ? props.initialValue : null;
 
   return (
     <Form.Field className={fieldClass}>
@@ -18,6 +19,7 @@ export const FormFieldHelper = (props) => {
         id={id}
         onChange={props.onChange}
         type={type}
+        value={initialValue}
       />
     </Form.Field>
   );

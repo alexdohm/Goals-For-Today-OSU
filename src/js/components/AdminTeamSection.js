@@ -18,7 +18,6 @@ class AdminTeamSection extends Component {
   }
 
   render() {
-    console.log('admin props', this.props)
     const { team, firstName } = this.props;
     return (
       <div className="Admin-teamSection Admin-form">
