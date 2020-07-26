@@ -110,14 +110,14 @@ class CreateAccountForm extends Component {
           baseClass="CreateAccount"
           idPrefix="create-account"
           name="password"
-          type="text"
+          type="password"
           onChange={this.handlePasswordChange}
         />
         <FormFieldHelper
           baseClass="CreateAccount"
           idPrefix="create-account"
           name="confirm password"
-          type="text"
+          type="password"
           onChange={this.handlePasswordConfirmChange}
         />
         <Button

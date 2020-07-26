@@ -31,6 +31,7 @@ class ToDoList extends Component {
     this.openAddModal = this.openAddModal.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleAddTask = this.handleAddTask.bind(this);
   }
 
   selectItem(index) {
@@ -65,8 +66,38 @@ class ToDoList extends Component {
   }
 
   handleAddTask() {
-    //TODO: implement
-    alert("you clicked the submit new task button");
+    const { newTaskName, newTaskDescription } = this.state;
+    const { currentUserId, currentTeamId } = this.props;
+
+    const body = {
+      name: newTaskName,
+      description: newTaskDescription,
+      create_date: new Date(),
+      team_id: currentTeamId,
+      member_id: currentUserId
+    }
+
+    const raw = JSON.stringify(body); 
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    fetch("/goals", requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        console.log(result);
+        this.setState({
+          showAddModal: false
+        });
+        this.props.updateData();
+      })
+      .catch(error => console.log('error', error));
   }
 
   handleCancel() {
@@ -125,20 +156,16 @@ class ToDoList extends Component {
             .flat()}
         </div>
         {this.props.selectedUserId == this.props.currentUserId
-          ? <IconButton
-              baseClass="ToDoList"
-              color="green"
-              icon={ADD_ICON}
-              onClick={this.openAddModal}
-            />
+          ? <div className="ToDoList-addButtonContainer">
+              <IconButton
+                baseClass="ToDoList"
+                color="green"
+                icon={ADD_ICON}
+                onClick={this.openAddModal}
+              />
+            </div>
           : null
         }
-        <IconButton
-          baseClass="ToDoList"
-          color="green"
-          icon={ADD_ICON}
-          onClick={this.openAddModal}
-        />
         {this.state.showAddModal ? (
           <AddToDoForm
             handleAddTask={this.handleAddTask}
@@ -198,6 +225,7 @@ const AddToDoForm = (props) => {
 const mapStateToProps = (state) => ({
   selectedToDoId: state.toDos.selectedToDoId,
   selectedUserId: state.toDos.selectedUserId,
+  currentTeamId: state.teams.currentTeam
 });
 
 const mapDispatchToProps = (dispatch) => ({
