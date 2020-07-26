@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Team = require("../models/teamModel");
+const TeamStats = require("../models/teamStatisticsModel");
 const Helpers = require("../handlers/helpers");
 
 const MISSING_ATTRIBUTE_TEXT =
@@ -300,5 +301,24 @@ router.delete("/:team_id/users/:user_id", async function (req, res) {
       res.status(500).json({ Error: err.message });
     });
 });
+
+/**********************************************************************
+ * Get statistics for a team
+ *********************************************************************/
+router.get("/:team_id/statistics", function (req, res) {
+  TeamStats.getAllTeamStats(
+    req.params.team_id,
+    req.query.beginDate,
+    req.query.endDate
+  )
+    .then((stats) => {
+      res.status(200).json(stats);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ Error: err.message }).end();
+    });
+});
+
 /* ------------- End Controller Functions ------------- */
 module.exports = router;
