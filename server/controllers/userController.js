@@ -86,6 +86,25 @@ router.get("/:user_id/load_team/:team_id", function (req, res) {
 });
 
 /**********************************************************************
+ * GET all teams user is not a member of
+ *********************************************************************/
+router.get("/:user_id/non_members", function (req, res) {
+  User.getNonTeamsForUser(req.params.user_id)
+    .then((teams) => {
+      if (teams) {
+        // format returned teams
+        teams.items = Helpers.addSelf(req, teams.items, "teams");
+      }
+      // return regardless if teams were found
+      res.status(200).json(teams);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ Error: err.message }).end();
+    });
+});
+
+/**********************************************************************
  * GET all general comments for a user
  *********************************************************************/
 router.get("/:user_id/teams/:team_id/comments", function (req, res) {

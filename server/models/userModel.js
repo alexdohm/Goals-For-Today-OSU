@@ -511,6 +511,39 @@ const getAllTeamsForUser = async function (userId) {
 };
 
 /**
+ * Get teams that user is not a part of
+ * so they can request to join them
+ * @param {number} userId unique member id
+ */
+const getNonTeamsForUser = async function (userId) {
+  const nonMemberQuery = `SELECT DISTINCT t.team_name, t.team_id
+  FROM team as t
+           INNER JOIN member_of AS mo ON mo.team_id = t.team_id
+  WHERE mo.member_id <> $1
+    AND mo.team_id NOT IN
+        (SELECT t.team_id
+         FROM team as t
+                  INNER JOIN member_of AS mo on mo.team_id = t.team_id
+         WHERE mo.member_id = $1);`;
+
+  const notJoinedTeams = await Helpers.runQuery(nonMemberQuery, [userId]);
+
+  if (notJoinedTeams.length) {
+    const dataJson = {};
+    dataJson.number_of_items = notJoinedTeams.length;
+
+    dataJson.items = [...notJoinedTeams];
+
+    return dataJson;
+  } else {
+    return {
+      number_of_items: 0,
+      items: [],
+    };
+  }
+};
+
+/**
  * Returns all active users in system for user email reminders
  */
 const getAllEmailTimesForUsers = async function () {
@@ -542,4 +575,5 @@ module.exports = {
   getUserTeamGoalsComments,
   getUserComments,
   addUserComment,
+  getNonTeamsForUser,
 };

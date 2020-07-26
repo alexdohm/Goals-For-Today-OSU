@@ -140,6 +140,25 @@ router.get("/:team_id/users", function (req, res) {
 });
 
 /**********************************************************************
+ * GET all non-members of a team
+ *********************************************************************/
+router.get("/:team_id/non_members", function (req, res) {
+  Team.getUsersNotInTeam(req.params.team_id)
+    .then((teamMembers) => {
+      if (teamMembers) {
+        // format returned teams
+        teamMembers.items = Helpers.addSelf(req, teamMembers.items, "users");
+      }
+      // return regardless if teams were found
+      res.status(200).json(teamMembers);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ Error: err.message }).end();
+    });
+});
+
+/**********************************************************************
  * DELETE a team
  *********************************************************************/
 router.delete("/:team_id", async function (req, res) {
