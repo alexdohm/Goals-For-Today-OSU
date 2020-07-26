@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Button, Checkbox, Form } from "semantic-ui-react";
 import { connect } from "react-redux";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -7,9 +6,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ADD_ICON } from "./common/constants";
 import Heading from "./common/Heading";
 import IconButton from "./common/IconButton";
-import { FormFieldHelper } from "./common/helpers";
 import { selectToDo } from "../redux/actions";
 import ToDoItem from "./ToDoItem";
+import ToDoForm from "./ToDoForm";
 
 class ToDoList extends Component {
   constructor(props) {
@@ -167,60 +166,19 @@ class ToDoList extends Component {
           : null
         }
         {this.state.showAddModal ? (
-          <AddToDoForm
-            handleAddTask={this.handleAddTask}
-            handleNewTaskNameChange={this.handleNewTaskNameChange}
-            handleNewTaskDescriptionChange={this.handleNewTaskDescriptionChange}
-            handleCancel={this.handleCancel}
+          <ToDoForm
+            heading="Add New Task"
+            handleAction={this.handleAddTask}
+            handleTaskNameChange={this.handleNewTaskNameChange}
+            handleTaskDescriptionChange={this.handleNewTaskDescriptionChange}
+            closeModal={this.handleCancel}
+            submitText="Submit"
           />
         ) : null}
       </div>
     );
   }
 }
-
-const AddToDoForm = (props) => {
-  return (
-    <div className="ToDoList-overlay">
-      <div className="ToDoList-formWrapper">
-        <Form className="ToDoList-form">
-          <Heading hLevel={2} baseClass="ToDoList">
-            Add New Task
-          </Heading>
-          <FormFieldHelper
-            baseClass="ToDoList"
-            idPrefix="todo"
-            name="task name"
-            onChange={props.handleNewTaskNameChange}
-          />
-          <Form.TextArea
-            className="ToDoList-taskDescription"
-            placeholder="task description"
-            onChange={props.handleNewTaskDescriptionChange}
-          />
-          <div className="ToDoList-addFormButtons">
-            <Button
-              negative
-              className="ToDoList-cancel"
-              type="button"
-              onClick={props.handleCancel}
-            >
-              Cancel
-            </Button>
-            <Button
-              positive
-              className="ToDoList-submit"
-              type="submit"
-              onClick={props.handleAddTask}
-            >
-              Submit
-            </Button>
-          </div>
-        </Form>
-      </div>
-    </div>
-  );
-};
 
 const mapStateToProps = (state) => ({
   selectedToDoId: state.toDos.selectedToDoId,

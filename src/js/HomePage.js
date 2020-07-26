@@ -61,6 +61,7 @@ class HomePage extends Component {
 
 const mapStateToProps = (state) => {
   let email;
+  //need to confirm this value exists here, otherwise logout experiences a runtime error with an index out of bounds exception
   if (state.auth && state.auth.user && state.auth.user.user && state.auth.user.user.length) {
     email = state.auth.user.user[0].email
   } else {

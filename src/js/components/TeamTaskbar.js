@@ -18,24 +18,6 @@ import {
   setCurrentUser,
 } from "../redux/actions";
 
-const testUsers = [
-  //TODO: replace with real data from database
-  {
-    id: 0,
-    name: "Emre",
-  },
-  {
-    id: 1,
-    name: "Kelly",
-  },
-  {
-    id: 2,
-    name: "Alexandra",
-  },
-];
-
-const testTeamName = "Team Quasar"; //TODO: replace with real data from database
-
 class TeamTaskbar extends Component {
   constructor(props) {
     super(props);
