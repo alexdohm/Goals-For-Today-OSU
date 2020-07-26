@@ -1,10 +1,10 @@
-import { SELECT_TODO } from "./actions";
-import { SELECT_USER } from "./actions";
-import { SET_CURRENT_USER } from "./actions";
+import { SELECT_TODO, SELECT_TEAM, SELECT_USER, SET_CURRENT_USER } from "./actions";
+
 
 const initialState = {
   selectedToDoId: -1,
   selectedUserId: null,
+  currentTeam: null,
   isAuthenticated: false,
   user: {},
 };
@@ -42,6 +42,22 @@ export const auth = (state = initialState, action) => {
         isAuthenticated: !!Object.keys(action.user).length, // turn an empty object into false or an object with keys to be true
         user: action.user,
       };
+    default:
+      return state;
+  }
+};
+
+export const teams = (state = initialState, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case SELECT_TEAM: {
+      const { teamID } = payload;
+      const newState = {
+        ...state,
+        currentTeam: teamID,
+      };
+      return newState;
+    }
     default:
       return state;
   }

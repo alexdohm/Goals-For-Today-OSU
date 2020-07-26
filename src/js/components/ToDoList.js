@@ -124,6 +124,15 @@ class ToDoList extends Component {
             )
             .flat()}
         </div>
+        {this.props.selectedUserId == this.props.currentUserId
+          ? <IconButton
+              baseClass="ToDoList"
+              color="green"
+              icon={ADD_ICON}
+              onClick={this.openAddModal}
+            />
+          : null
+        }
         <IconButton
           baseClass="ToDoList"
           color="green"
