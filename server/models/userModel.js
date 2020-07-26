@@ -398,6 +398,20 @@ const loadUserInfoOnLogin = async function (userEmail) {
   }
 };
 
+const deleteTeamsOfDeletedMember = async function (memberId) {
+  const deleteQuery = `DELETE FROM team t 
+WHERE t.team_id IN (SELECT t.team_id
+	FROM team t 
+		INNER JOIN member_of mo ON t.team_id = mo.team_id
+	WHERE mo.member_id = $1
+	AND EXISTS (SELECT 1 FROM manages m WHERE m.team_id = t.team_id AND m.member_id = $1)
+	GROUP BY t.team_id
+  HAVING count(*) = 1)
+  RETURNING t.team_name`;
+
+  return Helpers.deleteData(deleteQuery, [memberId]);
+};
+
 /**
  * deletes a user and inactivates team memberships
  * @param {number} userId unique id of user
@@ -405,15 +419,8 @@ const loadUserInfoOnLogin = async function (userEmail) {
  * @param {date} date current date
  */
 const deleteUser = async function (userId, date) {
-  //TODO what happens if a user is a member of more than 1 team?
-  // also I'm not sure which #s are the variables (member id is 1 or 3?)
-  // can do later just wanted to get it filled out
-
-  // TODO For Kelly: Basically if this query below spits out anything, it means that the user can't delete their account
-  // until they make someone else an admin of the teams this query returns. All you need below is member_id
-  // where it states member_id = 3
-
-  // user deletes personal account [ member_id, team_id, date ]
+  // check if user is sole admin of any teams
+  // if yes, they must assign another member admin status and cannot delete their account
   const checkAdminQuery = `SELECT n1.team_name
   FROM (SELECT t.team_name, count(*) AS totalRows
         FROM team AS t
@@ -446,6 +453,12 @@ const deleteUser = async function (userId, date) {
     throw requestForbidden;
   }
 
+  // if we get here, we can inactivate the user
+  // if they are the sole member (and admin) of any teams, delete those teams
+  const deletedTeams = await deleteTeamsOfDeletedMember(userId);
+
+  // if there are teams with multiple members this user was a part of,
+  // update the date the user left the team
   const updateMemberOf = `UPDATE member_of
   SET date_left = $1
   WHERE member_id = $2
@@ -455,15 +468,13 @@ const deleteUser = async function (userId, date) {
     userId,
   ]);
 
+  // finally, inactivate the user
   const inactivate = `UPDATE team_member
   SET active = false
   WHERE member_id = $1;`;
 
   const teamMemberUpdate = await Helpers.updateData(inactivate, [userId]);
 
-  console.log(
-    `memberOfUpdate: ${memberOfUpdate} teamMemberUpdate: ${teamMemberUpdate}`
-  );
   if (teamMemberUpdate) {
     return true;
   } else {

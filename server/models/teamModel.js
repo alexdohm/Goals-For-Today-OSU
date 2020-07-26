@@ -108,9 +108,17 @@ const updateTeam = async function (teamId, teamInfoObject) {
   return Helpers.updateData(updateQuery, filter);
 };
 
+/**
+ * Deletes a team from the database
+ * Database cascade handles associated members, goals, and comments
+ * @param {number} teamId unique id of team to delete
+ */
 const deleteTeam = async function (teamId) {
-  //TODO implement
-  console.log("NOT IMPLEMENTED YET!!");
+  const deleteTeamQuery = `DELETE FROM team WHERE team_id = $1`;
+
+  return Helpers.deleteData(deleteTeamQuery, [teamId]);
+
+  //return deleteResult;
 };
 /**
  * Add user to a team

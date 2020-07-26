@@ -69,9 +69,16 @@ router.post("/", async function (req, res) {
       .catch((err) => {
         console.log(err);
         if (err.constraint) {
+          const reason =
+            err.constraint === "member_of_member_id_fkey"
+              ? `Member with member_id ${req.body.member_id} does not exist.`
+              : failedResponseMatch.get("403");
           res
             .status(403)
-            .json({ Error: `${failedResponseMatch.get("403")}` })
+            .json({
+              Error: reason,
+              Detail: err.detail,
+            })
             .end();
         } else {
           res.status(500).json({ Error: err.message });
