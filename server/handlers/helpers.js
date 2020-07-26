@@ -60,16 +60,27 @@ async function insertData(insertText, insertValues, key_field_name) {
   return insertResult.rows[0][key_field_name];
 }
 
+/**
+ * Delete an existing entity
+ * @param {string} deleteText SQL delete statement
+ * @param {array} filterValues SQL query parameters
+ */
 async function deleteData(deleteText, filterValues) {
   const query = { text: deleteText, values: filterValues };
 
   const deleteResult = await pool.query(query);
 
-  console.log(deleteResult);
-
-  return deleteResult;
+  if (deleteText.indexOf("RETURNING") === -1) {
+    return deleteResult.rowCount;
+  }
+  return deleteResult.rows;
 }
 
+/**
+ * Update data for an existing entity
+ * @param {string} updateText SQL update statement
+ * @param {array} updateValues array of query parameters
+ */
 async function updateData(updateText, updateValues) {
   // format query
   const query = { text: updateText, values: updateValues };

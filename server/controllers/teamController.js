@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Team = require("../models/teamModel");
+const TeamStats = require("../models/teamStatisticsModel");
 const Helpers = require("../handlers/helpers");
 
 const MISSING_ATTRIBUTE_TEXT =
@@ -69,9 +70,16 @@ router.post("/", async function (req, res) {
       .catch((err) => {
         console.log(err);
         if (err.constraint) {
+          const reason =
+            err.constraint === "member_of_member_id_fkey"
+              ? `Member with member_id ${req.body.member_id} does not exist.`
+              : failedResponseMatch.get("403");
           res
             .status(403)
-            .json({ Error: `${failedResponseMatch.get("403")}` })
+            .json({
+              Error: reason,
+              Detail: err.detail,
+            })
             .end();
         } else {
           res.status(500).json({ Error: err.message });
@@ -117,6 +125,25 @@ router.patch("/:team_id", async function (req, res) {
  *********************************************************************/
 router.get("/:team_id/users", function (req, res) {
   Team.getAllUsersOnTeam(req.params.team_id)
+    .then((teamMembers) => {
+      if (teamMembers) {
+        // format returned teams
+        teamMembers.items = Helpers.addSelf(req, teamMembers.items, "users");
+      }
+      // return regardless if teams were found
+      res.status(200).json(teamMembers);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ Error: err.message }).end();
+    });
+});
+
+/**********************************************************************
+ * GET all non-members of a team
+ *********************************************************************/
+router.get("/:team_id/non_members", function (req, res) {
+  Team.getUsersNotInTeam(req.params.team_id)
     .then((teamMembers) => {
       if (teamMembers) {
         // format returned teams
@@ -293,5 +320,24 @@ router.delete("/:team_id/users/:user_id", async function (req, res) {
       res.status(500).json({ Error: err.message });
     });
 });
+
+/**********************************************************************
+ * Get statistics for a team
+ *********************************************************************/
+router.get("/:team_id/statistics", function (req, res) {
+  TeamStats.getAllTeamStats(
+    req.params.team_id,
+    req.query.beginDate,
+    req.query.endDate
+  )
+    .then((stats) => {
+      res.status(200).json(stats);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ Error: err.message }).end();
+    });
+});
+
 /* ------------- End Controller Functions ------------- */
 module.exports = router;

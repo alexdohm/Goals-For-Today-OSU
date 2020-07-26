@@ -21,7 +21,10 @@ const getAllTeams = async function () {
 
     return teamJson;
   } else {
-    return 0;
+    return {
+      number_of_items: 0,
+      items: [],
+    };
   }
 };
 
@@ -108,9 +111,17 @@ const updateTeam = async function (teamId, teamInfoObject) {
   return Helpers.updateData(updateQuery, filter);
 };
 
+/**
+ * Deletes a team from the database
+ * Database cascade handles associated members, goals, and comments
+ * @param {number} teamId unique id of team to delete
+ */
 const deleteTeam = async function (teamId) {
-  //TODO implement
-  console.log("NOT IMPLEMENTED YET!!");
+  const deleteTeamQuery = `DELETE FROM team WHERE team_id = $1`;
+
+  return Helpers.deleteData(deleteTeamQuery, [teamId]);
+
+  //return deleteResult;
 };
 /**
  * Add user to a team
@@ -214,9 +225,45 @@ const getAllUsersOnTeam = async function (teamId) {
 
     return dataJson;
   } else {
-    return 0;
+    return {
+      number_of_items: 0,
+      items: [],
+    };
   }
 };
+/**
+ * get users in system not a member of current team
+ * so they can be invited
+ * @param {number} teamId unique id of team
+ */
+const getUsersNotInTeam = async function (teamId) {
+  const getTeamsQuery = `SELECT DISTINCT tm.member_id, tm.first_name, tm.last_name, tm.email
+  FROM team_member as tm
+           INNER JOIN member_of AS mo ON mo.member_id = tm.member_id
+  WHERE mo.team_id <> $1
+    AND mo.member_id NOT IN
+        (SELECT tm.member_id
+         FROM team_member as tm
+                  INNER JOIN member_of AS mo on mo.member_id = tm.member_id
+         WHERE mo.team_id = $1);`;
+
+  const allNonTeamMembers = await Helpers.runQuery(getTeamsQuery, [teamId]);
+
+  if (allNonTeamMembers.length) {
+    const dataJson = {};
+    dataJson.number_of_items = allNonTeamMembers.length;
+
+    dataJson.items = [...allNonTeamMembers];
+
+    return dataJson;
+  } else {
+    return {
+      number_of_items: 0,
+      items: [],
+    };
+  }
+};
+
 /**
  * Check if user is admin of given team
  * @param {number} userId unique id of user
@@ -373,4 +420,5 @@ module.exports = {
   teamEmailSummary,
   getTeamTimes,
   getGoalsForUser,
+  getUsersNotInTeam,
 };

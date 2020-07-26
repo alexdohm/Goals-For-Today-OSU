@@ -173,7 +173,7 @@ const updateGoal = async function (goalId, goalInfo) {
 const deleteGoal = async function (goalId) {
   const deleteGoalQuery = `DELETE FROM goal WHERE goal_id = $1`;
 
-  const deleteResult = await Helpers.runQuery(deleteGoalQuery, [goalId]);
+  const deleteResult = await Helpers.deleteData(deleteGoalQuery, [goalId]);
 
   console.log(deleteResult);
 
