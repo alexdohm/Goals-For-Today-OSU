@@ -83,11 +83,11 @@ const getAllCommentsForEntity = async function (entityType, entityObj) {
   switch (entityType) {
     case "GOAL":
       entityQuery = `SELECT c.comment_id, c.date_time, c.message, tm.first_name, tm.last_name, tm.avatar, tm.active
-                                    FROM team_member AS tm
-                                            INNER JOIN goal AS g ON g.member_id = tm.member_id
-                                            INNER JOIN comment as c on c.goal_id = g.goal_id
-                                    WHERE g.goal_id = $1
-                                    AND c.id_user_page IS NULL;`;
+                    FROM goal AS g
+                      INNER JOIN comment as c on c.goal_id = g.goal_id
+                      INNER JOIN team_member AS tm ON c.member_id = tm.member_id
+                    WHERE g.goal_id = $1;`;
+
       filters.push(entityObj.goal_id);
       break;
     case "USER":

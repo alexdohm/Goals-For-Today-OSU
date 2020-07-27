@@ -34,7 +34,7 @@ router.get("/teams/:team_id/users/:member_id", function (req, res) {
  * GET all comments for a goal
  *********************************************************************/
 router.get("/:goal_id/comments", function (req, res) {
-  Goal.getAllCommentsOnGoal(req.params.goal_id)
+  Goal.getAllCommentsOnGoal(parseInt(req.params.goal_id))
     .then((goals) => {
       if (goals.number_of_items) {
         goals.items = Helpers.addSelf(req, goals.items, "comments");
@@ -60,7 +60,7 @@ router.post("/:goal_id/comments", async function (req, res) {
     Goal.addGoalComment(
       req.body.team_id,
       req.body.author,
-      req.params.goal_id,
+      parseInt(req.params.goal_id),
       req.body.comment_text,
       req.body.comment_date
     )
