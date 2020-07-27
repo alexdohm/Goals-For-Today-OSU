@@ -43,8 +43,16 @@ class HomePage extends Component {
             currentUserFirstName={data.first_name}
             team={data.team}
           />
-          <ToDoList currentUserId={data.member_id} team={data.team} updateData={this.fetchData} />
-          <Comments team={data.team} />
+          <ToDoList 
+            currentUserId={data.member_id} 
+            team={data.team} 
+            updateData={this.fetchData} 
+          />
+          <Comments
+            currentUserId={data.member_id}
+            team={data.team}
+            updateData={this.fetchData}
+          />
         </div>
       );
     } else {

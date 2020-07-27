@@ -56,7 +56,12 @@ class Comments extends Component {
             )
             .flat()}
         </div>
-        <CommentForm />
+        <CommentForm 
+          updateData={this.props.updateData}
+          selectedToDoId={this.props.selectedToDoId}
+          currentUserId={this.props.currentUserId}
+          currentTeamId={this.props.currentTeamId}
+        />
       </div>
     );
   }
@@ -81,22 +86,82 @@ const Comment = (props) => {
   );
 };
 
-const CommentForm = (props) => {
-  return (
-    <Form className="Comment-form" reply>
-      <Form.TextArea />
-      <Button
-        content="Add Reply"
-        labelPosition="left"
-        icon={EDIT_ICON}
-        primary
-      />
-    </Form>
-  );
+class CommentForm extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      newCommentText: "",
+    }
+
+    this.handleCommentChange = this.handleCommentChange.bind(this);
+    this.postComment = this.postComment.bind(this);
+  }
+
+  handleCommentChange(event) {
+    const { value } = event.target;
+    this.setState((prevState) => ({
+      ...prevState,
+      newCommentText: value,
+    }));
+  }
+
+  postComment() {
+
+    const body = {
+      team_id: this.props.currentTeamId,
+      author: this.props.currentUserId,
+      comment_date: new Date(),
+      comment_text: this.state.newCommentText,
+    }
+
+    const raw = JSON.stringify(body); 
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    fetch("/goals/" + this.props.selectedToDoId + "/comments", requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        console.log(result);
+        this.setState( prevState => ({
+          ...prevState,
+          newCommentText: ""
+        }));
+        this.props.updateData();
+      })
+      .catch(error => console.log('error', error));
+  }
+
+  render() {
+    return (
+      <Form className="Comment-form" reply>
+        <Form.TextArea 
+          onChange={this.handleCommentChange}
+          value={this.state.newCommentText}
+        />
+        <Button
+          content="Add Reply"
+          labelPosition="left"
+          icon={EDIT_ICON}
+          onClick={this.postComment}
+          primary
+        />
+      </Form>
+    );
+  }
 };
 
 const mapStateToProps = (state) => ({
   selectedToDoId: state.toDos.selectedToDoId,
+  currentTeamId: state.teams.currentTeam,
 });
 
 export default connect(mapStateToProps)(Comments);
