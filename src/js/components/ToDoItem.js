@@ -15,12 +15,14 @@ class ToDoItem extends Component {
     this.state = {
       showEditModal: false,
       updatedTaskName: "",
-      updatedTaskDescription: ""
-    }
+      updatedTaskDescription: "",
+    };
 
     this.openEditForm = this.openEditForm.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
-    this.handleTaskDescriptionChange = this.handleTaskDescriptionChange.bind(this);
+    this.handleTaskDescriptionChange = this.handleTaskDescriptionChange.bind(
+      this
+    );
     this.handleTaskNameChange = this.handleTaskNameChange.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleUpdateTask = this.handleUpdateTask.bind(this);
@@ -32,38 +34,38 @@ class ToDoItem extends Component {
 
     const body = {
       name: this.state.updatedTaskName,
-      description: this.state.updatedTaskDescription
-    }
+      description: this.state.updatedTaskDescription,
+    };
 
     const raw = JSON.stringify(body);
 
     const requestOptions = {
-      method: 'PATCH',
+      method: "PATCH",
       headers: myHeaders,
       body: raw,
-      redirect: 'follow'
+      redirect: "follow",
     };
 
     fetch("http://localhost:8080/goals/" + this.props.id, requestOptions)
-      .then(response => response.text())
-      .then(result => {
+      .then((response) => response.text())
+      .then((result) => {
         console.log(result);
-        this.setState( prevState => ({
+        this.setState((prevState) => ({
           ...prevState,
-          showEditModal: false
+          showEditModal: false,
         }));
-        this.props.updateData()
+        this.props.updateData();
       })
-      .catch(error => console.log('error', error));
+      .catch((error) => console.log("error", error));
   }
 
   openEditForm() {
-    this.setState( prevState => ({
+    this.setState((prevState) => ({
       ...prevState,
       showEditModal: true,
       updatedTaskName: this.props.title,
-      updatedTaskDescription: this.props.description
-    }))
+      updatedTaskDescription: this.props.description,
+    }));
   }
 
   handleCancel() {

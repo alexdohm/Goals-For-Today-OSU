@@ -1,9 +1,9 @@
-import React from 'react';
-import { Button, Form } from 'semantic-ui-react';
-import PropTypes from 'prop-types';
+import React from "react";
+import { Button, Form } from "semantic-ui-react";
+import PropTypes from "prop-types";
 
-import Heading from './common/Heading';
-import { FormFieldHelper } from './common/helpers';
+import Heading from "./common/Heading";
+import { FormFieldHelper } from "./common/helpers";
 
 const ToDoForm = (props) => {
   return (
@@ -55,7 +55,7 @@ ToDoForm.propTypes = {
   handleTaskNameChange: PropTypes.func.isRequired,
   handleTaskDescriptionChange: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  submitText: PropTypes.string.isRequired
-}
+  submitText: PropTypes.string.isRequired,
+};
 
 export default ToDoForm;

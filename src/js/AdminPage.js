@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Dimmer, Loader } from "semantic-ui-react";
-import { connect } from "react-redux"
+import { connect } from "react-redux";
 
 import Heading from "./components/common/Heading";
 import AdminTeamSection from "./components/AdminTeamSection";
@@ -8,12 +8,11 @@ import AdminEmailSection from "./components/AdminEmailSection";
 import AdminDeleteButton from "./components/AdminDeleteButton";
 
 class AdminPage extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      data: null
-    }
+      data: null,
+    };
     this.deleteTeam = this.deleteTeam.bind(this);
   }
 
@@ -30,7 +29,7 @@ class AdminPage extends Component {
 
   deleteTeam() {
     //TODO: implement
-    alert('you deleted a team');
+    alert("you deleted a team");
   }
 
   render() {
@@ -40,7 +39,10 @@ class AdminPage extends Component {
           <Heading hLevel={2} baseClass="Settings">
             Admin Page
           </Heading>
-          <AdminTeamSection team={this.state.data.team} firstName={this.state.data.first_name} />
+          <AdminTeamSection
+            team={this.state.data.team}
+            firstName={this.state.data.first_name}
+          />
           <AdminEmailSection />
           <AdminDeleteButton onClick={this.deleteTeam} />
         </div>
@@ -54,9 +56,8 @@ class AdminPage extends Component {
         </div>
       );
     }
-    
   }
-};
+}
 
 const mapStateToProps = (state) => ({
   userEmail: state.auth.user.user[0].email,

@@ -56,7 +56,7 @@ class Comments extends Component {
             )
             .flat()}
         </div>
-        <CommentForm 
+        <CommentForm
           updateData={this.props.updateData}
           selectedToDoId={this.props.selectedToDoId}
           currentUserId={this.props.currentUserId}
@@ -87,13 +87,12 @@ const Comment = (props) => {
 };
 
 class CommentForm extends Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
       newCommentText: "",
-    }
+    };
 
     this.handleCommentChange = this.handleCommentChange.bind(this);
     this.postComment = this.postComment.bind(this);
@@ -108,42 +107,41 @@ class CommentForm extends Component {
   }
 
   postComment() {
-
     const body = {
       team_id: this.props.currentTeamId,
       author: this.props.currentUserId,
       comment_date: new Date(),
       comment_text: this.state.newCommentText,
-    }
+    };
 
-    const raw = JSON.stringify(body); 
+    const raw = JSON.stringify(body);
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     const requestOptions = {
-      method: 'POST',
+      method: "POST",
       headers: myHeaders,
       body: raw,
-      redirect: 'follow'
+      redirect: "follow",
     };
 
     fetch("/goals/" + this.props.selectedToDoId + "/comments", requestOptions)
-      .then(response => response.text())
-      .then(result => {
+      .then((response) => response.text())
+      .then((result) => {
         console.log(result);
-        this.setState( prevState => ({
+        this.setState((prevState) => ({
           ...prevState,
-          newCommentText: ""
+          newCommentText: "",
         }));
         this.props.updateData();
       })
-      .catch(error => console.log('error', error));
+      .catch((error) => console.log("error", error));
   }
 
   render() {
     return (
       <Form className="Comment-form" reply>
-        <Form.TextArea 
+        <Form.TextArea
           onChange={this.handleCommentChange}
           value={this.state.newCommentText}
         />
@@ -157,7 +155,7 @@ class CommentForm extends Component {
       </Form>
     );
   }
-};
+}
 
 const mapStateToProps = (state) => ({
   selectedToDoId: state.toDos.selectedToDoId,

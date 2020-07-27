@@ -77,12 +77,11 @@ class TeamTaskbar extends Component {
           <TaskbarItem icon={GROUP_ICON} onClick={this.navigateToTeamOverview}>
             {team.team_name}
           </TaskbarItem>
-          {team.team_admin 
-            ? <TaskbarItem icon={ADMIN_ICON} onClick={this.navigateToAdmin}>
-                Admin
-              </TaskbarItem>
-            : null
-          }
+          {team.team_admin ? (
+            <TaskbarItem icon={ADMIN_ICON} onClick={this.navigateToAdmin}>
+              Admin
+            </TaskbarItem>
+          ) : null}
           <div className="TeamTaskbar-buttons">
             <IconButton
               baseClass="TeamTaskbar"

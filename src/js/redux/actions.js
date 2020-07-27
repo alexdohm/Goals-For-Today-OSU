@@ -62,5 +62,5 @@ export const selectUser = (userID) => ({
 export const SELECT_TEAM = "SELECT_TEAM";
 export const selectTeam = (teamID) => ({
   type: SELECT_TEAM,
-  payload: { teamID }
+  payload: { teamID },
 });

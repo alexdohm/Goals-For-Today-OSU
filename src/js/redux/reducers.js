@@ -1,5 +1,9 @@
-import { SELECT_TODO, SELECT_TEAM, SELECT_USER, SET_CURRENT_USER } from "./actions";
-
+import {
+  SELECT_TODO,
+  SELECT_TEAM,
+  SELECT_USER,
+  SET_CURRENT_USER,
+} from "./actions";
 
 const initialState = {
   selectedToDoId: -1,

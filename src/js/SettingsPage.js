@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import Heading from "./components/common/Heading";
 import UserSettings from "./components/UserSettings";
 import TeamSettings from "./components/TeamSettings";
-import SettingsDeleteButton from './components/SettingsDeleteButton';
+import SettingsDeleteButton from "./components/SettingsDeleteButton";
 
 class SettingsPage extends Component {
   constructor(props) {
@@ -14,7 +14,7 @@ class SettingsPage extends Component {
       data: null,
       teams: null,
     };
-    this.deleteAccount = this.deleteAccount.bind(this)
+    this.deleteAccount = this.deleteAccount.bind(this);
   }
 
   componentDidMount() {
@@ -37,7 +37,7 @@ class SettingsPage extends Component {
 
   deleteAccount() {
     //TODO: implement
-    alert('delete account button');
+    alert("delete account button");
   }
 
   render() {
@@ -52,7 +52,7 @@ class SettingsPage extends Component {
             My Teams
           </Heading>
           <TeamSettings teams={this.state.data.items} />
-          <SettingsDeleteButton onClick={this.deleteAccount}/>
+          <SettingsDeleteButton onClick={this.deleteAccount} />
         </div>
       );
     } else {
@@ -69,6 +69,6 @@ class SettingsPage extends Component {
 
 const mapStateToProps = (state) => ({
   currentUserId: state.auth.user.user[0].member_id,
-})
+});
 
 export default connect(mapStateToProps)(SettingsPage);

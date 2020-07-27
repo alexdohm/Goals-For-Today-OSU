@@ -68,14 +68,19 @@ class UserSettings extends Component {
           </div>
         </div>
         <Form className="Settings-emailTime">
-          <Select placeholder="Select Reminder Email Time" options={this.timeOptions}/>
+          <Select
+            placeholder="Select Reminder Email Time"
+            options={this.timeOptions}
+          />
         </Form>
-        {this.props.teams 
-            ? <Form className="Settings-currentTeamSelect">
-                <Select placeholder="Select Team" options={this.buildTeamOptions(this.props.teams)} />
-              </Form>
-            : null
-          }
+        {this.props.teams ? (
+          <Form className="Settings-currentTeamSelect">
+            <Select
+              placeholder="Select Team"
+              options={this.buildTeamOptions(this.props.teams)}
+            />
+          </Form>
+        ) : null}
       </div>
     );
   }

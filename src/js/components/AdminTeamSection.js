@@ -6,7 +6,6 @@ import { USER_ICON, TRASH_ICON } from "./common/constants";
 import IconButton from "./common/IconButton";
 
 class AdminTeamSection extends Component {
-
   constructor(props) {
     super(props);
     this.deleteMember = this.deleteMember.bind(this);
@@ -14,7 +13,7 @@ class AdminTeamSection extends Component {
 
   deleteMember() {
     //TODO: implement
-    alert('you clicked the delete member button');
+    alert("you clicked the delete member button");
   }
 
   render() {
@@ -25,16 +24,16 @@ class AdminTeamSection extends Component {
           {team.team_name}
         </Heading>
         <div className="Admin-teamMembers">
-          <AdminTeamMember name={firstName} onClick={this.deleteMember}/>
-          {team.team_members.map( member => {
+          <AdminTeamMember name={firstName} onClick={this.deleteMember} />
+          {team.team_members.map((member) => {
             return (
-              <AdminTeamMember 
-                key={member.member_id} 
-                name={member.first_name} 
+              <AdminTeamMember
+                key={member.member_id}
+                name={member.first_name}
                 onClick={this.deleteMember}
                 isNotCurrentUser={true}
               />
-            )
+            );
           })}
         </div>
       </div>
@@ -47,12 +46,15 @@ const AdminTeamMember = (props) => {
     <div className="Admin-teamMember">
       <Icon className="Admin-teamMemberIcon" name={USER_ICON} size="large" />
       <Text baseClass="Admin">{props.name}</Text>
-      {props.isNotCurrentUser
-        ? <IconButton baseClass="Admin" icon={TRASH_ICON} onClick={props.deleteMember} />
-        : null 
-      }
+      {props.isNotCurrentUser ? (
+        <IconButton
+          baseClass="Admin"
+          icon={TRASH_ICON}
+          onClick={props.deleteMember}
+        />
+      ) : null}
     </div>
   );
-}
+};
 
 export default AdminTeamSection;

@@ -19,12 +19,14 @@ class ToDoList extends Component {
       showAddModal: false,
       newTaskName: "",
       newTaskDescription: "",
-      date: new Date()
+      date: new Date(),
     };
 
     this.selectItem = this.selectItem.bind(this);
     this.handleNewTaskNameChange = this.handleNewTaskNameChange.bind(this);
-    this.handleNewTaskDescriptionChange = this.handleNewTaskDescriptionChange.bind(this);
+    this.handleNewTaskDescriptionChange = this.handleNewTaskDescriptionChange.bind(
+      this
+    );
     this.openAddModal = this.openAddModal.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
@@ -71,30 +73,30 @@ class ToDoList extends Component {
       description: newTaskDescription,
       create_date: new Date(),
       team_id: currentTeamId,
-      member_id: currentUserId
-    }
+      member_id: currentUserId,
+    };
 
-    const raw = JSON.stringify(body); 
+    const raw = JSON.stringify(body);
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     const requestOptions = {
-      method: 'POST',
+      method: "POST",
       headers: myHeaders,
       body: raw,
-      redirect: 'follow'
+      redirect: "follow",
     };
 
     fetch("/goals", requestOptions)
-      .then(response => response.text())
-      .then(result => {
+      .then((response) => response.text())
+      .then((result) => {
         console.log(result);
         this.setState({
-          showAddModal: false
+          showAddModal: false,
         });
         this.props.updateData();
       })
-      .catch(error => console.log('error', error));
+      .catch((error) => console.log("error", error));
   }
 
   handleCancel() {
@@ -106,9 +108,9 @@ class ToDoList extends Component {
 
   handleDateChange(date) {
     this.setState({
-      startDate: date
+      startDate: date,
     });
-  };
+  }
 
   render() {
     const { currentUserId, team } = this.props;
@@ -153,17 +155,16 @@ class ToDoList extends Component {
             )
             .flat()}
         </div>
-        {this.props.selectedUserId == this.props.currentUserId
-          ? <div className="ToDoList-addButtonContainer">
-              <IconButton
-                baseClass="ToDoList"
-                color="green"
-                icon={ADD_ICON}
-                onClick={this.openAddModal}
-              />
-            </div>
-          : null
-        }
+        {this.props.selectedUserId == this.props.currentUserId ? (
+          <div className="ToDoList-addButtonContainer">
+            <IconButton
+              baseClass="ToDoList"
+              color="green"
+              icon={ADD_ICON}
+              onClick={this.openAddModal}
+            />
+          </div>
+        ) : null}
         {this.state.showAddModal ? (
           <ToDoForm
             heading="Add New Task"
@@ -182,7 +183,7 @@ class ToDoList extends Component {
 const mapStateToProps = (state) => ({
   selectedToDoId: state.toDos.selectedToDoId,
   selectedUserId: state.toDos.selectedUserId,
-  currentTeamId: state.teams.currentTeam
+  currentTeamId: state.teams.currentTeam,
 });
 
 const mapDispatchToProps = (dispatch) => ({
