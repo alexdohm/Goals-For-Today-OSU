@@ -24,6 +24,9 @@ class Comments extends Component {
       goalToCommentsMap[-1] = goalToCommentsMap[-1].concat(
         member.user_comments
       );
+      for (const goal of member.goals) {
+        goalToCommentsMap[goal.goal_id] = goal.comments;
+      }
     }
 
     for (const goal of team.goals) {
