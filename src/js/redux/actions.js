@@ -21,6 +21,7 @@ export function signup(userData) {
     return axios.post(`${BASE_URL}/auth/signup`, userData);
   };
 }
+
 export function logout() {
   return (dispatch) => {
     localStorage.removeItem("jwtToken");
@@ -37,6 +38,12 @@ export function login(data) {
       setAuthorizationToken(token);
       dispatch(setCurrentUser(jwtDecode(token)));
     });
+  };
+}
+
+export function deleteGoal(data) {
+  return (dispatch) => {
+    return axios.delete(`${BASE_URL}/goals/${data}`, data);
   };
 }
 

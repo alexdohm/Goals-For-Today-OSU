@@ -7,6 +7,8 @@ import Text from "./common/Text";
 import Heading from "./common/Heading";
 import { EDIT_ICON, TRASH_ICON } from "./common/constants";
 import ToDoForm from "./ToDoForm";
+import { withRouter } from "react-router-dom";
+import { deleteGoal } from "../redux/actions";
 
 class ToDoItem extends Component {
   constructor(props) {
@@ -92,8 +94,14 @@ class ToDoItem extends Component {
   }
 
   handleDelete() {
-    //TODO: implement
-    alert(`You pressed the delete button of item number ${this.props.id}`);
+    this.props.deleteGoal(this.props.id).then(
+      () => {
+        console.log("You deleted a goal");
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
   }
 
   render() {
@@ -148,4 +156,5 @@ class ToDoItem extends Component {
   }
 }
 
-export default ToDoItem;
+// export default ToDoItem;
+export default withRouter(connect(null, { deleteGoal })(ToDoItem));
