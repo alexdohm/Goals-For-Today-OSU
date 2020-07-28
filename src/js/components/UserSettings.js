@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Form, Button, Icon, Select } from "semantic-ui-react";
 import { FormFieldHelper } from "./common/helpers";
-import { TIME_OPTIONS, USER_ICON } from "./common/constants";
+import { TIME_OPTIONS, USER_ICON, TIME_LIST } from "./common/constants";
 import Heading from "./common/Heading";
 import axios from "axios";
 const BASE_URL = `${window.location.protocol}//${window.location.host}`;
@@ -13,11 +13,15 @@ class UserSettings extends Component {
     this.state = {
       updatedMorningTime: "",
       updatedEveningTime: "",
+      updatedTimeZone: "",
     };
 
     this.handleMorningTimeChange = this.handleMorningTimeChange.bind(this);
     this.handleEveningTimeChange = this.handleEveningTimeChange.bind(this);
+    this.handleTimeZoneChange = this.handleTimeZoneChange.bind(this);
     this.timeOptions = TIME_OPTIONS;
+    this.timeZones = TIME_LIST;
+    console.log(this.timeZones);
   }
 
   handleMorningTimeChange(event, data) {
@@ -48,7 +52,21 @@ class UserSettings extends Component {
         });
       }
     );
-    // this.props.updateUserMorningTime()
+  }
+
+  handleTimeZoneChange(event, data) {
+    const { value } = data;
+    this.setState(
+      (prevState) => ({
+        ...prevState,
+        updatedTimeZone: value,
+      }),
+      () => {
+        axios.patch(`${BASE_URL}/users/${this.props.user.member_id}`, {
+          time_zone: this.state.updatedTimeZone,
+        });
+      }
+    );
   }
 
   render() {
@@ -88,6 +106,22 @@ class UserSettings extends Component {
                         this.state.updatedEveningTime
                           ? this.state.updatedEveningTime
                           : this.props.user.evening_time.slice(0, 5)
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="column">
+                    <label>Select Time Zone</label>
+                  </div>
+                  <div className="column">
+                    <Select
+                      options={this.timeZones}
+                      onChange={this.handleTimeZoneChange}
+                      value={
+                        this.state.updatedTimeZone
+                          ? this.state.updatedTimeZone
+                          : this.props.user.time_zone
                       }
                     />
                   </div>

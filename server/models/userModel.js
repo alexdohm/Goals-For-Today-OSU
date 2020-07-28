@@ -553,7 +553,12 @@ const getNonTeamsForUser = async function (userId) {
  * Returns all active users in system for user email reminders
  */
 const getAllEmailTimesForUsers = async function () {
-  const queryString = `SELECT first_name, last_name, email, morning_time, evening_time, time_zone FROM team_member WHERE active = true;`;
+  const queryString = `SELECT first_name, last_name, email, morning_time, evening_time, time_zone
+FROM team_member
+WHERE active = true
+AND email IN (SELECT DISTINCT tm.email
+FROM team_member as tm
+INNER JOIN member_of AS mo ON mo.member_id = tm.member_id);`;
   const filter = [];
   const user = await Helpers.runQuery(queryString, filter);
   if (user) {
