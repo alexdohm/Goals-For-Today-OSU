@@ -13,6 +13,7 @@ class SettingsPage extends Component {
     this.state = {
       data: null,
       teams: null,
+      userInfo: null,
     };
     this.deleteAccount = this.deleteAccount.bind(this);
   }
@@ -21,7 +22,6 @@ class SettingsPage extends Component {
     fetch("/teams")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         this.setState({
           data: data,
         });
@@ -31,6 +31,14 @@ class SettingsPage extends Component {
       .then((data) => {
         this.setState({
           teams: data.items,
+        });
+      });
+    fetch("/users/" + this.props.currentUserId)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        this.setState({
+          userInfo: data,
         });
       });
   }
@@ -47,7 +55,7 @@ class SettingsPage extends Component {
           <Heading hLevel={2} baseClass="Settings">
             Settings
           </Heading>
-          <UserSettings teams={this.state.teams} />
+          <UserSettings teams={this.state.teams} user={this.state.userInfo} />
           <Heading hLevel={2} baseClass="Settings">
             My Teams
           </Heading>
