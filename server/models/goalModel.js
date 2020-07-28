@@ -101,7 +101,8 @@ const getAllGoalsForUser = async function (memberId, teamId) {
   const goalQuery = `SELECT goal_id, task_name, task_description, date_time, status
         FROM goal
         WHERE member_id = $1
-        AND team_id = $2;`;
+        AND team_id = $2
+        ORDER BY goal_id;`;
 
   const filters = [memberId, teamId];
 
