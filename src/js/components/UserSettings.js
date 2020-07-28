@@ -3,46 +3,52 @@ import { Form, Button, Icon, Select } from "semantic-ui-react";
 import { FormFieldHelper } from "./common/helpers";
 import { TIME_OPTIONS, USER_ICON } from "./common/constants";
 import Heading from "./common/Heading";
+import axios from "axios";
+const BASE_URL = `${window.location.protocol}//${window.location.host}`;
 
 class UserSettings extends Component {
   constructor(props) {
     super(props);
-    // console.log("printing user settings props");
-    // console.log(props);
 
     this.state = {
-      usernameInput: "",
+      updatedMorningTime: "",
+      updatedEveningTime: "",
     };
 
-    this.handleUsernameChange = this.handleUsernameChange.bind(this);
-    this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleMorningTimeChange = this.handleMorningTimeChange.bind(this);
+    this.handleEveningTimeChange = this.handleEveningTimeChange.bind(this);
     this.timeOptions = TIME_OPTIONS;
   }
 
-  handleUsernameChange() {
-    const { value } = event.target;
-    this.setState((prevState) => ({
-      ...prevState,
-      usernameInput: value,
-    }));
+  handleMorningTimeChange(event, data) {
+    const { value } = data;
+    this.setState(
+      (prevState) => ({
+        ...prevState,
+        updatedMorningTime: value,
+      }),
+      () => {
+        axios.patch(`${BASE_URL}/users/${this.props.user.member_id}`, {
+          morning_time: this.state.updatedMorningTime,
+        });
+      }
+    );
   }
 
-  handleUpdate() {
-    //TODO: implement
-    alert("you clicked the update button");
-  }
-
-  buildTeamOptions(teams) {
-    let teamOptions = [];
-    for (const team of teams) {
-      teamOptions.push({
-        text: team.team_name,
-        value: team.team_id,
-        key: team.team_id,
-      });
-    }
-
-    return teamOptions;
+  handleEveningTimeChange(event, data) {
+    const { value } = data;
+    this.setState(
+      (prevState) => ({
+        ...prevState,
+        updatedEveningTime: value,
+      }),
+      () => {
+        axios.patch(`${BASE_URL}/users/${this.props.user.member_id}`, {
+          evening_time: this.state.updatedEveningTime,
+        });
+      }
+    );
+    // this.props.updateUserMorningTime()
   }
 
   render() {
@@ -59,9 +65,13 @@ class UserSettings extends Component {
                   </div>
                   <div className="column">
                     <Select
-                      placeholder="Select Reminder Email Time"
-                      value={this.props.user.morning_time.slice(0, 5)}
                       options={this.timeOptions}
+                      onChange={this.handleMorningTimeChange}
+                      value={
+                        this.state.updatedMorningTime
+                          ? this.state.updatedMorningTime
+                          : this.props.user.morning_time.slice(0, 5)
+                      }
                     />
                   </div>
                 </div>
@@ -72,9 +82,13 @@ class UserSettings extends Component {
                   </div>
                   <div className="column">
                     <Select
-                      placeholder="Select Reminder Email Time"
-                      value={this.props.user.evening_time.slice(0, 5)}
                       options={this.timeOptions}
+                      onChange={this.handleEveningTimeChange}
+                      value={
+                        this.state.updatedEveningTime
+                          ? this.state.updatedEveningTime
+                          : this.props.user.evening_time.slice(0, 5)
+                      }
                     />
                   </div>
                 </div>
@@ -82,24 +96,6 @@ class UserSettings extends Component {
             </Form>
           ) : null}
         </div>
-        {/* TODO: I think this should go in the TeamSettings component */}
-        {this.props.teams ? (
-          <Form className="Settings-currentTeamSelect">
-            <div className="ui equal width grid">
-              <div className="row">
-                <div className="column">
-                  <label>Switch To Dashboard</label>
-                </div>
-                <div className="column">
-                  <Select
-                    placeholder="Select Team"
-                    options={this.buildTeamOptions(this.props.teams)}
-                  />
-                </div>
-              </div>
-            </div>
-          </Form>
-        ) : null}
       </div>
     );
   }

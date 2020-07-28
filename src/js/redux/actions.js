@@ -2,9 +2,7 @@ import axios from "axios";
 import jwtDecode from "jwt-decode";
 
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
-// const BASE_URL = {process.env.BASE_URL}; //how do we handle the case where we aren't serving locally?
-// const BASE_URL = "http://localhost:8080"; //how do we handle the case where we aren't serving locally?
-// const BASE_URL = "https://goals-for-today-osu.herokuapp.com"; //how do we handle the case where we aren't serving locally?
+
 const BASE_URL = `${window.location.protocol}//${window.location.host}`;
 
 export function setAuthorizationToken(token) {
@@ -38,12 +36,6 @@ export function login(data) {
       setAuthorizationToken(token);
       dispatch(setCurrentUser(jwtDecode(token)));
     });
-  };
-}
-
-export function deleteGoal(data) {
-  return (dispatch) => {
-    return axios.delete(`${BASE_URL}/goals/${data}`, data);
   };
 }
 

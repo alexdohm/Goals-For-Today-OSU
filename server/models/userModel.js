@@ -412,6 +412,12 @@ WHERE t.team_id IN (SELECT t.team_id
   return Helpers.deleteData(deleteQuery, [memberId]);
 };
 
+const updateUserMorningTime = async function (userId, morning_time) {
+  const queryString = `UPDATE team_member SET morning_time = $1 WHERE member_id = $2`;
+  const filter = [morning_time, userId];
+  return Helpers.runQuery(queryString, filter);
+};
+
 /**
  * deletes a user and inactivates team memberships
  * @param {number} userId unique id of user
@@ -568,6 +574,7 @@ module.exports = {
   updateUserUsername,
   updateUserTimeZone,
   updateUserAvatar,
+  updateUserMorningTime,
   getUserById,
   updateUser,
   getAllEmailTimesForUsers,

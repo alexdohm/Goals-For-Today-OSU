@@ -8,7 +8,8 @@ import Heading from "./common/Heading";
 import { EDIT_ICON, TRASH_ICON } from "./common/constants";
 import ToDoForm from "./ToDoForm";
 import { withRouter } from "react-router-dom";
-import { deleteGoal } from "../redux/actions";
+import axios from "axios";
+const BASE_URL = `${window.location.protocol}//${window.location.host}`;
 
 class ToDoItem extends Component {
   constructor(props) {
@@ -94,14 +95,9 @@ class ToDoItem extends Component {
   }
 
   handleDelete() {
-    this.props.deleteGoal(this.props.id).then(
-      () => {
-        console.log("You deleted a goal");
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
+    axios.delete(`${BASE_URL}/goals/${this.props.id}`).then(() => {
+      console.log("Goal deleted");
+    });
   }
 
   render() {
@@ -156,5 +152,5 @@ class ToDoItem extends Component {
   }
 }
 
-// export default ToDoItem;
-export default withRouter(connect(null, { deleteGoal })(ToDoItem));
+export default ToDoItem;
+// export default withRouter(connect(null, { deleteGoal })(ToDoItem));
