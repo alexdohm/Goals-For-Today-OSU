@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { Button, Form, Select } from "semantic-ui-react";
+import { Button, Form, Select, Grid, Segment } from "semantic-ui-react";
 
 import { FormFieldHelper } from "./common/helpers";
 
 class TeamSettings extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       teamRequest: "",
     };
@@ -42,28 +41,76 @@ class TeamSettings extends Component {
     alert("you requested to join a team");
   }
 
+  buildTeamOptions(teams) {
+    console.log(teams);
+    let teamOptions = [];
+    for (const team of teams) {
+      teamOptions.push({
+        text: team.team_name,
+        value: team.team_id,
+        key: team.team_id,
+      });
+    }
+
+    return teamOptions;
+  }
+
   render() {
     return (
       <div className="Settings-teamSettings Settings-form">
+        <h3 className="Settings-header">Team Settings</h3>
         <div className="Settings-teamWrapper">
+          <h5>Switch To Dashboard</h5>
+          {this.props.currentTeams ? (
+            <Form className="Settings-teamForm">
+              <div className="ui grid Settings-teamSelect">
+                <div className="eight wide column">
+                  <Select
+                    placeholder="Select Team"
+                    options={this.buildTeamOptions(this.props.currentTeams)}
+                  />
+                </div>
+              </div>
+            </Form>
+          ) : null}
           <Form className="Settings-teamForm">
+            <h5>Request To Join Team</h5>
             <div className="Settings-teamSelect">
-              <Select placeholder="Teams" options={this.teamOptions} />
-              <Button primary onClick={this.handleTeamRequest}>
-                Request
-              </Button>
+              <div className="ui grid">
+                <div className="eight wide column">
+                  <Select placeholder="Teams" options={this.teamOptions} />
+                </div>
+                <div className="eight wide column">
+                  <Button
+                    primary
+                    onClick={this.handleTeamRequest}
+                    class="Settings-button"
+                  >
+                    Request To Join Team
+                  </Button>
+                </div>
+              </div>
             </div>
+          </Form>
+          <Form className="Settings-teamForm">
+            <h5>Create New Team</h5>
             <div className="Settings-teamUpdate">
-              <FormFieldHelper
-                baseClass="Settings"
-                idPrefix="settings"
-                name="teamRequest"
-                placeholder="New Team Name"
-                onChange={this.handleTeamCreateChange}
-              />
-              <Button primary onClick={this.handleTeamCreate}>
-                Create
-              </Button>
+              <div className="ui grid Settings-teamGrid">
+                <div className="eight wide column">
+                  <FormFieldHelper
+                    baseClass="Settings"
+                    idPrefix="settings"
+                    name="teamRequest"
+                    placeholder="New Team Name"
+                    onChange={this.handleTeamCreateChange}
+                  />
+                </div>
+                <div className="eight wide column">
+                  <Button primary onClick={this.handleTeamCreate}>
+                    Create New Team
+                  </Button>
+                </div>
+              </div>
             </div>
           </Form>
         </div>

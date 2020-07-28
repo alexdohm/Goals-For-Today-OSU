@@ -56,10 +56,11 @@ class SettingsPage extends Component {
             Settings
           </Heading>
           <UserSettings teams={this.state.teams} user={this.state.userInfo} />
-          <Heading hLevel={2} baseClass="Settings">
-            My Teams
-          </Heading>
-          <TeamSettings teams={this.state.data.items} />
+          <div className="ui hidden divider"></div>
+          <TeamSettings
+            teams={this.state.data.items}
+            currentTeams={this.state.teams}
+          />
           <SettingsDeleteButton onClick={this.deleteAccount} />
         </div>
       );

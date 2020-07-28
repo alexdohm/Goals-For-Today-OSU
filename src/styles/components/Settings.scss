@@ -5,9 +5,10 @@
   flex-direction: column;
   align-items: center;
 
-  &-teamSelect
+  &-teamSelect,
+  &-teamGrid
   {
-    margin-bottom: 24px;
+    margin-bottom: 20px!important;
   }
 
   &-teamSelect,
@@ -28,6 +29,11 @@
     height: fit-content;
   }
 
+  .grid
+  {
+    width: 100%!important
+  }
+
   &-deleteButton
   {
     width: 100%;
@@ -38,5 +44,16 @@
   &-currentTeamSelect
   {
     margin-top: 24px;
+  }
+
+  &-header
+  {
+    text-align: center;
+  }
+
+  &-teamGrid,
+  &-button
+  {
+    width: 100%!important;
   }
 }

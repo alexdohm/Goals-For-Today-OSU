@@ -2,10 +2,13 @@ import React, { Component } from "react";
 import { Form, Button, Icon, Select } from "semantic-ui-react";
 import { FormFieldHelper } from "./common/helpers";
 import { TIME_OPTIONS, USER_ICON } from "./common/constants";
+import Heading from "./common/Heading";
 
 class UserSettings extends Component {
   constructor(props) {
     super(props);
+    // console.log("printing user settings props");
+    // console.log(props);
 
     this.state = {
       usernameInput: "",
@@ -45,13 +48,14 @@ class UserSettings extends Component {
   render() {
     return (
       <div className="Settings-userSettings Settings-form">
+        <h3 className="Settings-header">Time Settings</h3>
         <div className="Settings-userWrapper">
           {this.props.user ? (
             <Form className="Settings-emailTime">
               <div className="ui equal width grid">
                 <div className="row">
                   <div className="column">
-                    <label>Morning Time</label>
+                    <label>Morning Email Time</label>
                   </div>
                   <div className="column">
                     <Select
@@ -64,7 +68,7 @@ class UserSettings extends Component {
 
                 <div className="row">
                   <div className="column">
-                    <label>Evening Time</label>
+                    <label>Evening Email Time</label>
                   </div>
                   <div className="column">
                     <Select
