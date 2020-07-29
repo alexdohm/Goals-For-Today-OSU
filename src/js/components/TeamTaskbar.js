@@ -46,7 +46,12 @@ class TeamTaskbar extends Component {
   }
 
   render() {
-    const { currentUserId, currentUserFirstName, currentUserLastName, team } = this.props;
+    const {
+      currentUserId,
+      currentUserFirstName,
+      currentUserLastName,
+      team,
+    } = this.props;
 
     return (
       <div className="TeamTaskbar">

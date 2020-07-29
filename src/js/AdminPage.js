@@ -12,6 +12,7 @@ class AdminPage extends Component {
     super(props);
     this.state = {
       data: null,
+      teamInfo: null,
     };
     this.deleteTeam = this.deleteTeam.bind(this);
   }
@@ -23,6 +24,13 @@ class AdminPage extends Component {
         console.log(data);
         this.setState({
           data: data,
+        });
+      });
+    fetch("/teams/" + this.props.currentTeam)
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({
+          teamInfo: data,
         });
       });
   }
@@ -43,7 +51,9 @@ class AdminPage extends Component {
             team={this.state.data.team}
             firstName={this.state.data.first_name}
           />
-          <AdminEmailSection />
+          <div className="ui hidden divider"></div>
+          <AdminEmailSection teamInfo={this.state.teamInfo} />
+          <div className="ui hidden divider"></div>
           <AdminDeleteButton onClick={this.deleteTeam} />
         </div>
       );
@@ -61,6 +71,7 @@ class AdminPage extends Component {
 
 const mapStateToProps = (state) => ({
   userEmail: state.auth.user.user[0].email,
+  currentTeam: state.teams.currentTeam,
 });
 
 export default connect(mapStateToProps)(AdminPage);

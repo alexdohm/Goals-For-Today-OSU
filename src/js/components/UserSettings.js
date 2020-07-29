@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Form, Button, Icon, Select } from "semantic-ui-react";
+import { Form, Select } from "semantic-ui-react";
 import { FormFieldHelper } from "./common/helpers";
 import { TIME_OPTIONS, USER_ICON, TIME_LIST } from "./common/constants";
-import Heading from "./common/Heading";
 import axios from "axios";
 const BASE_URL = `${window.location.protocol}//${window.location.host}`;
 
@@ -21,7 +20,6 @@ class UserSettings extends Component {
     this.handleTimeZoneChange = this.handleTimeZoneChange.bind(this);
     this.timeOptions = TIME_OPTIONS;
     this.timeZones = TIME_LIST;
-    console.log(this.timeZones);
   }
 
   handleMorningTimeChange(event, data) {

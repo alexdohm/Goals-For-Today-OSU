@@ -7,8 +7,8 @@ import {
 
 const initialState = {
   selectedToDoId: -1,
-  selectedToDoName: 'General Comments',
-  selectedToDoDescription: '',
+  selectedToDoName: "General Comments",
+  selectedToDoDescription: "",
   selectedUserId: null,
   currentTeam: null,
   isAuthenticated: false,
@@ -25,7 +25,7 @@ export const toDos = (state = initialState, action) => {
         ...state,
         selectedToDoId: toDoID,
         selectedToDoName: toDoName,
-        selectedToDoDescription: toDoDescription
+        selectedToDoDescription: toDoDescription,
       };
       return newState;
     }

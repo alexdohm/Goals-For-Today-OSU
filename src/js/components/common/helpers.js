@@ -25,31 +25,30 @@ export const FormFieldHelper = (props) => {
   );
 };
 
-export const isSameDay = (first, second) => (
+export const isSameDay = (first, second) =>
   first.getFullYear() === second.getFullYear() &&
   first.getMonth() === second.getMonth() &&
-  first.getDate() === second.getDate()
-)
+  first.getDate() === second.getDate();
 
 export const dateToTimestampString = (date) => {
   const month = date.getMonth() + 1;
   let day = date.getDate();
   if (day < 10) {
-    day = '0' + day
+    day = "0" + day;
   }
   const year = date.getFullYear();
   let hour = date.getHours();
-  let ampm = 'am';
-  if (hour ==  0) {
+  let ampm = "am";
+  if (hour == 0) {
     hour = 12;
   } else if (hour > 12) {
-    hour -= 12
-    ampm = 'pm';
+    hour -= 12;
+    ampm = "pm";
   }
   let minutes = date.getMinutes();
   if (minutes < 10) {
-    minutes = '0' + minutes;
+    minutes = "0" + minutes;
   }
 
-  return month + '/' + day + '/' + year + ' @ ' + hour + ':' + minutes + ampm;
-}
+  return month + "/" + day + "/" + year + " @ " + hour + ":" + minutes + ampm;
+};

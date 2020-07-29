@@ -122,7 +122,8 @@ class ToDoList extends Component {
       memberToGoalsMap[member.member_id] = member.goals;
     }
 
-    const headingModifier = this.props.selectedToDoId == -1 ? 'selectedHeading' : '';
+    const headingModifier =
+      this.props.selectedToDoId == -1 ? "selectedHeading" : "";
 
     return (
       <div className="ToDoList">
@@ -134,11 +135,12 @@ class ToDoList extends Component {
             placeholderText="Select Date"
           />
         </div>
-        <Heading 
-          baseClass="ToDoList" 
-          modifier={headingModifier} 
+        <Heading
+          baseClass="ToDoList"
+          modifier={headingModifier}
           hLevel={1}
-          onClick={() => this.props.onToDoSelected(-1, 'General Comments', '')}>
+          onClick={() => this.props.onToDoSelected(-1, "General Comments", "")}
+        >
           To do list for today
         </Heading>
         <div className="ToDoList-items">
@@ -155,7 +157,13 @@ class ToDoList extends Component {
                         title={goal.task_name}
                         description={goal.task_description}
                         showButtons={currentUserId == key}
-                        onClick={() => this.props.onToDoSelected(goal.goal_id, goal.task_name, goal.task_description)}
+                        onClick={() =>
+                          this.props.onToDoSelected(
+                            goal.goal_id,
+                            goal.task_name,
+                            goal.task_description
+                          )
+                        }
                         updateData={this.props.updateData}
                       />
                     );
@@ -197,7 +205,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onToDoSelected: (toDoID, toDoName, toDoDescription) => dispatch(selectToDo(toDoID, toDoName, toDoDescription)),
+  onToDoSelected: (toDoID, toDoName, toDoDescription) =>
+    dispatch(selectToDo(toDoID, toDoName, toDoDescription)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ToDoList);

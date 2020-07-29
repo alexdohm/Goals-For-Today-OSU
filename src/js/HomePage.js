@@ -32,7 +32,7 @@ class HomePage extends Component {
         this.props.selectTeam(data.team.team_id);
         if (isInitialLoad) {
           this.props.selectUser(data.member_id);
-          this.props.selectToDo(-1, 'General Comments', '');
+          this.props.selectToDo(-1, "General Comments", "");
         }
       });
   }
@@ -94,7 +94,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   selectUser: (userID) => dispatch(selectUser(userID)),
   selectTeam: (teamID) => dispatch(selectTeam(teamID)),
-  selectToDo: (toDoId, toDoName, toDoDescription) => dispatch(selectToDo(toDoId, toDoName, toDoDescription)),
+  selectToDo: (toDoId, toDoName, toDoDescription) =>
+    dispatch(selectToDo(toDoId, toDoName, toDoDescription)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

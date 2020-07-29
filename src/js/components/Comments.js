@@ -36,12 +36,11 @@ class Comments extends Component {
           <Heading baseClass="Comments" hLevel={2}>
             {selectedToDoName}
           </Heading>
-          {selectedToDoDescription 
-            ? <Heading baseClass="Comments" hLevel={4}>
-                {selectedToDoDescription}
-              </Heading> 
-            : null 
-          }
+          {selectedToDoDescription ? (
+            <Heading baseClass="Comments" hLevel={4}>
+              {selectedToDoDescription}
+            </Heading>
+          ) : null}
         </div>
         <div className="Comments-list">
           {Object.keys(goalToCommentsMap)
@@ -132,7 +131,7 @@ class CommentForm extends Component {
     };
 
     let fetchPath;
-    if (this.props.selectedToDoId == -1) { 
+    if (this.props.selectedToDoId == -1) {
       //post a general comment
       fetchPath = "/users/" + this.props.currentUserId + "/comments";
     } else {
