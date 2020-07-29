@@ -6,10 +6,6 @@ import { USER_ICON, EDIT_ICON } from "./common/constants";
 import Heading from "./common/Heading";
 import Text from "./common/Text";
 
-//TODO these should be determined by the currently selected todo item via redux
-const heading = "Comments";
-const subHeading = "These are some comments";
-
 class Comments extends Component {
   constructor(props) {
     super(props);
