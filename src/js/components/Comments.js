@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { USER_ICON, EDIT_ICON } from "./common/constants";
 import Heading from "./common/Heading";
 import Text from "./common/Text";
+import { dateToTimestampString } from "./common/helpers";
 
 class Comments extends Component {
   constructor(props) {
@@ -53,6 +54,7 @@ class Comments extends Component {
                       firstName={comment.first_name}
                       lastName={comment.last_name}
                       body={comment.message}
+                      date={new Date(comment.date_time)}
                     />
                   );
                 }
@@ -81,7 +83,7 @@ const Comment = (props) => {
             {props.firstName} {props.lastName}
           </Heading>
           <span className="Comment-timestamp">
-            {/* TODO: put timestamp here */}
+            {dateToTimestampString(props.date)}
           </span>
         </div>
         <Text baseClass="Comments">{props.body}</Text>

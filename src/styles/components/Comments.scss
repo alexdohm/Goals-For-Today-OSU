@@ -25,6 +25,18 @@
     border-top: $border-gray-1;
   }
 
+  &-top
+  {
+    display: flex;
+  }
+
+  &-timestamp
+  {
+    padding-left: 8px;
+    color: $gray;
+    font-size: 12px;
+  }
+
   &-contentWrapper
   {
     margin-left: 12px;
