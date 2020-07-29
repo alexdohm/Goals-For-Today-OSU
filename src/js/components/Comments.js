@@ -12,6 +12,17 @@ class Comments extends Component {
     super(props);
   }
 
+  sortCommentsByTime(goalToCommentsMap) {
+    for (const goal in goalToCommentsMap) {
+      goalToCommentsMap[goal].sort( (a, b) => {
+        let aDate = new Date(a.date_time);
+        let bDate = new Date(b.date_time);
+
+        return aDate.getTime() - bDate.getTime();
+      });
+    }
+  }
+
   render() {
     const { team, selectedToDoName, selectedToDoDescription } = this.props;
     const goalToCommentsMap = {};
@@ -29,6 +40,8 @@ class Comments extends Component {
     for (const goal of team.goals) {
       goalToCommentsMap[goal.goal_id] = goal.comments;
     }
+
+    this.sortCommentsByTime(goalToCommentsMap);
 
     return (
       <div className="Comments">
