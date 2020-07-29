@@ -86,7 +86,8 @@ const getAllCommentsForEntity = async function (entityType, entityObj) {
                     FROM goal AS g
                       INNER JOIN comment as c on c.goal_id = g.goal_id
                       INNER JOIN team_member AS tm ON c.member_id = tm.member_id
-                    WHERE g.goal_id = $1;`;
+                    WHERE g.goal_id = $1
+                    order by c.date_time;`;
 
       filters.push(entityObj.goal_id);
       break;
@@ -96,9 +97,9 @@ const getAllCommentsForEntity = async function (entityType, entityObj) {
                                         INNER JOIN comment as c on c.member_id = tm.member_id
                                 WHERE c.goal_id IS NULL
                                 AND c.id_user_page = $1
-                                
                                 AND c.team_id = $2
-                                AND c.team_page = false;`;
+                                AND c.team_page = false
+                                order by c.date_time;`;
       filters.push(entityObj.user_id, entityObj.team_id);
       break;
     case "TEAM":
@@ -108,7 +109,8 @@ const getAllCommentsForEntity = async function (entityType, entityObj) {
                                 WHERE c.goal_id IS NULL
                                 AND c.id_user_page IS NULL
                                 AND c.team_id = $1
-                                AND c.team_page = true;`;
+                                AND c.team_page = true
+                                order by c.date_time;`;
       filters.push(entityObj.team_id);
       break;
   }
