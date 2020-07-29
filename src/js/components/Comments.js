@@ -129,7 +129,16 @@ class CommentForm extends Component {
       redirect: "follow",
     };
 
-    fetch("/goals/" + this.props.selectedToDoId + "/comments", requestOptions)
+    let fetchPath;
+    if (this.props.selectedToDoId == -1) { 
+      //post a general comment
+      fetchPath = "/users/" + this.props.currentUserId + "/comments";
+    } else {
+      //post comment on a specific goal
+      fetchPath = "/goals/" + this.props.selectedToDoId + "/comments";
+    }
+
+    fetch(fetchPath, requestOptions)
       .then((response) => response.text())
       .then((result) => {
         console.log(result);
