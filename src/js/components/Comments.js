@@ -16,7 +16,7 @@ class Comments extends Component {
   }
 
   render() {
-    const { team } = this.props;
+    const { team, selectedToDoName, selectedToDoDescription } = this.props;
     const goalToCommentsMap = {};
 
     goalToCommentsMap[-1] = team.user_comments;
@@ -35,12 +35,17 @@ class Comments extends Component {
 
     return (
       <div className="Comments">
-        <Heading baseClass="Comments" hLevel={2}>
-          {heading}
-        </Heading>
-        <Heading baseClass="Comments" hLevel={4}>
-          {subHeading}
-        </Heading>
+        <div className="Comments-headings">
+          <Heading baseClass="Comments" hLevel={2}>
+            {selectedToDoName}
+          </Heading>
+          {selectedToDoDescription 
+            ? <Heading baseClass="Comments" hLevel={4}>
+                {selectedToDoDescription}
+              </Heading> 
+            : null 
+          }
+        </div>
         <div className="Comments-list">
           {Object.keys(goalToCommentsMap)
             .map((key) =>
@@ -162,6 +167,8 @@ class CommentForm extends Component {
 
 const mapStateToProps = (state) => ({
   selectedToDoId: state.toDos.selectedToDoId,
+  selectedToDoName: state.toDos.selectedToDoName,
+  selectedToDoDescription: state.toDos.selectedToDoDescription,
   currentTeamId: state.teams.currentTeam,
 });
 

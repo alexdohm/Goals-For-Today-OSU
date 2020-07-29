@@ -47,9 +47,9 @@ export function setCurrentUser(user) {
 }
 
 export const SELECT_TODO = "SELECT_TODO";
-export const selectToDo = (toDoID) => ({
+export const selectToDo = (toDoID, toDoName, toDoDescription) => ({
   type: SELECT_TODO,
-  payload: { toDoID },
+  payload: { toDoID, toDoName, toDoDescription },
 });
 
 export const SELECT_USER = "SELECT_USER";

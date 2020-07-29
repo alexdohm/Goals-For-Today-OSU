@@ -7,6 +7,8 @@ import {
 
 const initialState = {
   selectedToDoId: -1,
+  selectedToDoName: 'General Comments',
+  selectedToDoDescription: '',
   selectedUserId: null,
   currentTeam: null,
   isAuthenticated: false,
@@ -18,10 +20,12 @@ export const toDos = (state = initialState, action) => {
 
   switch (type) {
     case SELECT_TODO: {
-      const { toDoID } = payload;
+      const { toDoID, toDoName, toDoDescription } = payload;
       const newState = {
         ...state,
         selectedToDoId: toDoID,
+        selectedToDoName: toDoName,
+        selectedToDoDescription: toDoDescription
       };
       return newState;
     }
