@@ -9,7 +9,13 @@ const Heading = (props) => {
     Tag = "h4";
   }
 
-  return <Tag className={props.baseClass + "-heading"}>{props.children}</Tag>;
+  const classes = props.baseClass + '-heading' + (props.modifier ? ' ' + props.baseClass + '-' + props.modifier : '');
+
+  return (
+    <Tag className={classes} onClick={props.onClick ? props.onClick : () => {}}>
+      {props.children}
+    </Tag>
+  );
 };
 
 Heading.propTypes = {

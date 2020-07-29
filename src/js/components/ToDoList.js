@@ -121,6 +121,9 @@ class ToDoList extends Component {
     for (const member of team.team_members) {
       memberToGoalsMap[member.member_id] = member.goals;
     }
+
+    const headingModifier = this.props.selectedToDoId == -1 ? 'selectedHeading' : '';
+
     return (
       <div className="ToDoList">
         <div className="ToDoList-datePickerContainer">
@@ -131,7 +134,11 @@ class ToDoList extends Component {
             placeholderText="Select Date"
           />
         </div>
-        <Heading baseClass="ToDoList" hLevel={1}>
+        <Heading 
+          baseClass="ToDoList" 
+          modifier={headingModifier} 
+          hLevel={1}
+          onClick={() => this.props.onToDoSelected(-1)}>
           To do list for today
         </Heading>
         <div className="ToDoList-items">

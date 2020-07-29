@@ -12,6 +12,12 @@
   {
     text-transform: uppercase;
     text-align: center;
+    cursor: pointer;
+  }
+
+  &-selectedHeading
+  {
+    background-color: $gray-light;
   }
 
   &-datePickerContainer

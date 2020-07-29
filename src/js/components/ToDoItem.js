@@ -97,6 +97,7 @@ class ToDoItem extends Component {
   handleDelete() {
     axios.delete(`${BASE_URL}/goals/${this.props.id}`).then(() => {
       console.log("Goal deleted");
+      this.props.updateData();
     });
   }
 

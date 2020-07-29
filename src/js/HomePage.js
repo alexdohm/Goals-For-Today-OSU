@@ -5,7 +5,7 @@ import { Dimmer, Loader } from "semantic-ui-react";
 import Comments from "./components/Comments";
 import TeamTaskbar from "./components/TeamTaskbar";
 import ToDoList from "./components/ToDoList";
-import { selectTeam, selectUser } from "./redux/actions";
+import { selectTeam, selectToDo, selectUser } from "./redux/actions";
 
 class HomePage extends Component {
   constructor(props) {
@@ -32,6 +32,7 @@ class HomePage extends Component {
         this.props.selectTeam(data.team.team_id);
         if (isInitialLoad) {
           this.props.selectUser(data.member_id);
+          this.props.selectToDo(-1);
         }
       });
   }
@@ -44,6 +45,7 @@ class HomePage extends Component {
           <TeamTaskbar
             currentUserId={data.member_id}
             currentUserFirstName={data.first_name}
+            currentUserLastName={data.last_name}
             team={data.team}
           />
           <ToDoList
@@ -92,6 +94,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   selectUser: (userID) => dispatch(selectUser(userID)),
   selectTeam: (teamID) => dispatch(selectTeam(teamID)),
+  selectToDo: (toDoId) => dispatch(selectToDo(toDoId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

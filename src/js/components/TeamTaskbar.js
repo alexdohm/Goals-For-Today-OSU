@@ -46,7 +46,7 @@ class TeamTaskbar extends Component {
   }
 
   render() {
-    const { currentUserId, currentUserFirstName, team } = this.props;
+    const { currentUserId, currentUserFirstName, currentUserLastName, team } = this.props;
 
     return (
       <div className="TeamTaskbar">
@@ -58,7 +58,7 @@ class TeamTaskbar extends Component {
             icon={USER_ICON}
             isSelected={currentUserId == this.props.selectedUserId}
           >
-            {currentUserFirstName}
+            {currentUserFirstName} {currentUserLastName}
           </TaskbarItem>
 
           {/* then render rest of teammates */}
@@ -69,7 +69,7 @@ class TeamTaskbar extends Component {
               icon={USER_ICON}
               isSelected={user.member_id == this.props.selectedUserId}
             >
-              {user.first_name}
+              {user.first_name} {user.last_name}
             </TaskbarItem>
           ))}
         </div>
