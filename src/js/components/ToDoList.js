@@ -9,6 +9,7 @@ import IconButton from "./common/IconButton";
 import { selectToDo } from "../redux/actions";
 import ToDoItem from "./ToDoItem";
 import ToDoForm from "./ToDoForm";
+import { isSameDay } from "./common/helpers";
 
 class ToDoList extends Component {
   constructor(props) {
@@ -108,7 +109,7 @@ class ToDoList extends Component {
 
   handleDateChange(date) {
     this.setState({
-      startDate: date,
+      date: date,
     });
   }
 
@@ -126,7 +127,7 @@ class ToDoList extends Component {
           <DatePicker
             className="ToDoList-datePicker"
             selected={this.state.date}
-            onChange={this.handleChange}
+            onChange={this.handleDateChange}
             placeholderText="Select Date"
           />
         </div>
@@ -138,18 +139,20 @@ class ToDoList extends Component {
             .map((key) =>
               memberToGoalsMap[key].map((goal) => {
                 if (key == this.props.selectedUserId) {
-                  return (
-                    <ToDoItem
-                      key={goal.goal_id}
-                      id={goal.goal_id}
-                      selected={this.props.selectedToDoId == goal.goal_id}
-                      title={goal.task_name}
-                      description={goal.task_description}
-                      showButtons={currentUserId == key}
-                      onClick={() => this.props.onToDoSelected(goal.goal_id)}
-                      updateData={this.props.updateData}
-                    />
-                  );
+                  if (isSameDay(this.state.date, new Date(goal.date_time))) {
+                    return (
+                      <ToDoItem
+                        key={goal.goal_id}
+                        id={goal.goal_id}
+                        selected={this.props.selectedToDoId == goal.goal_id}
+                        title={goal.task_name}
+                        description={goal.task_description}
+                        showButtons={currentUserId == key}
+                        onClick={() => this.props.onToDoSelected(goal.goal_id)}
+                        updateData={this.props.updateData}
+                      />
+                    );
+                  }
                 }
               })
             )
