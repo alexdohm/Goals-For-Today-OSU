@@ -5,7 +5,7 @@ import { Dimmer, Loader } from "semantic-ui-react";
 import Comments from "./components/Comments";
 import TeamTaskbar from "./components/TeamTaskbar";
 import ToDoList from "./components/ToDoList";
-import { selectTeam } from "./redux/actions";
+import { selectTeam, selectUser } from "./redux/actions";
 
 class HomePage extends Component {
   constructor(props) {
@@ -18,10 +18,10 @@ class HomePage extends Component {
   }
 
   componentDidMount() {
-    this.fetchData();
+    this.fetchData(true);
   }
 
-  fetchData() {
+  fetchData(isInitialLoad = false) {
     fetch("/users/login/" + this.props.userEmail)
       .then((response) => response.json())
       .then((data) => {
@@ -30,6 +30,9 @@ class HomePage extends Component {
           data: data,
         });
         this.props.selectTeam(data.team.team_id);
+        if (isInitialLoad) {
+          this.props.selectUser(data.member_id);
+        }
       });
   }
 
@@ -87,6 +90,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  selectUser: (userID) => dispatch(selectUser(userID)),
   selectTeam: (teamID) => dispatch(selectTeam(teamID)),
 });
 
