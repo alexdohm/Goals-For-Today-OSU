@@ -18,7 +18,12 @@ class AdminPage extends Component {
   }
 
   componentDidMount() {
-    fetch("/users/login/" + this.props.userEmail)
+    fetch(
+      "/users/login/" +
+        this.props.userEmail +
+        "/team_id/" +
+        this.props.currentTeam
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log(data);

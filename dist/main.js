@@ -45312,7 +45312,12 @@ object-assign
               key: "componentDidMount",
               value: function () {
                 var e = this;
-                fetch("/users/login/" + this.props.userEmail)
+                fetch(
+                  "/users/login/" +
+                    this.props.userEmail +
+                    "/team_id/" +
+                    this.props.currentTeam
+                )
                   .then(function (e) {
                     return e.json();
                   })
