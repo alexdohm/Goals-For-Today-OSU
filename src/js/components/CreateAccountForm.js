@@ -54,17 +54,14 @@ class CreateAccountForm extends Component {
 
   handleEmailChange(event) {
     const { value } = event.target;
-    let errors = this.state.errors;
 
-    errors.emailFormat = validEmailRegExp.test(value)
-      ? ""
-      : "Email address is not valid";
-
-    this.setState((prevState) => ({
-      ...prevState,
-      errors,
-      email: value,
-    }));
+    this.setState(
+      (prevState) => ({
+        ...prevState,
+        email: value,
+      }),
+      this.errorCheckEmail
+    );
   }
 
   handlePasswordChange(event) {
@@ -78,15 +75,31 @@ class CreateAccountForm extends Component {
 
   handlePasswordConfirmChange(event) {
     const { value } = event.target;
-    this.setState((prevState) => ({
-      ...prevState,
-      passwordConfirm: value,
-    }), this.errorCheckEmail);
+    this.setState(
+      (prevState) => ({
+        ...prevState,
+        passwordConfirm: value,
+      }),
+      this.errorCheckConfirmPassword
+    );
   }
 
   errorCheckEmail() {
     let errors = this.state.errors;
-    
+
+    errors.emailFormat = validEmailRegExp.test(this.state.email)
+      ? ""
+      : "Email address is not valid";
+
+    this.setState((prevState) => ({
+      ...prevState,
+      errors,
+    }));
+  }
+
+  errorCheckConfirmPassword() {
+    let errors = this.state.errors;
+
     errors.passwordMatch =
       this.state.password === this.state.passwordConfirm
         ? ""
@@ -94,19 +107,29 @@ class CreateAccountForm extends Component {
 
     this.setState((prevState) => ({
       ...prevState,
-      errors
+      errors,
     }));
   }
 
   handleCreateAccount() {
-    // TODO handle email already registered case
     console.log("creating account");
     this.props.signup(this.state).then(
-      () => {
+      (response) => {
+        console.log(response);
         this.props.history.push("/");
       },
       (err) => {
         console.error(err);
+        let errors = this.state.errors;
+        errors.emailTaken =
+          err.message === "Request failed with status code 403"
+            ? "This email address is already registered"
+            : err.message;
+
+        this.setState((prevState) => ({
+          ...prevState,
+          errors,
+        }));
       }
     );
   }
@@ -173,6 +196,9 @@ class CreateAccountForm extends Component {
         >
           Create Account
         </Button>
+        {errors.emailTaken.length > 0 ? (
+          <Message negative content={errors.emailTaken} />
+        ) : null}
       </Form>
     );
   }
