@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Form } from "semantic-ui-react";
+import { Button, Form, Message } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -14,6 +14,9 @@ class LoginForm extends Component {
     this.state = {
       emailInput: "",
       passwordInput: "", //TODO: this is a suuuuper insecure way of getting user's password. anyone with react chrome devtools could see it. definitely something we can improve on
+      errors: {
+        emailPasswordNotFound: "",
+      },
     };
 
     this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -44,11 +47,26 @@ class LoginForm extends Component {
       },
       (err) => {
         console.error(err);
+
+        let errors = this.state.errors;
+        errors.emailPasswordNotFound =
+          err.message === "Request failed with status code 404"
+            ? "Email and password not recognized"
+            : err.message;
+
+        this.setState((prevState) => ({
+          ...prevState,
+          errors,
+        }));
       }
     );
   }
 
   render() {
+    const { errors } = this.state;
+    const enableSubmit =
+      this.state.emailInput && this.state.passwordInput ? true : false;
+
     return (
       <Form className="Login-form">
         <FormFieldHelper
@@ -69,9 +87,13 @@ class LoginForm extends Component {
           className="Login-submit"
           type="submit"
           onClick={this.handleLogin}
+          disabled={!enableSubmit}
         >
           Login
         </Button>
+        {errors.emailPasswordNotFound.length > 0 ? (
+          <Message negative content={errors.emailPasswordNotFound} />
+        ) : null}
       </Form>
     );
   }
