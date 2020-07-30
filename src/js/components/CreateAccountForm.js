@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Form } from "semantic-ui-react";
+import { Button, Form, Message } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 import { signup } from "../redux/actions";
 import { FormFieldHelper } from "./common/helpers.js";
 
+const validEmailRegExp = RegExp(
+  /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+);
 class CreateAccountForm extends Component {
   constructor(props) {
     super(props);
@@ -17,8 +20,12 @@ class CreateAccountForm extends Component {
       email: "",
       password: "",
       passwordConfirm: "", //TODO: this is a suuuuper insecure way of getting user's password. anyone with react chrome devtools could see it. definitely something we can improve on
+      errors: {
+        emailFormat: "",
+        passwordMatch: "",
+        emailTaken: "",
+      },
     };
-
     this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
     this.handleLastNameChange = this.handleLastNameChange.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -47,14 +54,22 @@ class CreateAccountForm extends Component {
 
   handleEmailChange(event) {
     const { value } = event.target;
+    let errors = this.state.errors;
+
+    errors.emailFormat = validEmailRegExp.test(value)
+      ? ""
+      : "Email address is not valid";
+
     this.setState((prevState) => ({
       ...prevState,
+      errors,
       email: value,
     }));
   }
 
   handlePasswordChange(event) {
     const { value } = event.target;
+
     this.setState((prevState) => ({
       ...prevState,
       password: value,
@@ -62,6 +77,12 @@ class CreateAccountForm extends Component {
   }
 
   handlePasswordConfirmChange(event) {
+    let errors = this.state.errors;
+
+    errors.passwordMatch =
+      this.state.password === this.state.passwordConfirm
+        ? ""
+        : "Passwords do not match";
     const { value } = event.target;
     this.setState((prevState) => ({
       ...prevState,
@@ -70,9 +91,8 @@ class CreateAccountForm extends Component {
   }
 
   handleCreateAccount() {
-    //TODO: implement
+    // TODO handle email already registered case
     console.log("creating account");
-
     this.props.signup(this.state).then(
       () => {
         this.props.history.push("/");
@@ -84,6 +104,16 @@ class CreateAccountForm extends Component {
   }
 
   render() {
+    const { errors } = this.state;
+    const enableSubmit =
+      !(errors.emailFormat || errors.emailTaken || errors.passwordMatch) &&
+      this.state.firstName &&
+      this.state.lastName &&
+      this.state.password &&
+      this.state.passwordConfirm &&
+      this.state.email
+        ? false
+        : true;
     return (
       <Form className="CreateAccount-form">
         <div className="CreateAccount-nameFields">
@@ -106,6 +136,9 @@ class CreateAccountForm extends Component {
           name="email"
           onChange={this.handleEmailChange}
         />
+        {errors.emailFormat.length > 0 ? (
+          <Message negative content={errors.emailFormat} />
+        ) : null}
         <FormFieldHelper
           baseClass="CreateAccount"
           idPrefix="create-account"
@@ -120,11 +153,15 @@ class CreateAccountForm extends Component {
           type="password"
           onChange={this.handlePasswordConfirmChange}
         />
+        {errors.passwordMatch.length > 0 ? (
+          <Message negative content={errors.passwordMatch} />
+        ) : null}
         <Button
           positive
           className="CreateAccount-submit"
           type="submit"
           onClick={this.handleCreateAccount}
+          disabled={enableSubmit}
         >
           Create Account
         </Button>
