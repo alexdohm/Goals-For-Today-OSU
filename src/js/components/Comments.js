@@ -14,7 +14,7 @@ class Comments extends Component {
 
   sortCommentsByTime(goalToCommentsMap) {
     for (const goal in goalToCommentsMap) {
-      goalToCommentsMap[goal].sort( (a, b) => {
+      goalToCommentsMap[goal].sort((a, b) => {
         let aDate = new Date(a.date_time);
         let bDate = new Date(b.date_time);
 

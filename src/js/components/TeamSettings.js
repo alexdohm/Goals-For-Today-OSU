@@ -2,15 +2,17 @@ import React, { Component } from "react";
 import { Button, Form, Select, Grid, Segment } from "semantic-ui-react";
 
 import { FormFieldHelper } from "./common/helpers";
+import { connect } from "react-redux";
+import { selectTeam } from "../redux/actions";
 
 class TeamSettings extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      teamRequest: "",
+      currentTeamDisplayed: "",
     };
 
-    this.handleTeamCreateChange = this.handleTeamCreateChange.bind(this);
+    this.handleTeamChange = this.handleTeamChange.bind(this);
     this.handleTeamRequest = this.handleTeamRequest.bind(this);
     this.handleTeamCreate = this.handleTeamCreate.bind(this);
     this.teamOptions = [];
@@ -23,12 +25,13 @@ class TeamSettings extends Component {
     }
   }
 
-  handleTeamCreateChange() {
-    const { value } = event.target;
+  handleTeamChange(event, data) {
+    const { value } = data;
     this.setState((prevState) => ({
       ...prevState,
-      teamRequestInput: value,
+      currentTeamDisplayed: value,
     }));
+    this.props.dispatch(selectTeam(value));
   }
 
   handleTeamCreate() {
@@ -42,7 +45,7 @@ class TeamSettings extends Component {
   }
 
   buildTeamOptions(teams) {
-    console.log(teams);
+    console.log(this.props.currentTeams);
     let teamOptions = [];
     for (const team of teams) {
       teamOptions.push({
@@ -66,8 +69,9 @@ class TeamSettings extends Component {
               <div className="ui grid Settings-teamSelect">
                 <div className="eight wide column">
                   <Select
-                    placeholder="Select Team"
                     options={this.buildTeamOptions(this.props.currentTeams)}
+                    value={this.props.currentTeam}
+                    onChange={this.handleTeamChange}
                   />
                 </div>
               </div>
@@ -119,4 +123,9 @@ class TeamSettings extends Component {
   }
 }
 
-export default TeamSettings;
+const mapStateToProps = (state) => ({
+  currentTeam: state.teams.currentTeam,
+});
+
+export default connect(mapStateToProps)(TeamSettings);
+// export default TeamSettings;

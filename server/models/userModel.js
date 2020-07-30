@@ -358,13 +358,22 @@ const getUserTeamGoalsComments = async function (userId, teamId) {
  * Function to load user data based on first team
  * returned (if they have team) for initial login
  * @param {string} userEmail
+ * @param {string} teamId
  */
-const loadUserInfoOnLogin = async function (userEmail) {
+const loadUserInfoOnLogin = async function (userEmail, teamId) {
   const userDataJson = {};
 
   const userInfo = await getUserByEmail(userEmail);
 
-  const userTeams = await getAllTeamsForUser(userInfo.member_id);
+  let userTeams = {};
+  if (teamId === "-1") {
+    userTeams = await getAllTeamsForUser(userInfo.member_id);
+  } else {
+    userTeams = await getTeamForUser(userInfo.member_id, teamId);
+  }
+
+  // const userTeams = await getAllTeamsForUser(userInfo.member_id);
+  // const userTeams = await getTeamForUser(userInfo.member_id, teamId);
 
   // set basic user data
   userDataJson.member_id = userInfo.member_id;
@@ -393,7 +402,6 @@ const loadUserInfoOnLogin = async function (userEmail) {
       userInfo.member_id,
       userTeams.items[0].team_id
     );
-
     return userDataJson;
   }
 };
@@ -517,6 +525,35 @@ const getAllTeamsForUser = async function (userId) {
 };
 
 /**
+ * Returns formatted json object with array of teams that a user is a member of
+ * @param {number} userId
+ */
+const getTeamForUser = async function (userId, teamId) {
+  const teamQuery = `SELECT t.team_id, t.team_name
+   FROM team as t
+           INNER JOIN member_of AS mo ON mo.team_id = t.team_id
+           INNER JOIN team_member as tm on tm.member_id = mo.member_id
+  WHERE tm.member_id = $1
+    AND t.team_id = $2
+    AND mo.approved = TRUE
+    AND mo.date_left IS NULL;`;
+
+  const filter = [userId, teamId];
+
+  const teams = await Helpers.runQuery(teamQuery, filter);
+
+  if (!teams) {
+    return teams;
+  }
+
+  const jsonResponse = { number_of_items: teams.length };
+
+  jsonResponse.items = [...teams];
+
+  return jsonResponse;
+};
+
+/**
  * Get teams that user is not a part of
  * so they can request to join them
  * @param {number} userId unique member id
@@ -588,4 +625,5 @@ module.exports = {
   getUserComments,
   addUserComment,
   getNonTeamsForUser,
+  getTeamForUser,
 };

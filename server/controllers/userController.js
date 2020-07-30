@@ -60,8 +60,8 @@ router.get("/:identifier", function (req, res) {
 /**********************************************************************
  * GET dataset for a user upon login
  *********************************************************************/
-router.get("/login/:email", function (req, res) {
-  User.loadUserInfoOnLogin(req.params.email)
+router.get("/login/:email/team_id/:team_id", function (req, res) {
+  User.loadUserInfoOnLogin(req.params.email, req.params.team_id)
     .then((data) => {
       res.status(200).json(data).end();
     })

@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { FormFieldHelper } from "./common/helpers";
-import { login } from "../redux/actions";
+import { login, selectTeam, selectToDo, selectUser } from "../redux/actions";
 
 class LoginForm extends Component {
   constructor(props) {
@@ -41,6 +41,7 @@ class LoginForm extends Component {
   }
 
   handleLogin() {
+    this.props.selectTeam(-1);
     this.props.login(this.state).then(
       () => {
         this.props.history.push("/home");
@@ -103,4 +104,4 @@ LoginForm.propTypes = {
   login: PropTypes.func.isRequired,
 };
 
-export default withRouter(connect(null, { login })(LoginForm));
+export default withRouter(connect(null, { login, selectTeam })(LoginForm));

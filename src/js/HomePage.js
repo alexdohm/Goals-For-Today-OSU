@@ -22,10 +22,15 @@ class HomePage extends Component {
   }
 
   fetchData(isInitialLoad = false) {
-    fetch("/users/login/" + this.props.userEmail)
+    fetch(
+      "/users/login/" +
+        this.props.userEmail +
+        "/team_id/" +
+        this.props.currentTeam
+    )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         this.setState({
           data: data,
         });
@@ -88,6 +93,7 @@ const mapStateToProps = (state) => {
 
   return {
     userEmail: email,
+    currentTeam: state.teams.currentTeam,
   };
 };
 
