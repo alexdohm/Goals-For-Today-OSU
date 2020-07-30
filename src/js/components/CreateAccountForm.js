@@ -77,16 +77,24 @@ class CreateAccountForm extends Component {
   }
 
   handlePasswordConfirmChange(event) {
-    let errors = this.state.errors;
-
-    errors.passwordMatch =
-      this.state.password === this.state.passwordConfirm
-        ? ""
-        : "Passwords do not match";
     const { value } = event.target;
     this.setState((prevState) => ({
       ...prevState,
       passwordConfirm: value,
+    }), this.errorCheckEmail);
+  }
+
+  errorCheckEmail() {
+    let errors = this.state.errors;
+    
+    errors.passwordMatch =
+      this.state.password === this.state.passwordConfirm
+        ? ""
+        : "Passwords do not match";
+
+    this.setState((prevState) => ({
+      ...prevState,
+      errors
     }));
   }
 
