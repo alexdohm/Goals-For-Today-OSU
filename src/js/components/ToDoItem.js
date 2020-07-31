@@ -49,7 +49,7 @@ class ToDoItem extends Component {
       redirect: "follow",
     };
 
-    fetch("http://localhost:8080/goals/" + this.props.id, requestOptions)
+    fetch(`${BASE_URL}/goals/${this.props.id}`, requestOptions)
       .then((response) => response.text())
       .then((result) => {
         console.log(result);
