@@ -41,6 +41,10 @@ app.get("/home", function (req, res) {
   res.sendFile(path.join(__dirname, "../dist", "index.html"));
 });
 
+app.get("/admin", function (req, res) {
+  res.sendFile(path.join(__dirname, "../dist", "index.html"));
+});
+
 app.use("/", require("./routes/index.js"));
 
 // Listen to the environment-specified port, or 8080 otherwise

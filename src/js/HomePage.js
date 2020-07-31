@@ -30,7 +30,7 @@ class HomePage extends Component {
     )
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
+        console.log(data);
         this.setState({
           data: data,
         });

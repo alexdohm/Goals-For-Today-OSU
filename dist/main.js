@@ -45777,6 +45777,7 @@ object-assign
               password: "",
               passwordConfirm: "",
               errors: { emailFormat: "", passwordMatch: "", emailTaken: "" },
+              registrationComplete: !1,
             }),
             (t.handleFirstNameChange = t.handleFirstNameChange.bind(Fi(t))),
             (t.handleLastNameChange = t.handleLastNameChange.bind(Fi(t))),
@@ -45863,13 +45864,20 @@ object-assign
               },
             },
             {
+              key: "resetForm",
+              value: function () {
+                console.log("account create update state"),
+                  document.getElementById("CreateAccountForm").reset();
+              },
+            },
+            {
               key: "handleCreateAccount",
               value: function () {
                 var e = this;
                 console.log("creating account"),
                   this.props.signup(this.state).then(
                     function (t) {
-                      console.log(t), e.props.history.push("/");
+                      e.setState({ registrationComplete: !0 }, e.resetForm);
                     },
                     function (t) {
                       console.error(t);
@@ -45898,71 +45906,86 @@ object-assign
                     this.state.email
                   );
                 return o.a.createElement(
-                  Jo,
+                  "div",
                   { className: "CreateAccount-form" },
                   o.a.createElement(
-                    "div",
-                    { className: "CreateAccount-nameFields" },
+                    Jo,
+                    { id: "CreateAccountForm" },
+                    o.a.createElement(
+                      "div",
+                      { className: "CreateAccount-nameFields" },
+                      o.a.createElement(Pi, {
+                        baseClass: "CreateAccount",
+                        idPrefix: "create-account",
+                        name: "first name",
+                        onChange: this.handleFirstNameChange,
+                      }),
+                      o.a.createElement(Pi, {
+                        baseClass: "CreateAccount",
+                        idPrefix: "create-account",
+                        name: "last name",
+                        onChange: this.handleLastNameChange,
+                      })
+                    ),
                     o.a.createElement(Pi, {
                       baseClass: "CreateAccount",
                       idPrefix: "create-account",
-                      name: "first name",
-                      onChange: this.handleFirstNameChange,
+                      name: "email",
+                      onChange: this.handleEmailChange,
+                    }),
+                    e.emailFormat.length > 0
+                      ? o.a.createElement(Di, {
+                          negative: !0,
+                          content: e.emailFormat,
+                        })
+                      : null,
+                    o.a.createElement(Pi, {
+                      baseClass: "CreateAccount",
+                      idPrefix: "create-account",
+                      name: "password",
+                      type: "password",
+                      onChange: this.handlePasswordChange,
                     }),
                     o.a.createElement(Pi, {
                       baseClass: "CreateAccount",
                       idPrefix: "create-account",
-                      name: "last name",
-                      onChange: this.handleLastNameChange,
-                    })
+                      name: "confirm password",
+                      type: "password",
+                      onChange: this.handlePasswordConfirmChange,
+                    }),
+                    e.passwordMatch
+                      ? o.a.createElement(Di, {
+                          negative: !0,
+                          content: e.passwordMatch,
+                        })
+                      : null,
+                    o.a.createElement(
+                      Oa,
+                      {
+                        positive: !0,
+                        className: "CreateAccount-submit",
+                        type: "submit",
+                        onClick: this.handleCreateAccount,
+                        disabled: t,
+                      },
+                      "Create Account"
+                    ),
+                    e.emailTaken
+                      ? o.a.createElement(Di, {
+                          negative: !0,
+                          content: e.emailTaken,
+                        })
+                      : null
                   ),
-                  o.a.createElement(Pi, {
-                    baseClass: "CreateAccount",
-                    idPrefix: "create-account",
-                    name: "email",
-                    onChange: this.handleEmailChange,
-                  }),
-                  e.emailFormat.length > 0
+                  this.state.registrationComplete
                     ? o.a.createElement(Di, {
-                        negative: !0,
-                        content: e.emailFormat,
-                      })
-                    : null,
-                  o.a.createElement(Pi, {
-                    baseClass: "CreateAccount",
-                    idPrefix: "create-account",
-                    name: "password",
-                    type: "password",
-                    onChange: this.handlePasswordChange,
-                  }),
-                  o.a.createElement(Pi, {
-                    baseClass: "CreateAccount",
-                    idPrefix: "create-account",
-                    name: "confirm password",
-                    type: "password",
-                    onChange: this.handlePasswordConfirmChange,
-                  }),
-                  e.passwordMatch.length > 0
-                    ? o.a.createElement(Di, {
-                        negative: !0,
-                        content: e.passwordMatch,
-                      })
-                    : null,
-                  o.a.createElement(
-                    Oa,
-                    {
-                      positive: !0,
-                      className: "CreateAccount-submit",
-                      type: "submit",
-                      onClick: this.handleCreateAccount,
-                      disabled: t,
-                    },
-                    "Create Account"
-                  ),
-                  e.emailTaken.length > 0
-                    ? o.a.createElement(Di, {
-                        negative: !0,
-                        content: e.emailTaken,
+                        success: !0,
+                        header: "Your user registration was successful",
+                        content: o.a.createElement(
+                          "a",
+                          { href: "/" },
+                          "You may now login!"
+                        ),
                       })
                     : null
                 );
@@ -47245,7 +47268,7 @@ object-assign
                     body: JSON.stringify(n),
                     redirect: "follow",
                   };
-                fetch("http://localhost:8080/goals/" + this.props.id, r)
+                fetch("".concat(es, "/goals/").concat(this.props.id), r)
                   .then(function (e) {
                     return e.text();
                   })
@@ -47970,7 +47993,8 @@ object-assign
                     return e.json();
                   })
                   .then(function (n) {
-                    e.setState({ data: n }),
+                    console.log(n),
+                      e.setState({ data: n }),
                       e.props.selectTeam(n.team.team_id),
                       t &&
                         (e.props.selectUser(n.member_id),
@@ -48565,36 +48589,47 @@ object-assign
           a = Fs(i);
         function i(e) {
           var t;
-          !(function (e, t) {
-            if (!(e instanceof t))
-              throw new TypeError("Cannot call a class as a function");
-          })(this, i),
-            ((t = a.call(this, e)).state = { currentTeamDisplayed: "" }),
+          return (
+            (function (e, t) {
+              if (!(e instanceof t))
+                throw new TypeError("Cannot call a class as a function");
+            })(this, i),
+            ((t = a.call(this, e)).state = {
+              currentTeamDisplayed: "",
+              joinTeamRequest: "",
+            }),
             (t.handleTeamChange = t.handleTeamChange.bind(Gs(t))),
             (t.handleTeamRequest = t.handleTeamRequest.bind(Gs(t))),
             (t.handleTeamCreate = t.handleTeamCreate.bind(Gs(t))),
-            (t.teamOptions = []);
-          var n,
-            r = Hs(t.props.teams);
-          try {
-            for (r.s(); !(n = r.n()).done; ) {
-              var o = n.value;
-              t.teamOptions.push({
-                key: o.team_id,
-                value: o.team_id,
-                text: o.team_name,
-              });
-            }
-          } catch (e) {
-            r.e(e);
-          } finally {
-            r.f();
-          }
-          return t;
+            (t.handleChange = t.handleChange.bind(Gs(t))),
+            t
+          );
         }
         return (
           (t = i),
           (n = [
+            {
+              key: "componentDidMount",
+              value: function () {
+                this.teamOptions = [];
+                var e,
+                  t = Hs(this.props.currentTeams);
+                try {
+                  for (t.s(); !(e = t.n()).done; ) {
+                    var n = e.value;
+                    this.teamOptions.push({
+                      key: n.team_id,
+                      value: n.team_id,
+                      text: n.team_name,
+                    });
+                  }
+                } catch (e) {
+                  t.e(e);
+                } finally {
+                  t.f();
+                }
+              },
+            },
             {
               key: "handleTeamChange",
               value: function (e, t) {
@@ -48614,13 +48649,24 @@ object-assign
             {
               key: "handleTeamRequest",
               value: function () {
-                alert("you requested to join a team");
+                console.log(this.props.joinTeamRequest),
+                  alert("you requested to join a team");
+              },
+            },
+            {
+              key: "handleChange",
+              value: function (e, t) {
+                var n = t.value;
+                console.log(t.value),
+                  this.setState(function (e) {
+                    return qs(qs({}, e), {}, { joinTeamRequest: n.toString() });
+                  }),
+                  console.log("in this function");
               },
             },
             {
               key: "buildTeamOptions",
               value: function (e) {
-                console.log(this.props.currentTeams);
                 var t,
                   n = [],
                   r = Hs(e);
@@ -48642,6 +48688,33 @@ object-assign
               },
             },
             {
+              key: "buildNonTeamOptions",
+              value: function (e, t) {
+                var n,
+                  r = [],
+                  a = Hs(e);
+                try {
+                  var o = function () {
+                    var e = n.value;
+                    t.some(function (t) {
+                      return t.team_id === e.team_id;
+                    }) ||
+                      r.push({
+                        text: e.team_name,
+                        value: e.team_id,
+                        key: e.team_id,
+                      });
+                  };
+                  for (a.s(); !(n = a.n()).done; ) o();
+                } catch (e) {
+                  a.e(e);
+                } finally {
+                  a.f();
+                }
+                return r;
+              },
+            },
+            {
               key: "render",
               value: function () {
                 return o.a.createElement(
@@ -48658,59 +48731,71 @@ object-assign
                     o.a.createElement("h5", null, "Switch To Dashboard"),
                     this.props.currentTeams
                       ? o.a.createElement(
-                          Jo,
-                          { className: "Settings-teamForm" },
+                          "div",
+                          null,
                           o.a.createElement(
-                            "div",
-                            { className: "ui grid Settings-teamSelect" },
+                            Jo,
+                            { className: "Settings-teamForm" },
                             o.a.createElement(
                               "div",
-                              { className: "eight wide column" },
-                              o.a.createElement(Ro, {
-                                options: this.buildTeamOptions(
-                                  this.props.currentTeams
+                              { className: "ui grid Settings-teamSelect" },
+                              o.a.createElement(
+                                "div",
+                                { className: "eight wide column" },
+                                o.a.createElement(Ro, {
+                                  options: this.buildTeamOptions(
+                                    this.props.currentTeams
+                                  ),
+                                  value: this.props.currentTeam,
+                                  onChange: this.handleTeamChange,
+                                })
+                              )
+                            )
+                          ),
+                          o.a.createElement(
+                            Jo,
+                            { className: "Settings-teamForm" },
+                            o.a.createElement(
+                              "h5",
+                              null,
+                              "Request To Join Team"
+                            ),
+                            o.a.createElement(
+                              "div",
+                              { className: "Settings-teamSelect" },
+                              o.a.createElement(
+                                "div",
+                                { className: "ui grid" },
+                                o.a.createElement(
+                                  "div",
+                                  { className: "eight wide column" },
+                                  o.a.createElement(Ro, {
+                                    placeholder: "Select Team",
+                                    options: this.buildNonTeamOptions(
+                                      this.props.teams,
+                                      this.props.currentTeams
+                                    ),
+                                    onChange: this.handleChange,
+                                  })
                                 ),
-                                value: this.props.currentTeam,
-                                onChange: this.handleTeamChange,
-                              })
+                                o.a.createElement(
+                                  "div",
+                                  { className: "eight wide column" },
+                                  o.a.createElement(
+                                    Oa,
+                                    {
+                                      primary: !0,
+                                      onClick: this.handleTeamRequest,
+                                      class: "Settings-button",
+                                    },
+                                    "Request To Join Team"
+                                  )
+                                )
+                              )
                             )
                           )
                         )
                       : null,
-                    o.a.createElement(
-                      Jo,
-                      { className: "Settings-teamForm" },
-                      o.a.createElement("h5", null, "Request To Join Team"),
-                      o.a.createElement(
-                        "div",
-                        { className: "Settings-teamSelect" },
-                        o.a.createElement(
-                          "div",
-                          { className: "ui grid" },
-                          o.a.createElement(
-                            "div",
-                            { className: "eight wide column" },
-                            o.a.createElement(Ro, {
-                              placeholder: "Teams",
-                              options: this.teamOptions,
-                            })
-                          ),
-                          o.a.createElement(
-                            "div",
-                            { className: "eight wide column" },
-                            o.a.createElement(
-                              Oa,
-                              {
-                                primary: !0,
-                                onClick: this.handleTeamRequest,
-                                class: "Settings-button",
-                              },
-                              "Request To Join Team"
-                            )
-                          )
-                        )
-                      )
-                    ),
                     o.a.createElement(
                       Jo,
                       { className: "Settings-teamForm" },
@@ -48899,7 +48984,7 @@ object-assign
                       return e.json();
                     })
                     .then(function (t) {
-                      console.log(t), e.setState({ userInfo: t });
+                      e.setState({ userInfo: t });
                     });
               },
             },
@@ -48912,7 +48997,7 @@ object-assign
             {
               key: "render",
               value: function () {
-                return this.state.data
+                return this.state.userInfo
                   ? o.a.createElement(
                       "div",
                       { className: "Settings" },

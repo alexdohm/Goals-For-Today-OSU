@@ -36,7 +36,6 @@ class SettingsPage extends Component {
     fetch("/users/" + this.props.currentUserId)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         this.setState({
           userInfo: data,
         });
@@ -49,7 +48,7 @@ class SettingsPage extends Component {
   }
 
   render() {
-    if (this.state.data) {
+    if (this.state.userInfo) {
       return (
         <div className="Settings">
           <Heading hLevel={2} baseClass="Settings">
