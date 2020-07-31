@@ -34,7 +34,6 @@ class CreateAccountForm extends Component {
       this
     );
     this.handleCreateAccount = this.handleCreateAccount.bind(this);
-    this.resetForm = this.resetForm.bind(this);
   }
 
   handleFirstNameChange(event) {
@@ -121,12 +120,10 @@ class CreateAccountForm extends Component {
     console.log("creating account");
     this.props.signup(this.state).then(
       (response) => {
-        //console.log(response);
-        //this.props.history.push("/");
         this.setState(
-          () => ({
+          {
             registrationComplete: true,
-          }),
+          },
           this.resetForm
         );
       },
@@ -198,7 +195,7 @@ class CreateAccountForm extends Component {
             type="password"
             onChange={this.handlePasswordConfirmChange}
           />
-          {errors.passwordMatch.length > 0 ? (
+          {errors.passwordMatch ? (
             <Message negative content={errors.passwordMatch} />
           ) : null}
           <Button
@@ -210,7 +207,7 @@ class CreateAccountForm extends Component {
           >
             Create Account
           </Button>
-          {errors.emailTaken.length > 0 ? (
+          {errors.emailTaken ? (
             <Message negative content={errors.emailTaken} />
           ) : null}
         </Form>
