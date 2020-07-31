@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Button, Form, Message } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-
 import { signup } from "../redux/actions";
 import { FormFieldHelper } from "./common/helpers.js";
 
@@ -25,6 +24,7 @@ class CreateAccountForm extends Component {
         passwordMatch: "",
         emailTaken: "",
       },
+      registrationComplete: false,
     };
     this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
     this.handleLastNameChange = this.handleLastNameChange.bind(this);
@@ -34,6 +34,7 @@ class CreateAccountForm extends Component {
       this
     );
     this.handleCreateAccount = this.handleCreateAccount.bind(this);
+    this.resetForm = this.resetForm.bind(this);
   }
 
   handleFirstNameChange(event) {
@@ -111,12 +112,23 @@ class CreateAccountForm extends Component {
     }));
   }
 
+  resetForm() {
+    console.log("account create update state");
+    document.getElementById("CreateAccountForm").reset();
+  }
+
   handleCreateAccount() {
     console.log("creating account");
     this.props.signup(this.state).then(
       (response) => {
-        console.log(response);
-        this.props.history.push("/");
+        //console.log(response);
+        //this.props.history.push("/");
+        this.setState(
+          () => ({
+            registrationComplete: true,
+          }),
+          this.resetForm
+        );
       },
       (err) => {
         console.error(err);
@@ -145,61 +157,71 @@ class CreateAccountForm extends Component {
       this.state.email
         ? false
         : true;
+
     return (
-      <Form className="CreateAccount-form">
-        <div className="CreateAccount-nameFields">
+      <div className="CreateAccount-form">
+        <Form id="CreateAccountForm">
+          <div className="CreateAccount-nameFields">
+            <FormFieldHelper
+              baseClass="CreateAccount"
+              idPrefix="create-account"
+              name="first name"
+              onChange={this.handleFirstNameChange}
+            />
+            <FormFieldHelper
+              baseClass="CreateAccount"
+              idPrefix="create-account"
+              name="last name"
+              onChange={this.handleLastNameChange}
+            />
+          </div>
           <FormFieldHelper
             baseClass="CreateAccount"
             idPrefix="create-account"
-            name="first name"
-            onChange={this.handleFirstNameChange}
+            name="email"
+            onChange={this.handleEmailChange}
+          />
+          {errors.emailFormat.length > 0 ? (
+            <Message negative content={errors.emailFormat} />
+          ) : null}
+          <FormFieldHelper
+            baseClass="CreateAccount"
+            idPrefix="create-account"
+            name="password"
+            type="password"
+            onChange={this.handlePasswordChange}
           />
           <FormFieldHelper
             baseClass="CreateAccount"
             idPrefix="create-account"
-            name="last name"
-            onChange={this.handleLastNameChange}
+            name="confirm password"
+            type="password"
+            onChange={this.handlePasswordConfirmChange}
           />
-        </div>
-        <FormFieldHelper
-          baseClass="CreateAccount"
-          idPrefix="create-account"
-          name="email"
-          onChange={this.handleEmailChange}
-        />
-        {errors.emailFormat.length > 0 ? (
-          <Message negative content={errors.emailFormat} />
+          {errors.passwordMatch.length > 0 ? (
+            <Message negative content={errors.passwordMatch} />
+          ) : null}
+          <Button
+            positive
+            className="CreateAccount-submit"
+            type="submit"
+            onClick={this.handleCreateAccount}
+            disabled={enableSubmit}
+          >
+            Create Account
+          </Button>
+          {errors.emailTaken.length > 0 ? (
+            <Message negative content={errors.emailTaken} />
+          ) : null}
+        </Form>
+        {this.state.registrationComplete ? (
+          <Message
+            success
+            header={"Your user registration was successful"}
+            content={<a href="/">You may now login!</a>}
+          />
         ) : null}
-        <FormFieldHelper
-          baseClass="CreateAccount"
-          idPrefix="create-account"
-          name="password"
-          type="password"
-          onChange={this.handlePasswordChange}
-        />
-        <FormFieldHelper
-          baseClass="CreateAccount"
-          idPrefix="create-account"
-          name="confirm password"
-          type="password"
-          onChange={this.handlePasswordConfirmChange}
-        />
-        {errors.passwordMatch.length > 0 ? (
-          <Message negative content={errors.passwordMatch} />
-        ) : null}
-        <Button
-          positive
-          className="CreateAccount-submit"
-          type="submit"
-          onClick={this.handleCreateAccount}
-          disabled={enableSubmit}
-        >
-          Create Account
-        </Button>
-        {errors.emailTaken.length > 0 ? (
-          <Message negative content={errors.emailTaken} />
-        ) : null}
-      </Form>
+      </div>
     );
   }
 }
