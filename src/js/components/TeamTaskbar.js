@@ -92,24 +92,28 @@ class TeamTaskbar extends Component {
             </TaskbarItem>
 
             {/* then render rest of teammates */}
-            {team.team_members.map((user, index) => (
-              <TaskbarItem
-                key={user.member_id}
-                onClick={() => this.props.onUserSelected(user.member_id)}
-                icon={USER_ICON}
-                isSelected={user.member_id == this.props.selectedUserId}
-              >
-                {user.first_name} {user.last_name}
-              </TaskbarItem>
-            ))}
+            {team.team_members
+              ? team.team_members.map((user, index) => (
+                  <TaskbarItem
+                    key={user.member_id}
+                    onClick={() => this.props.onUserSelected(user.member_id)}
+                    icon={USER_ICON}
+                    isSelected={user.member_id == this.props.selectedUserId}
+                  >
+                    {user.first_name} {user.last_name}
+                  </TaskbarItem>
+                ))
+              : null}
           </div>
           <div className="TeamTaskbar-bottom">
-            <TaskbarItem
-              icon={GROUP_ICON}
-              onClick={this.navigateToTeamOverview}
-            >
-              {team.team_name}
-            </TaskbarItem>
+            {team.team_name ? (
+              <TaskbarItem
+                icon={GROUP_ICON}
+                onClick={this.navigateToTeamOverview}
+              >
+                {team.team_name}
+              </TaskbarItem>
+            ) : null}
             {team.team_admin ? (
               <TaskbarItem icon={ADMIN_ICON} onClick={this.navigateToAdmin}>
                 Admin
