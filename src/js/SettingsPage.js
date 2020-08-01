@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Dimmer, Form, Loader, Message } from "semantic-ui-react";
 import { connect } from "react-redux";
 import axios from "axios";
-
+import moment from "moment";
 import Heading from "./components/common/Heading";
 import UserSettings from "./components/UserSettings";
 import TeamSettings from "./components/TeamSettings";
@@ -29,6 +29,7 @@ class SettingsPage extends Component {
     this.deleteAccount = this.deleteAccount.bind(this);
     this.addPending = this.addPending.bind(this);
     this.removePending = this.removePending.bind(this);
+    this.addTeam = this.addTeam.bind(this);
   }
 
   async componentDidMount() {
@@ -127,9 +128,56 @@ class SettingsPage extends Component {
       });
   }
 
+  async addTeam(teamName) {
+    const curDate = moment(new Date()).format("YYYY-MM-DD");
+    //console.log(moment(new Date()).format("YYYY-MM-DD"));
+
+    console.log(`Adding ${teamName} on ${curDate}`);
+    try {
+      const addNewTeamOutcome = await axios.post("/teams", {
+        name: teamName,
+        date: curDate,
+        member_id: this.props.currentUserId,
+      });
+
+      const allTeams = await axios.get(
+        `/users/${this.props.currentUserId}/teams`
+      );
+      //debugger;
+
+      console.log("allTeams:");
+      console.log(allTeams);
+
+      this.setState((prevState) => ({
+        ...prevState,
+        teams: allTeams.data.items,
+      }));
+
+      //this.setState({ teams: allTeams.data.items });
+    } catch (err) {
+      console.log(err);
+    }
+
+    /* axios
+      .post("/teams", {
+        name: teamName,
+        date: curDate,
+        member_id: this.props.currentUserId,
+      })
+      .then(function (response) {
+        console.log(response);
+
+
+        this.setState({ teams: json2.items });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });*/
+  }
+
   render() {
     if (this.state.userInfo) {
-      console.log('settings state', this.state);
+      console.log("settings state", this.state);
       return (
         <div className="Settings">
           <Heading hLevel={2} baseClass="Settings">
@@ -142,6 +190,7 @@ class SettingsPage extends Component {
             currentTeams={this.state.teams ? this.state.teams : []}
             pending={this.state.pending}
             onAddPending={this.addPending}
+            onAddTeam={this.addTeam}
           />
           <div className="ui hidden divider"></div>
           <PendingInvites

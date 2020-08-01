@@ -92,13 +92,14 @@ class AdminPage extends Component {
                 inviteError: "",
                 showInviteModal: false,
               });
+              this.fetchData();
             })
             .catch((err) => {
-              console.warn(err);
               this.setState({
                 inviteError: "",
                 showInviteModal: false,
               });
+              this.fetchData();
             });
         }
       });

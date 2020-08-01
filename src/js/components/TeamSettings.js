@@ -11,11 +11,13 @@ class TeamSettings extends Component {
     this.state = {
       currentTeamDisplayed: "",
       joinTeamRequest: [],
+      newTeamName: "",
     };
 
     this.handleTeamChange = this.handleTeamChange.bind(this);
     this.handleTeamRequest = this.handleTeamRequest.bind(this);
     this.handleTeamCreate = this.handleTeamCreate.bind(this);
+    this.handleTeamCreateChange = this.handleTeamCreateChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -39,9 +41,35 @@ class TeamSettings extends Component {
     this.props.dispatch(selectTeam(value));
   }
 
+  handleTeamCreateChange(event) {
+    //debugger;
+    const { value } = event.target;
+    console.log(event.target.value);
+
+    this.setState((prevState) => ({
+      ...prevState,
+      newTeamName: value,
+    }));
+  }
+
   handleTeamCreate() {
-    //TODO: implement
-    alert("you created a team");
+    //alert("you created a team");
+    this.props
+      .onAddTeam(this.state.newTeamName)
+      .then((result) => {
+        console.log(`RESULT: ${result}`);
+        this.setState(
+          (prevState) => ({
+            ...prevState,
+            newTeamName: "",
+          }),
+          handleTeamCreateChange({ target: { value: "" } })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    //console.log(this.state);
   }
 
   handleTeamRequest() {
@@ -95,21 +123,19 @@ class TeamSettings extends Component {
         <div className="Settings-teamWrapper">
           {this.props.currentTeams.length ? <h5>Switch To Dashboard</h5> : null}
           <div>
-            {this.props.currentTeams.length 
-              ?
-                <Form className="Settings-teamForm">
-                  <div className="ui grid Settings-teamSelect">
-                    <div className="eight wide column">
-                      <Select
-                        options={this.buildTeamOptions(this.props.currentTeams)}
-                        value={this.props.currentTeam}
-                        onChange={this.handleTeamChange}
-                      />
-                    </div>
+            {this.props.currentTeams.length ? (
+              <Form className="Settings-teamForm">
+                <div className="ui grid Settings-teamSelect">
+                  <div className="eight wide column">
+                    <Select
+                      options={this.buildTeamOptions(this.props.currentTeams)}
+                      value={this.props.currentTeam}
+                      onChange={this.handleTeamChange}
+                    />
                   </div>
-                </Form>
-              :
-                null}
+                </div>
+              </Form>
+            ) : null}
             <Form className="Settings-teamForm">
               <h5>Request To Join Team</h5>
               <div className="Settings-teamSelect">
@@ -128,7 +154,7 @@ class TeamSettings extends Component {
                     <Button
                       primary
                       onClick={this.handleTeamRequest}
-                      class="Settings-button"
+                      className="Settings-button"
                     >
                       Request To Join Team
                     </Button>
@@ -148,6 +174,7 @@ class TeamSettings extends Component {
                     idPrefix="settings"
                     name="teamRequest"
                     placeholder="New Team Name"
+                    value={this.state.newTeamName}
                     onChange={this.handleTeamCreateChange}
                   />
                 </div>

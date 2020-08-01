@@ -1,0 +1,10 @@
+.TeamOverview
+{
+  display: flex;
+  
+  @media (max-width: $small-screen)
+  {
+    padding-top: 48px;
+    display: block;
+  }
+}
