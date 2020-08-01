@@ -36,3 +36,58 @@
     margin-top: 24px;
   }
 }
+
+.Invite
+{
+  &-overlay
+  {
+    background: $black-shadow;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+  }
+
+  &-formWrapper
+  {
+    @include responsive-container;
+
+    display: flex;
+    justify-content: center;
+  }
+
+  &-form
+  {
+    background-color: $white;
+    padding: 24px;
+  }
+
+  &-heading
+  {
+    margin-bottom: 24px;
+  }
+
+  &-inviteButtons
+  {
+    margin-top: 48px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-addButtonContainer
+  {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    padding: 16px;
+  }
+
+  &-submit
+  {
+    width: auto;
+  }
+}

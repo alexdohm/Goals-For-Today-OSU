@@ -6,6 +6,7 @@ import Heading from "./components/common/Heading";
 import AdminTeamSection from "./components/AdminTeamSection";
 import AdminEmailSection from "./components/AdminEmailSection";
 import AdminDeleteButton from "./components/AdminDeleteButton";
+import InviteForm from "./components/InviteForm";
 
 class AdminPage extends Component {
   constructor(props) {
@@ -13,8 +14,14 @@ class AdminPage extends Component {
     this.state = {
       data: null,
       teamInfo: null,
+      showInviteModal: false,
+      inviteEmail: "",
     };
     this.deleteTeam = this.deleteTeam.bind(this);
+    this.openInviteModal = this.openInviteModal.bind(this);
+    this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.inviteTeamMember = this.inviteTeamMember.bind(this);
   }
 
   componentDidMount() {
@@ -45,6 +52,31 @@ class AdminPage extends Component {
     alert("you deleted a team");
   }
 
+  inviteTeamMember() {
+    //TODO: implement
+    alert("you invited a team member");
+  }
+
+  handleEmailChange(event) {
+    const { value } = event.target;
+    this.setState((prevState) => ({
+      ...prevState,
+      inviteEmail: value,
+    }));
+  }
+
+  openInviteModal() {
+    this.setState({
+      showInviteModal: true
+    });
+  }
+
+  closeModal() {
+    this.setState({
+      showInviteModal: false
+    });
+  }
+
   render() {
     if (this.state.data) {
       return (
@@ -55,11 +87,19 @@ class AdminPage extends Component {
           <AdminTeamSection
             team={this.state.data.team}
             firstName={this.state.data.first_name}
+            openInviteModal={this.openInviteModal}
           />
           <div className="ui hidden divider"></div>
           <AdminEmailSection teamInfo={this.state.teamInfo} />
           <div className="ui hidden divider"></div>
           <AdminDeleteButton onClick={this.deleteTeam} />
+          {this.state.showInviteModal
+            ? <InviteForm 
+                handleEmailChange={this.handleEmailChange}
+                closeModal={this.closeModal}
+                handleAction={this.inviteTeamMember}
+              />
+            : null}
         </div>
       );
     } else {

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Heading from "./common/Heading";
 import Text from "./common/Text";
-import { Icon } from "semantic-ui-react";
+import { Icon, Button } from "semantic-ui-react";
 import { USER_ICON, TRASH_ICON } from "./common/constants";
 import IconButton from "./common/IconButton";
 
@@ -35,6 +35,14 @@ class AdminTeamSection extends Component {
               />
             );
           })}
+        </div>
+        <div className="Admin-inviteButtonWrapper">
+          <Button 
+            primary
+            onClick={this.props.openInviteModal}
+            className="Admin-inviteButton">
+            Invite
+          </Button>
         </div>
       </div>
     );
