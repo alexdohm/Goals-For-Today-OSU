@@ -10,7 +10,7 @@ const initialState = {
   selectedToDoName: "General Comments",
   selectedToDoDescription: "",
   selectedUserId: null,
-  currentTeam: null,
+  currentTeam: -1,
   isAuthenticated: false,
   user: {},
 };

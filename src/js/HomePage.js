@@ -5,6 +5,7 @@ import { Dimmer, Loader } from "semantic-ui-react";
 import Comments from "./components/Comments";
 import TeamTaskbar from "./components/TeamTaskbar";
 import ToDoList from "./components/ToDoList";
+import WelcomeModal from "./components/WelcomeModal";
 import { selectTeam, selectToDo, selectUser } from "./redux/actions";
 
 class HomePage extends Component {
@@ -53,16 +54,19 @@ class HomePage extends Component {
             currentUserLastName={data.last_name}
             team={data.team}
           />
+          {Object.keys(data.team).length ? 
           <ToDoList
             currentUserId={data.member_id}
             team={data.team}
             updateData={this.fetchData}
-          />
+          /> : 
+          <WelcomeModal />}
+          {Object.keys(data.team).length ? 
           <Comments
             currentUserId={data.member_id}
             team={data.team}
             updateData={this.fetchData}
-          />
+          /> : null}
         </div>
       );
     } else {
