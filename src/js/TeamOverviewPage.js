@@ -4,6 +4,7 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 
 import Heading from "./components/common/Heading";
 import TeamTaskbar from "./components/TeamTaskbar";
+import { dateToQueryString } from "./components/common/helpers";
 
 class TeamOverviewPage extends Component {
 
@@ -11,7 +12,8 @@ class TeamOverviewPage extends Component {
     super(props);
     this.state = {
       data: null,
-      teamInfo: null
+      teamInfo: null,
+      stats: null,
     };
   }
 
@@ -24,7 +26,6 @@ class TeamOverviewPage extends Component {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         this.setState({
           data: data,
         });
@@ -35,11 +36,21 @@ class TeamOverviewPage extends Component {
         this.setState({
           teamInfo: data,
         });
+      })
+      .then( () => {
+        fetch("/teams/" + this.props.currentTeam + "/statistics?beginDate=07-21-2020&endDate=" + dateToQueryString(new Date()))
+        .then(response => response.json())
+        .then(data => {
+          this.setState({
+            stats: data
+          });
+        });
       });
   }
 
   render() {
-    if (this.state.data) {
+    if (this.state.data && this.state.teamInfo && this.state.stats) {
+      console.log(this.state);
       const { data } = this.state;
       return (
         <div className="TeamOverview">
@@ -49,10 +60,12 @@ class TeamOverviewPage extends Component {
               currentUserLastName={data.last_name}
               team={data.team}
             />
-          <Heading hLevel={1} baseClass="TeamOverview">
-            {this.props.teamName ? this.props.teamName : "Test Team Name"}
-          </Heading>
-          <div className="TeamOverview-stats">TODO: place charts here</div>
+          <div classname="TeamOverview-container">
+            <Heading hLevel={1} baseClass="TeamOverview">
+              {this.state.teamInfo.team_name}
+            </Heading>
+            <div className="TeamOverview-stats">TODO: place charts here</div>
+          </div>
         </div>
       );
     } else {
