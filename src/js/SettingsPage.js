@@ -101,6 +101,7 @@ class SettingsPage extends Component {
 
   render() {
     if (this.state.userInfo) {
+      console.log('settings state', this.state);
       return (
         <div className="Settings">
           <Heading hLevel={2} baseClass="Settings">
@@ -110,7 +111,7 @@ class SettingsPage extends Component {
           <div className="ui hidden divider"></div>
           <TeamSettings
             teams={this.state.data.items}
-            currentTeams={this.state.teams}
+            currentTeams={this.state.teams ? this.state.teams : []}
             pending={this.state.pending}
             onAddPending={this.addPending}
           />

@@ -93,19 +93,23 @@ class TeamSettings extends Component {
       <div className="Settings-teamSettings Settings-form">
         <h3 className="Settings-header">Team Settings</h3>
         <div className="Settings-teamWrapper">
-          <h5>Switch To Dashboard</h5>
+          {this.props.currentTeams.length ? <h5>Switch To Dashboard</h5> : null}
           <div>
-            <Form className="Settings-teamForm">
-              <div className="ui grid Settings-teamSelect">
-                <div className="eight wide column">
-                  <Select
-                    options={this.buildTeamOptions(this.props.currentTeams)}
-                    value={this.props.currentTeam}
-                    onChange={this.handleTeamChange}
-                  />
-                </div>
-              </div>
-            </Form>
+            {this.props.currentTeams.length 
+              ?
+                <Form className="Settings-teamForm">
+                  <div className="ui grid Settings-teamSelect">
+                    <div className="eight wide column">
+                      <Select
+                        options={this.buildTeamOptions(this.props.currentTeams)}
+                        value={this.props.currentTeam}
+                        onChange={this.handleTeamChange}
+                      />
+                    </div>
+                  </div>
+                </Form>
+              :
+                null}
             <Form className="Settings-teamForm">
               <h5>Request To Join Team</h5>
               <div className="Settings-teamSelect">
