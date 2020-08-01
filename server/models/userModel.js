@@ -188,6 +188,27 @@ const getUserByEmail = async function (userEmail) {
 };
 
 /**
+ * Return pending requests
+ * @param {string} user_id
+ */
+const getUserPendingRequests = async function (user_id) {
+  const requests = await Helpers.runQuery(
+    `SELECT t.team_id, t.team_name
+FROM team as t
+         INNER JOIN member_of AS mo ON mo.team_id = t.team_id
+WHERE mo.approved = false
+  AND mo.member_id = $1;`,
+    [user_id]
+  );
+
+  if (requests) {
+    return requests;
+  } else {
+    return [];
+  }
+};
+
+/**
  * Returns user object based on member_id
  * @param {number} id
  */
@@ -364,7 +385,6 @@ const loadUserInfoOnLogin = async function (userEmail, teamId) {
   const userDataJson = {};
 
   const userInfo = await getUserByEmail(userEmail);
-
   let userTeams = {};
   if (teamId === "-1") {
     userTeams = await getAllTeamsForUser(userInfo.member_id);
@@ -394,7 +414,6 @@ const loadUserInfoOnLogin = async function (userEmail, teamId) {
     userDataJson.team = {};
     userDataJson.goals = [];
     userDataJson.comments = [];
-
     return userDataJson;
   } else {
     // get team info for the first team in the list
@@ -626,4 +645,5 @@ module.exports = {
   addUserComment,
   getNonTeamsForUser,
   getTeamForUser,
+  getUserPendingRequests,
 };

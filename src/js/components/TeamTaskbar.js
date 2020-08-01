@@ -10,7 +10,7 @@ import {
   SIGN_OUT_ICON,
   USER_ICON,
   MENU_ICON,
-  CLOSE_ICON
+  CLOSE_ICON,
 } from "./common/constants";
 import IconButton from "./common/IconButton";
 import Text from "./common/Text";
@@ -31,8 +31,8 @@ class TeamTaskbar extends Component {
     this.toggleMenu = this.toggleMenu.bind(this);
 
     this.state = {
-      isExpanded: false
-    }
+      isExpanded: false,
+    };
   }
 
   handleLogout(e) {
@@ -55,7 +55,7 @@ class TeamTaskbar extends Component {
   toggleMenu() {
     this.setState((prevState) => ({
       ...prevState,
-      isExpanded: !prevState.isExpanded
+      isExpanded: !prevState.isExpanded,
     }));
   }
 
@@ -68,8 +68,17 @@ class TeamTaskbar extends Component {
     } = this.props;
 
     return (
-      <div className={`TeamTaskbar${this.state.isExpanded ? '' : ' TeamTaskbar--collapsed'}`}>
-        <IconButton baseClass="TeamTaskbar" modifier="toggle" onClick={this.toggleMenu} icon={this.state.isExpanded ? CLOSE_ICON : MENU_ICON} />
+      <div
+        className={`TeamTaskbar${
+          this.state.isExpanded ? "" : " TeamTaskbar--collapsed"
+        }`}
+      >
+        <IconButton
+          baseClass="TeamTaskbar"
+          modifier="toggle"
+          onClick={this.toggleMenu}
+          icon={this.state.isExpanded ? CLOSE_ICON : MENU_ICON}
+        />
         <div className="TeamTaskbar-container">
           <div className="TeamTaskbar-members">
             {/* render current user's card first */}
@@ -95,7 +104,10 @@ class TeamTaskbar extends Component {
             ))}
           </div>
           <div className="TeamTaskbar-bottom">
-            <TaskbarItem icon={GROUP_ICON} onClick={this.navigateToTeamOverview}>
+            <TaskbarItem
+              icon={GROUP_ICON}
+              onClick={this.navigateToTeamOverview}
+            >
               {team.team_name}
             </TaskbarItem>
             {team.team_admin ? (

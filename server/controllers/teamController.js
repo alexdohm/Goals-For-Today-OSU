@@ -303,6 +303,20 @@ router.patch("/:team_id/users/:user_id", async function (req, res) {
 });
 
 /**********************************************************************
+ * Remove pending request from team
+ *********************************************************************/
+router.delete("/:team_id/users/:user_id/pending", async function (req, res) {
+  Team.removePendingTeamMember(req.params.user_id, req.params.team_id)
+    .then(() => {
+      res.status(204).end();
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ Error: err.message });
+    });
+});
+
+/**********************************************************************
  * Remove a user from a team
  *********************************************************************/
 router.delete("/:team_id/users/:user_id", async function (req, res) {

@@ -264,6 +264,27 @@ router.get("/:user_id/teams", function (req, res) {
 });
 
 /**********************************************************************
+ * GET all pending team requests for a user
+ *********************************************************************/
+router.get("/:user_id/pending", function (req, res) {
+  User.getUserPendingRequests(req.params.user_id)
+    .then((pendingInvites) => {
+      if (failedResponseMatch.get(pendingInvites)) {
+        res
+          .status(Number(pendingInvites))
+          .json({ Error: `${failedResponseMatch.get(pendingInvites)}` });
+      } else {
+        pendingInvites.self = Helpers.addSelf(req, req.params.user_id, "users");
+        res.status(200).json(pendingInvites);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ Error: err.message }).end();
+    });
+});
+
+/**********************************************************************
  * DELETE a user
  *********************************************************************/
 router.delete("/:member_id", function (req, res) {

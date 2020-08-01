@@ -1,10 +1,10 @@
-import momentTZ from 'moment-timezone';
+import momentTZ from "moment-timezone";
 
 // Build Time Zone List
 const timeZonesList = momentTZ.tz.names();
 const allTimeZones = [];
 timeZonesList.forEach(function (zone) {
-  const item = {key:zone, value:zone, text:zone};
+  const item = { key: zone, value: zone, text: zone };
   allTimeZones.push(item);
 });
 export const TIME_LIST = allTimeZones;

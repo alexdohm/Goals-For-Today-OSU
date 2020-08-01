@@ -196,6 +196,18 @@ const removeTeamMember = async function (userId, teamId, date) {
 };
 
 /**
+ * Remove team member from group
+ * @param {number} userId
+ * @param {number} teamId
+ * @param {date} date
+ */
+const removePendingTeamMember = async function (userId, teamId) {
+  const removalQuery = `DELETE from member_of where member_id = $1 and team_id = $2;`;
+
+  return Helpers.updateData(removalQuery, [userId, teamId]);
+};
+
+/**
  * Return all users on team and their status (member, admin, requested)
  * @param {number} teamId unique id of team
  */
@@ -410,6 +422,7 @@ module.exports = {
   deleteTeam,
   addUserToTeam,
   removeTeamMember,
+  removePendingTeamMember,
   getAllUsersOnTeam,
   isUserTeamAdmin,
   addTeamComment,

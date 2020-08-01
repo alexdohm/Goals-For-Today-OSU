@@ -17,11 +17,11 @@ const InviteForm = (props) => {
             idPrefix="invite"
             name="Email"
             onChange={props.handleEmailChange}
-            placeholder='Enter Email'
+            placeholder="Enter Email"
           />
-          {props.errorText
-            ? <Message negative content={props.errorText}/>
-            : null}
+          {props.errorText ? (
+            <Message negative content={props.errorText} />
+          ) : null}
           <div className="Invite-inviteButtons">
             <Button
               negative

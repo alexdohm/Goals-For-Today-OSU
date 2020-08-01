@@ -56,16 +56,16 @@ class AdminPage extends Component {
   }
 
   inviteTeamMember() {
-    fetch('/users/' + this.state.inviteEmail + '?type=email')
-      .then( (response) => response.json())
-      .then( (data) => {
+    fetch("/users/" + this.state.inviteEmail + "?type=email")
+      .then((response) => response.json())
+      .then((data) => {
         if (data.Error) {
           this.setState({
-            inviteError: 'No user exists with that email'
+            inviteError: "No user exists with that email",
           });
         } else {
           const body = {
-            date_added: new Date()
+            date_added: new Date(),
           };
           const raw = JSON.stringify(body);
           const myHeaders = new Headers();
@@ -76,29 +76,32 @@ class AdminPage extends Component {
             body: raw,
             redirect: "follow",
           };
-          fetch('/teams/' + this.props.currentTeam + '/users/' + data.member_id, requestOptions)
-            .then( (response) => response.json())
-            .then( (data) => {
+          fetch(
+            "/teams/" + this.props.currentTeam + "/users/" + data.member_id,
+            requestOptions
+          )
+            .then((response) => response.json())
+            .then((data) => {
               console.log(data);
               this.setState({
-                inviteError: '',
-                showInviteModal: false
+                inviteError: "",
+                showInviteModal: false,
               });
             })
-            .catch( (err) => {
+            .catch((err) => {
               console.warn(err);
               this.setState({
-                inviteError: '',
-                showInviteModal: false
+                inviteError: "",
+                showInviteModal: false,
               });
-            })
+            });
         }
       });
   }
 
   changeStatus() {
     //TODO: implement
-    alert('you changed a user\'s status');
+    alert("you changed a user's status");
   }
 
   handleEmailChange(event) {
@@ -111,13 +114,13 @@ class AdminPage extends Component {
 
   openInviteModal() {
     this.setState({
-      showInviteModal: true
+      showInviteModal: true,
     });
   }
 
   closeModal() {
     this.setState({
-      showInviteModal: false
+      showInviteModal: false,
     });
   }
 
@@ -138,7 +141,7 @@ class AdminPage extends Component {
             <AdminTeamSection
               team={this.state.data.team}
               firstName={this.state.data.first_name}
-              status={this.state.data.team.team_admin ? 'ADMIN' : 'MEMBER'}
+              status={this.state.data.team.team_admin ? "ADMIN" : "MEMBER"}
               openInviteModal={this.openInviteModal}
               inviteTeamMember={this.inviteTeamMember}
               changeStatus={this.changeStatus}
@@ -147,14 +150,14 @@ class AdminPage extends Component {
             <AdminEmailSection teamInfo={this.state.teamInfo} />
             <div className="ui hidden divider"></div>
             <AdminDeleteButton onClick={this.deleteTeam} />
-            {this.state.showInviteModal
-              ? <InviteForm 
-                  handleEmailChange={this.handleEmailChange}
-                  closeModal={this.closeModal}
-                  handleAction={this.inviteTeamMember}
-                  errorText={this.state.inviteError}
-                />
-              : null}
+            {this.state.showInviteModal ? (
+              <InviteForm
+                handleEmailChange={this.handleEmailChange}
+                closeModal={this.closeModal}
+                handleAction={this.inviteTeamMember}
+                errorText={this.state.inviteError}
+              />
+            ) : null}
           </div>
         </div>
       );

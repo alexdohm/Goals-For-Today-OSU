@@ -36,7 +36,6 @@ async function runQuery(queryText, queryValues) {
   const query = { text: queryText, values: queryValues };
   // connect and run
   const queryResult = await pool.query(query);
-
   // get response
   if (queryResult.rowCount) {
     return queryResult.rows;

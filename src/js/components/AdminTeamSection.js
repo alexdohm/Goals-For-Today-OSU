@@ -7,15 +7,15 @@ import IconButton from "./common/IconButton";
 
 const statusOptions = [
   {
-    key: 'MEMBER',
-    value: 'MEMBER',
-    text: 'Member'
+    key: "MEMBER",
+    value: "MEMBER",
+    text: "Member",
   },
   {
-    key: 'ADMIN',
-    value: 'ADMIN',
-    text: 'Admin'
-  }
+    key: "ADMIN",
+    value: "ADMIN",
+    text: "Admin",
+  },
 ];
 
 class AdminTeamSection extends Component {
@@ -37,7 +37,12 @@ class AdminTeamSection extends Component {
           {team.team_name}
         </Heading>
         <div className="Admin-teamMembers">
-          <AdminTeamMember name={firstName} onClick={this.deleteMember} status={status} changeStatus={this.props.changeStatus} />
+          <AdminTeamMember
+            name={firstName}
+            onClick={this.deleteMember}
+            status={status}
+            changeStatus={this.props.changeStatus}
+          />
           {team.team_members.map((member) => {
             return (
               <AdminTeamMember
@@ -52,10 +57,11 @@ class AdminTeamSection extends Component {
           })}
         </div>
         <div className="Admin-inviteButtonWrapper">
-          <Button 
+          <Button
             primary
             onClick={this.props.openInviteModal}
-            className="Admin-inviteButton">
+            className="Admin-inviteButton"
+          >
             Invite
           </Button>
         </div>
@@ -69,7 +75,12 @@ const AdminTeamMember = (props) => {
     <div className="Admin-teamMember">
       <Icon className="Admin-teamMemberIcon" name={USER_ICON} size="large" />
       <Text baseClass="Admin">{props.name}</Text>
-      <Select className="Admin-statusSelect" options={statusOptions} defaultValue={props.status} onChange={props.changeStatus} />
+      <Select
+        className="Admin-statusSelect"
+        options={statusOptions}
+        defaultValue={props.status}
+        onChange={props.changeStatus}
+      />
       {props.isNotCurrentUser ? (
         <IconButton
           baseClass="Admin"
