@@ -166,10 +166,6 @@ const updateUserTimeZone = async function (userId, timeZone) {
   }
 };
 
-const updateUserAvatar = async function (userInfoObject) {
-  //TODO implement
-};
-
 /**
  * Returns user object based provided on email address
  * @param {string} userEmail
@@ -637,7 +633,6 @@ module.exports = {
   getUser,
   updateUserUsername,
   updateUserTimeZone,
-  updateUserAvatar,
   updateUserMorningTime,
   getUserById,
   updateUser,

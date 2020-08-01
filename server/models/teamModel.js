@@ -132,6 +132,28 @@ const deleteTeam = async function (teamId) {
 const addUserToTeam = async function (teamId, userId, body) {
   const approved_ind = body.approved_ind ? true : false;
 
+  // check if user is already on team and was previously removed
+  const checkTeamQuery =
+    "SELECT * FROM member_of WHERE team_id = $1 AND member_id = $2";
+
+  const alreadyOnTeamResult = await Helpers.runQuery(checkTeamQuery, [
+    teamId,
+    userId,
+  ]);
+
+  if (alreadyOnTeamResult && alreadyOnTeamResult[0].date_left) {
+    // set date left to null
+    const updateTeamUserQuery =
+      "UPDATE member_of set date_left = NULL where team_id = $1 AND member_id = $2";
+
+    const updateResult = await Helpers.updateData(updateTeamUserQuery, [
+      teamId,
+      userId,
+    ]);
+
+    return updateResult;
+  }
+
   const addTeamMemberQuery = `INSERT INTO member_of (member_id, team_id, approved, date_added)
     VALUES ($1, $2, $3, $4);`;
 
