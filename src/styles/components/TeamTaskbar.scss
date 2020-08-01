@@ -29,6 +29,11 @@
     }
   }
 
+  &--collapsed
+  {
+    background-color: transparent;
+  }
+
   &--collapsed &-container
   {
     @media (max-width: $small-screen)
