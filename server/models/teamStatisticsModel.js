@@ -66,7 +66,6 @@ const goalsCompletedPerTeamMemberPeriod = async function (
     beginDate,
     endDate,
   ]);
-  console.log(finishedGoals);
 
   return finishedGoals;
 };
@@ -92,7 +91,6 @@ GROUP BY member_id, DATE(date_time);`;
     beginDate,
     endDate,
   ]);
-  console.log(finishedGoals);
 
   return finishedGoals;
 };

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Dimmer, Loader } from 'semantic-ui-react';
+import DatePicker from 'react-datepicker';
 
 import Heading from "./components/common/Heading";
 import TeamTaskbar from "./components/TeamTaskbar";
@@ -10,11 +11,32 @@ class TeamOverviewPage extends Component {
 
   constructor(props) {
     super(props);
+    let today = new Date();
+    let lastWeek = new Date();
+    lastWeek.setDate(lastWeek.getDate() - 7);
     this.state = {
       data: null,
       teamInfo: null,
       stats: null,
+      beginDate: lastWeek,
+      endDate: today
     };
+
+    this.handleBeginDateChange = this.handleBeginDateChange.bind(this);
+    this.handleEndDateChange = this.handleEndDateChange.bind(this);
+    this.updateStatistics = this.updateStatistics.bind(this);
+  }
+
+  handleBeginDateChange(date) {
+    this.setState( prevState => ({
+      beginDate: date.getTime() < prevState.endDate.getTime() ? date : prevState.beginDate
+    }), this.updateStatistics);
+  }
+
+  handleEndDateChange(date) {
+    this.setState( prevState => ({
+      endDate: date.getTime() > prevState.beginDate.getTime() ? date : prevState.endDate
+    }), this.updateStatistics);
   }
 
   componentDidMount() {
@@ -38,12 +60,16 @@ class TeamOverviewPage extends Component {
         });
       })
       .then( () => {
-        fetch("/teams/" + this.props.currentTeam + "/statistics?beginDate=07-21-2020&endDate=" + dateToQueryString(new Date()))
-        .then(response => response.json())
-        .then(data => {
-          this.setState({
-            stats: data
-          });
+        this.updateStatistics()
+      });
+  }
+
+  updateStatistics() {
+    fetch("/teams/" + this.props.currentTeam + "/statistics?beginDate=07-21-2020&endDate=" + dateToQueryString(new Date()))
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          stats: data
         });
       });
   }
@@ -61,6 +87,30 @@ class TeamOverviewPage extends Component {
               team={data.team}
             />
           <div classname="TeamOverview-container">
+            <div class="TeamOverview-datepickers">
+              <div class="TeamOverview-beginDate">
+                <Heading baseClass="TeamOverview" hLevel={3}>
+                  Begin Date
+                </Heading>
+                <DatePicker
+                  className="ToDoList-datePicker"
+                  selected={this.state.beginDate}
+                  onChange={this.handleBeginDateChange}
+                  placeholderText="Select Date"
+                />
+              </div>
+              <div class="TeamOverview-endDate">
+                <Heading baseClass="TeamOverview" hLevel={3}>
+                  End Date
+                </Heading>
+                <DatePicker
+                  className="ToDoList-datePicker"
+                  selected={this.state.endDate}
+                  onChange={this.handleEndDateChange}
+                  placeholderText="Select Date"
+                />
+              </div>
+            </div>
             <Heading hLevel={1} baseClass="TeamOverview">
               {this.state.teamInfo.team_name}
             </Heading>
