@@ -137,7 +137,7 @@ router.post("/", async function (req, res) {
  * PATCH modify a goal
  *********************************************************************/
 router.patch("/:goal_id", async function (req, res) {
-  if (req.body.name || req.body.description || req.body.status) {
+  if (req.body.name || req.body.description || req.body.status != undefined) {
     Goal.updateGoal(req.params.goal_id, req.body)
       .then((g) => {
         if (failedResponseMatch.get(g)) {

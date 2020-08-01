@@ -29,6 +29,7 @@ class ToDoItem extends Component {
     this.handleTaskNameChange = this.handleTaskNameChange.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleUpdateTask = this.handleUpdateTask.bind(this);
+    this.updateGoalStatus = this.updateGoalStatus.bind(this);
   }
 
   handleUpdateTask() {
@@ -101,6 +102,12 @@ class ToDoItem extends Component {
     });
   }
 
+  updateGoalStatus(e, { checked }) {
+    axios.patch(`${BASE_URL}/goals/${this.props.id}`, {
+      status: checked,
+    });
+  }
+
   render() {
     const topLevelClass = this.props.selected
       ? "ToDoItem ToDoItem--selected"
@@ -112,7 +119,7 @@ class ToDoItem extends Component {
         onClick={() => this.props.onClick(this.props.id)}
       >
         <div className="ToDoItem-container">
-          <Checkbox />
+          <Checkbox onChange={this.updateGoalStatus} defaultChecked={this.props.status}/>
           <div className="ToDoItem-info">
             <Heading hlevel={3} baseClass="ToDoItem">
               {this.props.title}

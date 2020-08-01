@@ -157,6 +157,7 @@ class ToDoList extends Component {
                         title={goal.task_name}
                         description={goal.task_description}
                         showButtons={currentUserId == key}
+                        status={goal.status}
                         onClick={() =>
                           this.props.onToDoSelected(
                             goal.goal_id,
