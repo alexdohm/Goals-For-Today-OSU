@@ -1,15 +1,58 @@
 .TeamTaskbar
 {
-  max-width: 250px;
-  border-right: $border-black-2;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  position: relative;
+  background-color: $white;
 
   @media (min-width: $medium-screen)
   {
     width: percentage(1 / 4);
+  }
+
+  @media (max-width: $small-screen)
+  {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+  }
+
+  &--toggle
+  {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+
+    @media (max-width: $small-screen)
+    {
+      display: block;
+    }
+  }
+
+  &--collapsed &-container
+  {
+    @media (max-width: $small-screen)
+    {
+      width: 0 !important;
+    }
+  }
+
+  &-container
+  {
+    max-width: 250px;
+    border-right: $border-black-2;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 48px;
+    overflow: hidden;
+    transition: width 300ms ease-in-out;
+
+    @media (max-width: $small-screen)
+    {
+      width: 250px;
+    }
   }
 
   &-members

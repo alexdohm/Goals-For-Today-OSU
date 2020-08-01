@@ -9,6 +9,8 @@ import {
   SETTING_ICON,
   SIGN_OUT_ICON,
   USER_ICON,
+  MENU_ICON,
+  CLOSE_ICON
 } from "./common/constants";
 import IconButton from "./common/IconButton";
 import Text from "./common/Text";
@@ -26,6 +28,11 @@ class TeamTaskbar extends Component {
     this.navigateToSettings = this.navigateToSettings.bind(this);
     this.navigateToTeamOverview = this.navigateToTeamOverview.bind(this);
     this.navigateToAdmin = this.navigateToAdmin.bind(this);
+    this.toggleMenu = this.toggleMenu.bind(this);
+
+    this.state = {
+      isExpanded: false
+    }
   }
 
   handleLogout(e) {
@@ -45,6 +52,13 @@ class TeamTaskbar extends Component {
     this.props.history.push("/admin");
   }
 
+  toggleMenu() {
+    this.setState((prevState) => ({
+      ...prevState,
+      isExpanded: !prevState.isExpanded
+    }));
+  }
+
   render() {
     const {
       currentUserId,
@@ -54,50 +68,53 @@ class TeamTaskbar extends Component {
     } = this.props;
 
     return (
-      <div className="TeamTaskbar">
-        <div className="TeamTaskbar-members">
-          {/* render current user's card first */}
-          <TaskbarItem
-            key={currentUserId}
-            onClick={() => this.props.onUserSelected(currentUserId)}
-            icon={USER_ICON}
-            isSelected={currentUserId == this.props.selectedUserId}
-          >
-            {currentUserFirstName} {currentUserLastName}
-          </TaskbarItem>
-
-          {/* then render rest of teammates */}
-          {team.team_members.map((user, index) => (
+      <div className={`TeamTaskbar${this.state.isExpanded ? '' : ' TeamTaskbar--collapsed'}`}>
+        <IconButton baseClass="TeamTaskbar" modifier="toggle" onClick={this.toggleMenu} icon={this.state.isExpanded ? CLOSE_ICON : MENU_ICON} />
+        <div className="TeamTaskbar-container">
+          <div className="TeamTaskbar-members">
+            {/* render current user's card first */}
             <TaskbarItem
-              key={user.member_id}
-              onClick={() => this.props.onUserSelected(user.member_id)}
+              key={currentUserId}
+              onClick={() => this.props.onUserSelected(currentUserId)}
               icon={USER_ICON}
-              isSelected={user.member_id == this.props.selectedUserId}
+              isSelected={currentUserId == this.props.selectedUserId}
             >
-              {user.first_name} {user.last_name}
+              {currentUserFirstName} {currentUserLastName}
             </TaskbarItem>
-          ))}
-        </div>
-        <div className="TeamTaskbar-bottom">
-          <TaskbarItem icon={GROUP_ICON} onClick={this.navigateToTeamOverview}>
-            {team.team_name}
-          </TaskbarItem>
-          {team.team_admin ? (
-            <TaskbarItem icon={ADMIN_ICON} onClick={this.navigateToAdmin}>
-              Admin
+
+            {/* then render rest of teammates */}
+            {team.team_members.map((user, index) => (
+              <TaskbarItem
+                key={user.member_id}
+                onClick={() => this.props.onUserSelected(user.member_id)}
+                icon={USER_ICON}
+                isSelected={user.member_id == this.props.selectedUserId}
+              >
+                {user.first_name} {user.last_name}
+              </TaskbarItem>
+            ))}
+          </div>
+          <div className="TeamTaskbar-bottom">
+            <TaskbarItem icon={GROUP_ICON} onClick={this.navigateToTeamOverview}>
+              {team.team_name}
             </TaskbarItem>
-          ) : null}
-          <div className="TeamTaskbar-buttons">
-            <IconButton
-              baseClass="TeamTaskbar"
-              onClick={this.handleLogout}
-              icon={SIGN_OUT_ICON}
-            />
-            <IconButton
-              baseClass="TeamTaskbar"
-              onClick={this.navigateToSettings}
-              icon={SETTING_ICON}
-            />
+            {team.team_admin ? (
+              <TaskbarItem icon={ADMIN_ICON} onClick={this.navigateToAdmin}>
+                Admin
+              </TaskbarItem>
+            ) : null}
+            <div className="TeamTaskbar-buttons">
+              <IconButton
+                baseClass="TeamTaskbar"
+                onClick={this.handleLogout}
+                icon={SIGN_OUT_ICON}
+              />
+              <IconButton
+                baseClass="TeamTaskbar"
+                onClick={this.navigateToSettings}
+                icon={SETTING_ICON}
+              />
+            </div>
           </div>
         </div>
       </div>

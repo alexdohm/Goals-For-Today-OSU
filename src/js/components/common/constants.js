@@ -18,6 +18,8 @@ export const SIGN_OUT_ICON = "sign-out";
 export const TRASH_ICON = "trash alternate";
 export const USER_ICON = "user";
 export const ADMIN_ICON = "user secret";
+export const MENU_ICON = "bars";
+export const CLOSE_ICON = "close";
 
 export const TIME_OPTIONS = [
   {

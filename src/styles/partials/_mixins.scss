@@ -61,3 +61,18 @@
     width: 100%;
   }
 }
+
+@mixin mobile-taskbar-styling
+{
+  &--toggle
+  {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  &--collapsed &-container
+  {
+    width: 0;
+  }
+}

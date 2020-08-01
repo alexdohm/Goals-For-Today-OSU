@@ -3,8 +3,26 @@
   @include form-styling;
 
   display: flex;
-  flex-direction: column;
-  align-items: center;
+
+  &-col
+  {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-left: 36px;
+
+    @media (max-width: $small-screen) 
+    {
+      margin-left: 0;
+    }
+  }
+
+  @media (max-width: $small-screen)
+  {
+    padding-top: 48px;
+    display: block;
+  }
 
   &-teamMember
   {

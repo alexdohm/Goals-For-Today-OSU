@@ -15,10 +15,11 @@ const IconButton = (props) => {
   const size =
     props.size && acceptableSizes.includes(props.size) ? props.size : "big";
   const color = props.color ? props.color : "black";
+  const modifier = props.modifier || '';
 
   return (
     <button
-      className={props.baseClass + "-" + "button"}
+      className={props.baseClass + "-" + "button" + (modifier ? ' ' + props.baseClass + '--' + modifier : '')}
       type="button"
       onClick={props.onClick}
     >
