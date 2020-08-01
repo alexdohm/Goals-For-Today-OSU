@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Dimmer, Loader } from "semantic-ui-react";
+import { Dimmer, Form, Loader, Message } from "semantic-ui-react";
 import { connect } from "react-redux";
 import axios from "axios";
 
@@ -8,6 +8,11 @@ import UserSettings from "./components/UserSettings";
 import TeamSettings from "./components/TeamSettings";
 import PendingInvites from "./components/PendingInvites";
 import SettingsDeleteButton from "./components/SettingsDeleteButton";
+import {
+  selectUser,
+  setAuthorizationToken,
+  setCurrentUser,
+} from "./redux/actions";
 const BASE_URL = `${window.location.protocol}//${window.location.host}`;
 
 class SettingsPage extends Component {
@@ -18,7 +23,9 @@ class SettingsPage extends Component {
       teams: null,
       userInfo: null,
       pending: null,
+      deleteUserError: "",
     };
+
     this.deleteAccount = this.deleteAccount.bind(this);
     this.addPending = this.addPending.bind(this);
     this.removePending = this.removePending.bind(this);
@@ -48,8 +55,29 @@ class SettingsPage extends Component {
   }
 
   deleteAccount() {
-    //TODO: implement
-    alert("delete account button");
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, "0");
+    let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    let yyyy = today.getFullYear();
+    today = yyyy + "-" + mm + "-" + dd;
+
+    axios
+      .delete(`${BASE_URL}/users/${this.props.currentUserId}/?date=` + today)
+      .then(() => {
+        console.log("User Deleted");
+        //TODO the page needs to reload back to home, not hang
+        // this.setState((prevState) => ({
+        //   ...prevState,
+        //   currentUserId: 0,
+        // }));
+        this.props.logout();
+      })
+      .catch((error) => {
+        this.setState({
+          deleteUserError:
+            "You must revoke admin privileges in all teams > 1 member where you are the only admin",
+        });
+      });
   }
 
   addPending(teamId) {
@@ -120,6 +148,9 @@ class SettingsPage extends Component {
             onRemovePending={this.removePending}
           />
           <SettingsDeleteButton onClick={this.deleteAccount} />
+          {this.state.deleteUserError ? (
+            <Message negative content={this.state.deleteUserError} />
+          ) : null}
           <div className="ui hidden divider"></div>
         </div>
       );
@@ -135,8 +166,16 @@ class SettingsPage extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  logout: () => {
+    localStorage.removeItem("jwtToken");
+    setAuthorizationToken(false);
+    dispatch(setCurrentUser({}));
+  },
+});
+
 const mapStateToProps = (state) => ({
   currentUserId: state.auth.user.user[0].member_id,
 });
 
-export default connect(mapStateToProps)(SettingsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsPage);
