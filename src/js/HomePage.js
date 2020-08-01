@@ -54,19 +54,22 @@ class HomePage extends Component {
             currentUserLastName={data.last_name}
             team={data.team}
           />
-          {Object.keys(data.team).length ? 
-          <ToDoList
-            currentUserId={data.member_id}
-            team={data.team}
-            updateData={this.fetchData}
-          /> : 
-          <WelcomeModal />}
-          {Object.keys(data.team).length ? 
-          <Comments
-            currentUserId={data.member_id}
-            team={data.team}
-            updateData={this.fetchData}
-          /> : null}
+          {Object.keys(data.team).length ? (
+            <ToDoList
+              currentUserId={data.member_id}
+              team={data.team}
+              updateData={this.fetchData}
+            />
+          ) : (
+            <WelcomeModal />
+          )}
+          {Object.keys(data.team).length ? (
+            <Comments
+              currentUserId={data.member_id}
+              team={data.team}
+              updateData={this.fetchData}
+            />
+          ) : null}
         </div>
       );
     } else {
