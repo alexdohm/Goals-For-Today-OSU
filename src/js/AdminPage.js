@@ -17,12 +17,14 @@ class AdminPage extends Component {
       teamInfo: null,
       showInviteModal: false,
       inviteEmail: "",
+      inviteError: "",
     };
     this.deleteTeam = this.deleteTeam.bind(this);
     this.openInviteModal = this.openInviteModal.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.inviteTeamMember = this.inviteTeamMember.bind(this);
+    this.changeStatus = this.changeStatus.bind(this);
   }
 
   componentDidMount() {
@@ -54,8 +56,49 @@ class AdminPage extends Component {
   }
 
   inviteTeamMember() {
+    fetch('/users/' + this.state.inviteEmail + '?type=email')
+      .then( (response) => response.json())
+      .then( (data) => {
+        if (data.Error) {
+          this.setState({
+            inviteError: 'No user exists with that email'
+          });
+        } else {
+          const body = {
+            date_added: new Date()
+          };
+          const raw = JSON.stringify(body);
+          const myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
+          const requestOptions = {
+            method: "PUT",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+          };
+          fetch('/teams/' + this.props.currentTeam + '/users/' + data.member_id, requestOptions)
+            .then( (response) => response.json())
+            .then( (data) => {
+              console.log(data);
+              this.setState({
+                inviteError: '',
+                showInviteModal: false
+              });
+            })
+            .catch( (err) => {
+              console.warn(err);
+              this.setState({
+                inviteError: '',
+                showInviteModal: false
+              });
+            })
+        }
+      });
+  }
+
+  changeStatus() {
     //TODO: implement
-    alert("you invited a team member");
+    alert('you changed a user\'s status');
   }
 
   handleEmailChange(event) {
@@ -95,7 +138,10 @@ class AdminPage extends Component {
             <AdminTeamSection
               team={this.state.data.team}
               firstName={this.state.data.first_name}
+              status={this.state.data.team.team_admin ? 'ADMIN' : 'MEMBER'}
               openInviteModal={this.openInviteModal}
+              inviteTeamMember={this.inviteTeamMember}
+              changeStatus={this.changeStatus}
             />
             <div className="ui hidden divider"></div>
             <AdminEmailSection teamInfo={this.state.teamInfo} />
@@ -106,6 +152,7 @@ class AdminPage extends Component {
                   handleEmailChange={this.handleEmailChange}
                   closeModal={this.closeModal}
                   handleAction={this.inviteTeamMember}
+                  errorText={this.state.inviteError}
                 />
               : null}
           </div>

@@ -39,7 +39,7 @@
 
   &-button
   {
-    margin-left: auto;
+    margin-left: 16px;
   }
 
   &-emailSection
@@ -52,6 +52,11 @@
     width: 100%;
     max-width: 500px;
     margin-top: 24px;
+  }
+
+  &-statusSelect
+  {
+    margin-left: auto;
   }
 }
 

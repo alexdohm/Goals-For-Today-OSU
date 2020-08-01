@@ -1,9 +1,22 @@
 import React, { Component } from "react";
 import Heading from "./common/Heading";
 import Text from "./common/Text";
-import { Icon, Button } from "semantic-ui-react";
+import { Icon, Button, Select } from "semantic-ui-react";
 import { USER_ICON, TRASH_ICON } from "./common/constants";
 import IconButton from "./common/IconButton";
+
+const statusOptions = [
+  {
+    key: 'MEMBER',
+    value: 'MEMBER',
+    text: 'Member'
+  },
+  {
+    key: 'ADMIN',
+    value: 'ADMIN',
+    text: 'Admin'
+  }
+];
 
 class AdminTeamSection extends Component {
   constructor(props) {
@@ -17,20 +30,22 @@ class AdminTeamSection extends Component {
   }
 
   render() {
-    const { team, firstName } = this.props;
+    const { team, firstName, status } = this.props;
     return (
       <div className="Admin-teamSection Admin-form">
         <Heading hLevel={2} baseClass="Admin">
           {team.team_name}
         </Heading>
         <div className="Admin-teamMembers">
-          <AdminTeamMember name={firstName} onClick={this.deleteMember} />
+          <AdminTeamMember name={firstName} onClick={this.deleteMember} status={status} changeStatus={this.props.changeStatus} />
           {team.team_members.map((member) => {
             return (
               <AdminTeamMember
                 key={member.member_id}
                 name={member.first_name}
                 onClick={this.deleteMember}
+                status={member.status}
+                changeStatus={this.props.changeStatus}
                 isNotCurrentUser={true}
               />
             );
@@ -54,6 +69,7 @@ const AdminTeamMember = (props) => {
     <div className="Admin-teamMember">
       <Icon className="Admin-teamMemberIcon" name={USER_ICON} size="large" />
       <Text baseClass="Admin">{props.name}</Text>
+      <Select className="Admin-statusSelect" options={statusOptions} defaultValue={props.status} onChange={props.changeStatus} />
       {props.isNotCurrentUser ? (
         <IconButton
           baseClass="Admin"

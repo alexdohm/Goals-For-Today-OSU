@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form } from "semantic-ui-react";
+import { Button, Form, Message } from "semantic-ui-react";
 
 import Heading from "./common/Heading";
 import { FormFieldHelper } from "./common/helpers";
@@ -19,6 +19,9 @@ const InviteForm = (props) => {
             onChange={props.handleEmailChange}
             placeholder='Enter Email'
           />
+          {props.errorText
+            ? <Message negative content={props.errorText}/>
+            : null}
           <div className="Invite-inviteButtons">
             <Button
               negative
