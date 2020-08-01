@@ -4,6 +4,10 @@ import Text from "./common/Text";
 import { Icon, Button, Select } from "semantic-ui-react";
 import { USER_ICON, TRASH_ICON } from "./common/constants";
 import IconButton from "./common/IconButton";
+import { dateToQueryString } from "./common/helpers";
+import axios from "axios";
+
+const BASE_URL = `${window.location.protocol}//${window.location.host}`;
 
 const statusOptions = [
   {
@@ -25,9 +29,11 @@ class AdminTeamSection extends Component {
     this.changeStatus = this.changeStatus.bind(this);
   }
 
-  deleteMember() {
-    //TODO: implement
-    alert("you clicked the delete member button");
+  deleteMember(userId) {
+    axios.delete(`${BASE_URL}/teams/${this.props.currentTeam}/users/${userId}?date=${dateToQueryString(new Date())}`).then(() => {
+      console.log("User deleted");
+      this.props.updateData();
+    });
   }
 
   changeStatus(userId, value) {
@@ -127,7 +133,7 @@ class AdminTeamMember extends Component {
           <IconButton
             baseClass="Admin"
             icon={TRASH_ICON}
-            onClick={this.props.deleteMember}
+            onClick={() => this.props.deleteMember(this.props.id)}
           />
         ) : null}
       </div>

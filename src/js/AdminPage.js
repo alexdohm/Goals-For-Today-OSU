@@ -24,9 +24,14 @@ class AdminPage extends Component {
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.inviteTeamMember = this.inviteTeamMember.bind(this);
+    this.fetchData = this.fetchData.bind(this);
   }
 
   componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData() {
     fetch(
       "/users/login/" +
         this.props.userEmail +
@@ -141,6 +146,7 @@ class AdminPage extends Component {
               inviteTeamMember={this.inviteTeamMember}
               currentTeam={this.props.currentTeam}
               currentUserId={this.state.data.member_id}
+              updateData={this.fetchData}
             />
             <div className="ui hidden divider"></div>
             <AdminEmailSection teamInfo={this.state.teamInfo} />
