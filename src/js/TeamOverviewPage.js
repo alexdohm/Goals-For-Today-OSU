@@ -65,7 +65,7 @@ class TeamOverviewPage extends Component {
   }
 
   updateStatistics() {
-    fetch("/teams/" + this.props.currentTeam + "/statistics?beginDate=07-21-2020&endDate=" + dateToQueryString(new Date()))
+    fetch("/teams/" + this.props.currentTeam + "/statistics?beginDate=" + dateToQueryString(this.state.beginDate) + "&endDate=" + dateToQueryString(this.state.endDate))
       .then(response => response.json())
       .then(data => {
         this.setState({
