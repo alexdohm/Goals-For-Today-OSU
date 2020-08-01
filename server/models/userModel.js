@@ -47,7 +47,7 @@ const addUser = async function (firstName, lastName, email, password, req) {
 // check if user password and email match a record in database
 // returns row of user
 const getUser = async function (userEmail, userPass) {
-  const queryString = `SELECT member_id, email FROM team_member WHERE member_password = crypt($1, member_password) AND email = $2`;
+  const queryString = `SELECT member_id, email FROM team_member WHERE member_password = crypt($1, member_password) AND email = $2 and active=true`;
   const filter = [userPass, userEmail];
 
   const user = await Helpers.runQuery(queryString, filter);
@@ -385,6 +385,9 @@ const loadUserInfoOnLogin = async function (userEmail, teamId) {
   const userDataJson = {};
 
   const userInfo = await getUserByEmail(userEmail);
+  if (!userInfo.active || !userInfo) {
+    return "404";
+  }
   let userTeams = {};
   if (teamId === "-1") {
     userTeams = await getAllTeamsForUser(userInfo.member_id);
