@@ -66,6 +66,7 @@ class AdminPage extends Component {
         } else {
           const body = {
             date_added: new Date(),
+            approved_ind: 1,
           };
           const raw = JSON.stringify(body);
           const myHeaders = new Headers();
