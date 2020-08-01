@@ -22,11 +22,33 @@ class AdminTeamSection extends Component {
   constructor(props) {
     super(props);
     this.deleteMember = this.deleteMember.bind(this);
+    this.changeStatus = this.changeStatus.bind(this);
   }
 
   deleteMember() {
     //TODO: implement
     alert("you clicked the delete member button");
+  }
+
+  changeStatus(userId, value) {
+
+    const body = {
+      admin_ind: value == 'ADMIN' ? 1 : 0 
+    };
+
+    const raw = JSON.stringify(body);
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const requestOptions = {
+      method: "PATCH",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+    fetch("/teams/" + this.props.currentTeam + "/users/" + userId, requestOptions)
+      .then(response => response.json())
+      .then(data => console.log(data));
   }
 
   render() {
@@ -39,18 +61,20 @@ class AdminTeamSection extends Component {
         <div className="Admin-teamMembers">
           <AdminTeamMember
             name={firstName}
-            onClick={this.deleteMember}
+            id={this.props.currentUserId}
+            deleteMember={this.deleteMember}
             status={status}
-            changeStatus={this.props.changeStatus}
+            changeStatus={this.changeStatus}
           />
           {team.team_members.map((member) => {
             return (
               <AdminTeamMember
                 key={member.member_id}
+                id={member.member_id}
                 name={member.first_name}
-                onClick={this.deleteMember}
+                deleteMember={this.deleteMember}
                 status={member.status}
-                changeStatus={this.props.changeStatus}
+                changeStatus={this.changeStatus}
                 isNotCurrentUser={true}
               />
             );
@@ -70,26 +94,45 @@ class AdminTeamSection extends Component {
   }
 }
 
-const AdminTeamMember = (props) => {
-  return (
-    <div className="Admin-teamMember">
-      <Icon className="Admin-teamMemberIcon" name={USER_ICON} size="large" />
-      <Text baseClass="Admin">{props.name}</Text>
-      <Select
-        className="Admin-statusSelect"
-        options={statusOptions}
-        defaultValue={props.status}
-        onChange={props.changeStatus}
-      />
-      {props.isNotCurrentUser ? (
-        <IconButton
-          baseClass="Admin"
-          icon={TRASH_ICON}
-          onClick={props.deleteMember}
+class AdminTeamMember extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      statusValue: this.props.status
+    };
+    this.handleDropdownChange = this.handleDropdownChange.bind(this);
+  }
+
+  handleDropdownChange(e, { value }) {
+    this.setState((prevState) => ({
+      ...prevState,
+      statusValue: value,
+    }));
+    this.props.changeStatus(this.props.id, value);
+  }
+
+  render() {
+      return (
+      <div className="Admin-teamMember">
+        <Icon className="Admin-teamMemberIcon" name={USER_ICON} size="large" />
+        <Text baseClass="Admin">{this.props.name}</Text>
+        <Select
+          className="Admin-statusSelect"
+          options={statusOptions}
+          value={this.state.statusValue}
+          onChange={this.handleDropdownChange}
         />
-      ) : null}
-    </div>
-  );
+        {this.props.isNotCurrentUser ? (
+          <IconButton
+            baseClass="Admin"
+            icon={TRASH_ICON}
+            onClick={this.props.deleteMember}
+          />
+        ) : null}
+      </div>
+    );
+  }
 };
 
 export default AdminTeamSection;

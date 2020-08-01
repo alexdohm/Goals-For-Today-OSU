@@ -24,7 +24,6 @@ class AdminPage extends Component {
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.inviteTeamMember = this.inviteTeamMember.bind(this);
-    this.changeStatus = this.changeStatus.bind(this);
   }
 
   componentDidMount() {
@@ -100,11 +99,6 @@ class AdminPage extends Component {
       });
   }
 
-  changeStatus() {
-    //TODO: implement
-    alert("you changed a user's status");
-  }
-
   handleEmailChange(event) {
     const { value } = event.target;
     this.setState((prevState) => ({
@@ -145,7 +139,8 @@ class AdminPage extends Component {
               status={this.state.data.team.team_admin ? "ADMIN" : "MEMBER"}
               openInviteModal={this.openInviteModal}
               inviteTeamMember={this.inviteTeamMember}
-              changeStatus={this.changeStatus}
+              currentTeam={this.props.currentTeam}
+              currentUserId={this.state.data.member_id}
             />
             <div className="ui hidden divider"></div>
             <AdminEmailSection teamInfo={this.state.teamInfo} />
