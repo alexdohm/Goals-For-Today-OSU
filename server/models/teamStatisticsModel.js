@@ -103,7 +103,6 @@ GROUP BY member_id, DATE(date_time);`;
     beginDate,
     endDate,
   ]);
-  console.log(finishedGoals);
 
   finishedGoals.forEach((goal) => {
     goal.finishedgoals = parseInt(goal.finishedgoals);
