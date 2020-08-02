@@ -1,6 +1,13 @@
 import React, { Component } from "react";
-import { Button, Form, Select, Grid, Segment } from "semantic-ui-react";
-
+import {
+  Button,
+  Form,
+  Select,
+  Grid,
+  Segment,
+  Message,
+} from "semantic-ui-react";
+import DismissibleMessage from "./MessageDismissible";
 import { FormFieldHelper } from "./common/helpers";
 import { connect } from "react-redux";
 import { selectTeam } from "../redux/actions";
@@ -10,8 +17,10 @@ class TeamSettings extends Component {
     super(props);
     this.state = {
       currentTeamDisplayed: "",
-      joinTeamRequest: [],
+      joinTeamRequest: {},
       newTeamName: "",
+      newTeamNameError: "",
+      newTeamSuccess: false,
     };
 
     this.handleTeamChange = this.handleTeamChange.bind(this);
@@ -19,6 +28,15 @@ class TeamSettings extends Component {
     this.handleTeamCreate = this.handleTeamCreate.bind(this);
     this.handleTeamCreateChange = this.handleTeamCreateChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.createTeamButtonEnabledStatus = this.createTeamButtonEnabledStatus.bind(
+      this
+    );
+    this.requestToJoinTeamEnabledStatus = this.requestToJoinTeamEnabledStatus.bind(
+      this
+    );
+    this.teamCreateError = this.teamCreateError.bind(this);
+    this.teamCreateSuccess = this.teamCreateSuccess.bind(this);
+    this.handleDismissMsg = this.handleDismissMsg.bind(this);
   }
 
   // componentDidMount() {
@@ -44,32 +62,85 @@ class TeamSettings extends Component {
   handleTeamCreateChange(event) {
     //debugger;
     const { value } = event.target;
-    console.log(event.target.value);
 
+    this.setState(
+      (prevState) => ({
+        ...prevState,
+        newTeamName: value,
+        newTeamNameError: "",
+      }),
+      this.teamCreateError
+    );
+  }
+
+  handleDismissMsg() {
     this.setState((prevState) => ({
       ...prevState,
-      newTeamName: value,
+      newTeamName: "",
+      newTeamNameError: "",
+      newTeamSuccess: false,
     }));
   }
 
+  requestToJoinTeamEnabledStatus() {
+    if (this.state.joinTeamRequest.team_id) {
+      return false;
+    }
+    return true;
+  }
+
+  createTeamButtonEnabledStatus() {
+    if (this.state.newTeamName) {
+      return false;
+    }
+    return true;
+  }
+
+  teamCreateError() {
+    if (this.state.newTeamNameError) {
+      debugger;
+      return (
+        <Message
+          negative
+          header="Error!"
+          content={this.state.newTeamNameError}
+        ></Message>
+      );
+    }
+  }
+
+  teamCreateSuccess() {
+    if (!this.state.newTeamNameError) {
+      return (
+        <DismissibleMessage
+          header="Success!"
+          style="success"
+          content="Team was successfully created"
+        />
+      );
+    }
+  }
+
   handleTeamCreate() {
-    //alert("you created a team");
     this.props
       .onAddTeam(this.state.newTeamName)
       .then((result) => {
         console.log(`RESULT: ${result}`);
-        this.setState(
-          (prevState) => ({
-            ...prevState,
-            newTeamName: "",
-          }),
-          handleTeamCreateChange({ target: { value: "" } })
-        );
+        this.setState((prevState) => ({
+          ...prevState,
+          newTeamName: "",
+          newTeamSuccess: true,
+        }));
       })
       .catch((err) => {
         console.log(err);
+        if (err.message === "Request failed with status code 403") {
+          this.setState((prevState) => ({
+            ...prevState,
+            newTeamNameError: "This team name is already taken",
+          }));
+        }
       });
-    //console.log(this.state);
   }
 
   handleTeamRequest() {
@@ -155,6 +226,7 @@ class TeamSettings extends Component {
                       primary
                       onClick={this.handleTeamRequest}
                       className="Settings-button"
+                      disabled={this.requestToJoinTeamEnabledStatus()}
                     >
                       Request To Join Team
                     </Button>
@@ -179,13 +251,27 @@ class TeamSettings extends Component {
                   />
                 </div>
                 <div className="eight wide column">
-                  <Button primary onClick={this.handleTeamCreate}>
+                  <Button
+                    primary
+                    onClick={this.handleTeamCreate}
+                    className="Settings-button"
+                    disabled={this.createTeamButtonEnabledStatus()}
+                  >
                     Create New Team
                   </Button>
                 </div>
               </div>
             </div>
+            {this.teamCreateError()}
           </Form>
+          {this.state.newTeamSuccess ? (
+            <DismissibleMessage
+              header="Success!"
+              style="success"
+              content="Team was successfully created"
+              onDimiss={this.handleDismissMsg}
+            />
+          ) : null}
         </div>
       </div>
     );
@@ -197,4 +283,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(TeamSettings);
-// export default TeamSettings;

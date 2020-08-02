@@ -130,7 +130,6 @@ class SettingsPage extends Component {
 
   async addTeam(teamName) {
     const curDate = moment(new Date()).format("YYYY-MM-DD");
-    //console.log(moment(new Date()).format("YYYY-MM-DD"));
 
     console.log(`Adding ${teamName} on ${curDate}`);
     try {
@@ -143,36 +142,13 @@ class SettingsPage extends Component {
       const allTeams = await axios.get(
         `/users/${this.props.currentUserId}/teams`
       );
-      //debugger;
-
-      console.log("allTeams:");
-      console.log(allTeams);
-
       this.setState((prevState) => ({
         ...prevState,
         teams: allTeams.data.items,
       }));
-
-      //this.setState({ teams: allTeams.data.items });
     } catch (err) {
-      console.log(err);
+      throw err;
     }
-
-    /* axios
-      .post("/teams", {
-        name: teamName,
-        date: curDate,
-        member_id: this.props.currentUserId,
-      })
-      .then(function (response) {
-        console.log(response);
-
-
-        this.setState({ teams: json2.items });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });*/
   }
 
   render() {
@@ -191,6 +167,7 @@ class SettingsPage extends Component {
             pending={this.state.pending}
             onAddPending={this.addPending}
             onAddTeam={this.addTeam}
+            errors={this.state.newTeamError}
           />
           <div className="ui hidden divider"></div>
           <PendingInvites

@@ -27,6 +27,7 @@ class PendingInvites extends Component {
                   <Button
                     primary
                     onClick={() => this.handleDeleteRequest(team.team_id)}
+                    className="Settings-button"
                   >
                     Delete Request
                   </Button>
