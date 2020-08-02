@@ -1,16 +1,76 @@
 .Comments
 {
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-top: 48px;
-  border-left: $border-black-2;
-  width: 30%;
-  overflow: scroll;
+  position: relative;
+  background-color: $white;
+
+  &-container
+  {
+    padding-top: 48px;
+    border-left: $border-black-2;
+    overflow: scroll;
+    transition: width 300ms ease-in-out;
+
+    @media (max-width: $small-screen)
+    {
+      width: 250px;
+    }
+  }
+
+  @media (min-width: $medium-screen)
+  {
+    width: 30%;
+  }
+
+  @media (max-width: $small-screen)
+  {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0;
+  }
+
+  &--toggle
+  {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: none;
+
+    @media (max-width: $small-screen)
+    {
+      display: block;
+    }
+  }
+  
+  &--collapsed &-container
+  {
+    @media (max-width: $small-screen)
+    {
+      width: 0 !important;
+    }
+  }
+  
+  &--collapsed
+  {
+    background-color: transparent;
+  }
 
   &-headings
   {
     padding-bottom: 24px;
     border-bottom: $border-gray-1;
+  }
+
+  &-headings,
+  &-list
+  {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  &-button
+  {
+    @include icon-button;
   }
 }
 
@@ -44,6 +104,8 @@
 
   &-form
   {
+    padding-left: 16px;
+    padding-right: 16px;
     margin-top: 16px;
   }
 }

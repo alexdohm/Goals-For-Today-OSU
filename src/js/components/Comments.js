@@ -2,14 +2,21 @@ import React, { Component } from "react";
 import { Button, Form, Icon } from "semantic-ui-react";
 import { connect } from "react-redux";
 
-import { USER_ICON, EDIT_ICON } from "./common/constants";
+import { USER_ICON, EDIT_ICON, CLOSE_ICON, COMMENT_ICON } from "./common/constants";
 import Heading from "./common/Heading";
 import Text from "./common/Text";
 import { dateToTimestampString } from "./common/helpers";
+import IconButton from "./common/IconButton";
 
 class Comments extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      isExpanded: false,
+    }
+
+    this.toggleMenu = this.toggleMenu.bind(this);
   }
 
   sortCommentsByTime(goalToCommentsMap) {
@@ -21,6 +28,13 @@ class Comments extends Component {
         return aDate.getTime() - bDate.getTime();
       });
     }
+  }
+
+  toggleMenu() {
+    this.setState((prevState) => ({
+      ...prevState,
+      isExpanded: !prevState.isExpanded,
+    }));
   }
 
   render() {
@@ -44,42 +58,54 @@ class Comments extends Component {
     this.sortCommentsByTime(goalToCommentsMap);
 
     return (
-      <div className="Comments">
-        <div className="Comments-headings">
-          <Heading baseClass="Comments" hLevel={2}>
-            {selectedToDoName}
-          </Heading>
-          {selectedToDoDescription ? (
-            <Heading baseClass="Comments" hLevel={4}>
-              {selectedToDoDescription}
-            </Heading>
-          ) : null}
-        </div>
-        <div className="Comments-list">
-          {Object.keys(goalToCommentsMap)
-            .map((key) =>
-              goalToCommentsMap[key].map((comment) => {
-                if (key == this.props.selectedToDoId) {
-                  return (
-                    <Comment
-                      key={comment.comment_id}
-                      firstName={comment.first_name}
-                      lastName={comment.last_name}
-                      body={comment.message}
-                      date={new Date(comment.date_time)}
-                    />
-                  );
-                }
-              })
-            )
-            .flat()}
-        </div>
-        <CommentForm
-          updateData={this.props.updateData}
-          selectedToDoId={this.props.selectedToDoId}
-          currentUserId={this.props.currentUserId}
-          currentTeamId={this.props.currentTeamId}
+      <div
+        className={`Comments${
+          this.state.isExpanded ? "" : " Comments--collapsed"
+        }`}
+      >
+        <IconButton
+          baseClass="Comments"
+          modifier="toggle"
+          onClick={this.toggleMenu}
+          icon={this.state.isExpanded ? CLOSE_ICON : COMMENT_ICON}
         />
+        <div className="Comments-container">
+          <div className="Comments-headings">
+            <Heading baseClass="Comments" hLevel={2}>
+              {selectedToDoName}
+            </Heading>
+            {selectedToDoDescription ? (
+              <Heading baseClass="Comments" hLevel={4}>
+                {selectedToDoDescription}
+              </Heading>
+            ) : null}
+          </div>
+          <div className="Comments-list">
+            {Object.keys(goalToCommentsMap)
+              .map((key) =>
+                goalToCommentsMap[key].map((comment) => {
+                  if (key == this.props.selectedToDoId) {
+                    return (
+                      <Comment
+                        key={comment.comment_id}
+                        firstName={comment.first_name}
+                        lastName={comment.last_name}
+                        body={comment.message}
+                        date={new Date(comment.date_time)}
+                      />
+                    );
+                  }
+                })
+              )
+              .flat()}
+          </div>
+          <CommentForm
+            updateData={this.props.updateData}
+            selectedToDoId={this.props.selectedToDoId}
+            currentUserId={this.props.currentUserId}
+            currentTeamId={this.props.currentTeamId}
+          />
+        </div>
       </div>
     );
   }

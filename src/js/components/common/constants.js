@@ -20,6 +20,7 @@ export const USER_ICON = "user";
 export const ADMIN_ICON = "user secret";
 export const MENU_ICON = "bars";
 export const CLOSE_ICON = "close";
+export const COMMENT_ICON = "comment alternate outline";
 
 export const TIME_OPTIONS = [
   {
