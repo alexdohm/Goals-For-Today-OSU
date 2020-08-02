@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
-import { Dimmer, Loader } from 'semantic-ui-react';
-import DatePicker from 'react-datepicker';
+import { connect } from "react-redux";
+import { Dimmer, Loader } from "semantic-ui-react";
+import DatePicker from "react-datepicker";
 
 import Heading from "./components/common/Heading";
 import TeamTaskbar from "./components/TeamTaskbar";
 import { dateToQueryString } from "./components/common/helpers";
 
 class TeamOverviewPage extends Component {
-
   constructor(props) {
     super(props);
     let today = new Date();
@@ -19,7 +18,7 @@ class TeamOverviewPage extends Component {
       teamInfo: null,
       stats: null,
       beginDate: lastWeek,
-      endDate: today
+      endDate: today,
     };
 
     this.handleBeginDateChange = this.handleBeginDateChange.bind(this);
@@ -28,15 +27,27 @@ class TeamOverviewPage extends Component {
   }
 
   handleBeginDateChange(date) {
-    this.setState( prevState => ({
-      beginDate: date.getTime() < prevState.endDate.getTime() ? date : prevState.beginDate
-    }), this.updateStatistics);
+    this.setState(
+      (prevState) => ({
+        beginDate:
+          date.getTime() < prevState.endDate.getTime()
+            ? date
+            : prevState.beginDate,
+      }),
+      this.updateStatistics
+    );
   }
 
   handleEndDateChange(date) {
-    this.setState( prevState => ({
-      endDate: date.getTime() > prevState.beginDate.getTime() ? date : prevState.endDate
-    }), this.updateStatistics);
+    this.setState(
+      (prevState) => ({
+        endDate:
+          date.getTime() > prevState.beginDate.getTime()
+            ? date
+            : prevState.endDate,
+      }),
+      this.updateStatistics
+    );
   }
 
   componentDidMount() {
@@ -59,17 +70,24 @@ class TeamOverviewPage extends Component {
           teamInfo: data,
         });
       })
-      .then( () => {
-        this.updateStatistics()
+      .then(() => {
+        this.updateStatistics();
       });
   }
 
   updateStatistics() {
-    fetch("/teams/" + this.props.currentTeam + "/statistics?beginDate=" + dateToQueryString(this.state.beginDate) + "&endDate=" + dateToQueryString(this.state.endDate))
-      .then(response => response.json())
-      .then(data => {
+    fetch(
+      "/teams/" +
+        this.props.currentTeam +
+        "/statistics?beginDate=" +
+        dateToQueryString(this.state.beginDate) +
+        "&endDate=" +
+        dateToQueryString(this.state.endDate)
+    )
+      .then((response) => response.json())
+      .then((data) => {
         this.setState({
-          stats: data
+          stats: data,
         });
       });
   }
@@ -81,11 +99,11 @@ class TeamOverviewPage extends Component {
       return (
         <div className="TeamOverview">
           <TeamTaskbar
-              currentUserId={data.member_id}
-              currentUserFirstName={data.first_name}
-              currentUserLastName={data.last_name}
-              team={data.team}
-            />
+            currentUserId={data.member_id}
+            currentUserFirstName={data.first_name}
+            currentUserLastName={data.last_name}
+            team={data.team}
+          />
           <div classname="TeamOverview-container">
             <div class="TeamOverview-datepickers">
               <div class="TeamOverview-beginDate">
@@ -127,9 +145,8 @@ class TeamOverviewPage extends Component {
         </div>
       );
     }
-    
   }
-};
+}
 
 const mapStateToProps = (state) => {
   let email;
@@ -148,7 +165,7 @@ const mapStateToProps = (state) => {
   return {
     userEmail: email,
     currentTeam: state.teams.currentTeam,
-  }
+  };
 };
 
 export default connect(mapStateToProps)(TeamOverviewPage);

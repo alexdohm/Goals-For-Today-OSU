@@ -201,8 +201,20 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-const mapStateToProps = (state) => ({
-  currentUserId: state.auth.user.user[0].member_id,
-});
+const mapStateToProps = (state) => {
+  let id = null;
+  if (
+    state.auth &&
+    state.auth.user &&
+    state.auth.user.user &&
+    state.auth.user.user.length
+  ) {
+    id = state.auth.user.user[0].member_id;
+  }
+
+  return {
+    currentUserId: id,
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsPage);

@@ -193,7 +193,7 @@ const mapStateToProps = (state) => {
   return {
     userEmail: email,
     currentTeam: state.teams.currentTeam,
-  }
+  };
 };
 
 export default connect(mapStateToProps)(AdminPage);

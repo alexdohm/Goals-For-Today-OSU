@@ -30,16 +30,21 @@ class AdminTeamSection extends Component {
   }
 
   deleteMember(userId) {
-    axios.delete(`${BASE_URL}/teams/${this.props.currentTeam}/users/${userId}?date=${dateToQueryString(new Date())}`).then(() => {
-      console.log("User deleted");
-      this.props.updateData();
-    });
+    axios
+      .delete(
+        `${BASE_URL}/teams/${
+          this.props.currentTeam
+        }/users/${userId}?date=${dateToQueryString(new Date())}`
+      )
+      .then(() => {
+        console.log("User deleted");
+        this.props.updateData();
+      });
   }
 
   changeStatus(userId, value) {
-
     const body = {
-      admin_ind: value == 'ADMIN' ? 1 : 0 
+      admin_ind: value == "ADMIN" ? 1 : 0,
     };
 
     const raw = JSON.stringify(body);
@@ -52,9 +57,12 @@ class AdminTeamSection extends Component {
       body: raw,
       redirect: "follow",
     };
-    fetch("/teams/" + this.props.currentTeam + "/users/" + userId, requestOptions)
-      .then(response => response.json())
-      .then(data => console.log(data));
+    fetch(
+      "/teams/" + this.props.currentTeam + "/users/" + userId,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((data) => console.log(data));
   }
 
   render() {
@@ -101,11 +109,10 @@ class AdminTeamSection extends Component {
 }
 
 class AdminTeamMember extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      statusValue: this.props.status
+      statusValue: this.props.status,
     };
     this.handleDropdownChange = this.handleDropdownChange.bind(this);
   }
@@ -119,7 +126,7 @@ class AdminTeamMember extends Component {
   }
 
   render() {
-      return (
+    return (
       <div className="Admin-teamMember">
         <Icon className="Admin-teamMemberIcon" name={USER_ICON} size="large" />
         <Text baseClass="Admin">{this.props.name}</Text>
@@ -139,6 +146,6 @@ class AdminTeamMember extends Component {
       </div>
     );
   }
-};
+}
 
 export default AdminTeamSection;

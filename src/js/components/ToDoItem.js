@@ -119,7 +119,10 @@ class ToDoItem extends Component {
         onClick={() => this.props.onClick(this.props.id)}
       >
         <div className="ToDoItem-container">
-          <Checkbox onChange={this.updateGoalStatus} defaultChecked={this.props.status}/>
+          <Checkbox
+            onChange={this.updateGoalStatus}
+            defaultChecked={this.props.status}
+          />
           <div className="ToDoItem-info">
             <Heading hlevel={3} baseClass="ToDoItem">
               {this.props.title}

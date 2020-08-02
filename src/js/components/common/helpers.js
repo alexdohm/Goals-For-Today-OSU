@@ -56,7 +56,7 @@ export const dateToTimestampString = (date) => {
 export const dateToQueryString = (date) => {
   let month = date.getMonth() + 1;
   if (month < 10) {
-    month = '0' + month;
+    month = "0" + month;
   }
   let day = date.getDate();
   if (day < 10) {
@@ -64,5 +64,5 @@ export const dateToQueryString = (date) => {
   }
   const year = date.getFullYear();
 
-  return month + '-' + day + '-' + year;
-}
+  return month + "-" + day + "-" + year;
+};

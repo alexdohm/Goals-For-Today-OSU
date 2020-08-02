@@ -152,7 +152,8 @@ const updateGoal = async function (goalId, goalInfo) {
   const updatedGoal = {
     task_name: goalInfo.name || existingGoal[0].task_name,
     task_description: goalInfo.description || existingGoal[0].task_description,
-    status: goalInfo.status != undefined ? goalInfo.status : existingGoal[0].status,
+    status:
+      goalInfo.status != undefined ? goalInfo.status : existingGoal[0].status,
   };
 
   const updatedGoalQuery = `UPDATE goal SET task_name = $1,
