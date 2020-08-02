@@ -40,7 +40,6 @@ class AdminPage extends Component {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         this.setState({
           data: data,
         });
@@ -87,7 +86,6 @@ class AdminPage extends Component {
           )
             .then((response) => response.json())
             .then((data) => {
-              console.log(data);
               this.setState({
                 inviteError: "",
                 showInviteModal: false,

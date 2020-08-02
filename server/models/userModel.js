@@ -543,8 +543,9 @@ const getAllTeamsForUser = async function (userId) {
 };
 
 /**
- * Returns formatted json object with array of teams that a user is a member of
+ * Returns formatted json object with specific team that a user is a member of
  * @param {number} userId
+ * @param {number} teamId
  */
 const getTeamForUser = async function (userId, teamId) {
   const teamQuery = `SELECT t.team_id, t.team_name

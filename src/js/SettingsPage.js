@@ -153,7 +153,6 @@ class SettingsPage extends Component {
 
   render() {
     if (this.state.userInfo) {
-      console.log("settings state", this.state);
       return (
         <div className="Settings">
           <Heading hLevel={2} baseClass="Settings">
