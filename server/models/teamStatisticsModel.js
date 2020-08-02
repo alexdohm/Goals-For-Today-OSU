@@ -31,10 +31,12 @@ const goalsCompletedPerTeamMemberDate = async function (teamId, asOfDate) {
     asOfDate,
   ]);
 
-  finishedGoals.forEach((goal) => {
-    goal.finishedgoals = parseInt(goal.finishedgoals);
-    goal.totalgoals = parseInt(goal.totalgoals);
-  });
+  if (finishedGoals) {
+    finishedGoals.forEach((goal) => {
+      goal.finishedgoals = parseInt(goal.finishedgoals);
+      goal.totalgoals = parseInt(goal.totalgoals);
+    });
+  }
 
   return finishedGoals;
 };
@@ -72,12 +74,12 @@ const goalsCompletedPerTeamMemberPeriod = async function (
     endDate,
   ]);
 
-  //console.log(finishedGoals);
-
-  finishedGoals.forEach((goal) => {
-    goal.finishedgoals = parseInt(goal.finishedgoals);
-    goal.totalgoals = parseInt(goal.totalgoals);
-  });
+  if (finishedGoals) {
+    finishedGoals.forEach((goal) => {
+      goal.finishedgoals = parseInt(goal.finishedgoals);
+      goal.totalgoals = parseInt(goal.totalgoals);
+    });
+  }
 
   return finishedGoals;
 };
@@ -103,11 +105,12 @@ GROUP BY member_id, DATE(date_time);`;
     beginDate,
     endDate,
   ]);
-
-  finishedGoals.forEach((goal) => {
-    goal.finishedgoals = parseInt(goal.finishedgoals);
-    goal.totalgoals = parseInt(goal.totalgoals);
-  });
+  if (finishedGoals) {
+    finishedGoals.forEach((goal) => {
+      goal.finishedgoals = parseInt(goal.finishedgoals);
+      goal.totalgoals = parseInt(goal.totalgoals);
+    });
+  }
 
   return finishedGoals;
 };
