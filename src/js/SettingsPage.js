@@ -12,6 +12,7 @@ import {
   selectUser,
   setAuthorizationToken,
   setCurrentUser,
+  selectTeam,
 } from "./redux/actions";
 const BASE_URL = `${window.location.protocol}//${window.location.host}`;
 
@@ -53,6 +54,10 @@ class SettingsPage extends Component {
     const response3 = await fetch("/users/" + this.props.currentUserId);
     const json3 = await response3.json();
     this.setState({ userInfo: json3 });
+
+    if (!this.state.teams) {
+      this.props.selectTeam(-1);
+    }
   }
 
   deleteAccount() {
@@ -66,11 +71,6 @@ class SettingsPage extends Component {
       .delete(`${BASE_URL}/users/${this.props.currentUserId}/?date=` + today)
       .then(() => {
         console.log("User Deleted");
-        //TODO the page needs to reload back to home, not hang
-        // this.setState((prevState) => ({
-        //   ...prevState,
-        //   currentUserId: 0,
-        // }));
         this.props.logout();
       })
       .catch((error) => {
@@ -217,4 +217,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsPage);
+export default connect(mapStateToProps, { mapDispatchToProps, selectTeam })(
+  SettingsPage
+);
