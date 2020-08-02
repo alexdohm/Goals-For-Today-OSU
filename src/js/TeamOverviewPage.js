@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 
 import Heading from "./components/common/Heading";
 import TeamTaskbar from "./components/TeamTaskbar";
+import Comments from "./components/Comments";
 import { dateToQueryString } from "./components/common/helpers";
 
 class TeamOverviewPage extends Component {
@@ -134,6 +135,11 @@ class TeamOverviewPage extends Component {
             </Heading>
             <div className="TeamOverview-stats">TODO: place charts here</div>
           </div>
+          <Comments
+            currentUserId={data.member_id}
+            team={data.team}
+            updateData={this.fetchData}
+          />
         </div>
       );
     } else {
