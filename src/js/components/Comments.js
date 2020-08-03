@@ -125,6 +125,7 @@ class Comments extends Component {
           <CommentForm
             updateData={this.props.updateData}
             selectedToDoId={this.props.selectedToDoId}
+            selectedUserId={this.props.selectedUserId}
             currentUserId={this.props.currentUserId}
             currentTeamId={this.props.currentTeamId}
           />
@@ -195,7 +196,7 @@ class CommentForm extends Component {
     let fetchPath;
     if (this.props.selectedToDoId == -1) {
       //post a general comment
-      fetchPath = "/users/" + this.props.currentUserId + "/comments";
+      fetchPath = "/users/" + this.props.selectedUserId + "/comments";
     } else {
       //post comment on a specific goal
       fetchPath = "/goals/" + this.props.selectedToDoId + "/comments";
