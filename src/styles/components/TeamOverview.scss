@@ -1,6 +1,7 @@
 .TeamOverview
 {
   display: flex;
+  height: 100%;
   
   @media (max-width: $small-screen)
   {

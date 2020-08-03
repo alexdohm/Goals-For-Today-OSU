@@ -17,6 +17,7 @@ class TeamOverviewPage extends Component {
     this.state = {
       data: null,
       teamInfo: null,
+      teamComments: null,
       stats: null,
       beginDate: lastWeek,
       endDate: today,
@@ -25,6 +26,7 @@ class TeamOverviewPage extends Component {
     this.handleBeginDateChange = this.handleBeginDateChange.bind(this);
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
     this.updateStatistics = this.updateStatistics.bind(this);
+    this.fetchData = this.fetchData.bind(this);
   }
 
   handleBeginDateChange(date) {
@@ -52,6 +54,10 @@ class TeamOverviewPage extends Component {
   }
 
   componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData() {
     fetch(
       "/users/login/" +
         this.props.userEmail +
@@ -70,6 +76,13 @@ class TeamOverviewPage extends Component {
         this.setState({
           teamInfo: data,
         });
+        fetch("/teams/" + this.props.currentTeam + "/comments")
+          .then(response => response.json())
+          .then(data=> {
+            this.setState({
+              teamComments: data
+            });
+          });
       })
       .then(() => {
         this.updateStatistics();
@@ -104,6 +117,7 @@ class TeamOverviewPage extends Component {
             currentUserFirstName={data.first_name}
             currentUserLastName={data.last_name}
             team={data.team}
+            isTeamOverview={true}
           />
           <div classname="TeamOverview-container">
             <div class="TeamOverview-datepickers">
@@ -139,6 +153,8 @@ class TeamOverviewPage extends Component {
             currentUserId={data.member_id}
             team={data.team}
             updateData={this.fetchData}
+            isTeamOverview={true}
+            teamComments={this.state.teamComments ? this.state.teamComments : {}}
           />
         </div>
       );

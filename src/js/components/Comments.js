@@ -17,6 +17,7 @@ class Comments extends Component {
     }
 
     this.toggleMenu = this.toggleMenu.bind(this);
+    this.renderComments = this.renderComments.bind(this);
   }
 
   sortCommentsByTime(commentsMap) {
@@ -35,6 +36,16 @@ class Comments extends Component {
       ...prevState,
       isExpanded: !prevState.isExpanded,
     }));
+  }
+
+  renderComments(userToCommentsMap, goalToCommentsMap) {
+    if (this.props.isTeamOverview) {
+      return this.renderTeamComments();
+    } else if (this.props.selectedToDoId == -1) {
+      return this.renderUserComments(userToCommentsMap);
+    } else {
+      return this.renderGoalComments(goalToCommentsMap);
+    }
   }
 
   renderGoalComments(goalToCommentsMap) {
@@ -69,8 +80,31 @@ class Comments extends Component {
     });
   }
 
+  renderTeamComments() {
+    if (this.props.teamComments.items && this.props.teamComments.items.length) {
+      console.log('in if statement');
+      this.props.teamComments.items.sort((a, b) => {
+        let aDate = new Date(a.date_time);
+        let bDate = new Date(b.date_time);
+
+        return aDate.getTime() - bDate.getTime();
+      });
+      return this.props.teamComments.items.map( comment => {
+        return (
+          <Comment
+            key={comment.comment_id}
+            firstName={comment.first_name}
+            lastName={comment.last_name}
+            body={comment.message}
+            date={new Date(comment.date_time)}
+          />
+        );
+      });
+    }
+  }
+
   render() {
-    const { currentUserId, team, selectedToDoName, selectedToDoId, selectedToDoDescription } = this.props;
+    const { currentUserId, team, selectedToDoName, selectedToDoDescription } = this.props;
     const goalToCommentsMap = {};
     const userToCommentsMap = {};
 
@@ -120,7 +154,7 @@ class Comments extends Component {
             ) : null}
           </div>
           <div className="Comments-list">
-            {selectedToDoId == -1 ? this.renderUserComments(userToCommentsMap) : this.renderGoalComments(goalToCommentsMap)}
+            {this.renderComments(userToCommentsMap, goalToCommentsMap)}
           </div>
           <CommentForm
             updateData={this.props.updateData}

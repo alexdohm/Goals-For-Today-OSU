@@ -28,6 +28,7 @@ class TeamTaskbar extends Component {
     this.navigateToSettings = this.navigateToSettings.bind(this);
     this.navigateToTeamOverview = this.navigateToTeamOverview.bind(this);
     this.navigateToAdmin = this.navigateToAdmin.bind(this);
+    this.navigateToHome = this.navigateToHome.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
 
     this.state = {
@@ -50,6 +51,10 @@ class TeamTaskbar extends Component {
 
   navigateToAdmin() {
     this.props.history.push("/admin");
+  }
+
+  navigateToHome() {
+    this.props.history.push("/home");
   }
 
   toggleMenu() {
@@ -84,7 +89,7 @@ class TeamTaskbar extends Component {
             {/* render current user's card first */}
             <TaskbarItem
               key={currentUserId}
-              onClick={() => this.props.onUserSelected(currentUserId)}
+              onClick={this.props.isTeamOverview ? this.navigateToHome : () => this.props.onUserSelected(currentUserId)}
               icon={USER_ICON}
               isSelected={currentUserId == this.props.selectedUserId}
             >
@@ -96,7 +101,7 @@ class TeamTaskbar extends Component {
               ? team.team_members.map((user, index) => (
                   <TaskbarItem
                     key={user.member_id}
-                    onClick={() => this.props.onUserSelected(user.member_id)}
+                    onClick={this.props.isTeamOverview ? this.navigateToHome : () => this.props.onUserSelected(user.member_id)}
                     icon={USER_ICON}
                     isSelected={user.member_id == this.props.selectedUserId}
                   >
