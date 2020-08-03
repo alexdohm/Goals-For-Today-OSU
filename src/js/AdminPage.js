@@ -125,6 +125,7 @@ class AdminPage extends Component {
 
   render() {
     if (this.state.data) {
+      console.log(this.state);
       return (
         <div className="Admin">
           <TeamTaskbar

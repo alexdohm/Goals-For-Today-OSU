@@ -27,6 +27,7 @@ class AdminTeamSection extends Component {
     super(props);
     this.deleteMember = this.deleteMember.bind(this);
     this.changeStatus = this.changeStatus.bind(this);
+    this.approveMember = this.approveMember.bind(this);
   }
 
   deleteMember(userId) {
@@ -65,6 +66,48 @@ class AdminTeamSection extends Component {
       .then((data) => console.log(data));
   }
 
+  approveMember(userId) {
+    const body = {
+      approved_ind: 1
+    } 
+
+    const raw = JSON.stringify(body);
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const requestOptions = {
+      method: "PATCH",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+    fetch(
+      "/teams/" + this.props.currentTeam + "/users/" + userId,
+      requestOptions
+    )
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        this.props.updateData();
+      })
+      .catch(err => {
+        console.warn(err);
+        this.props.updateData();
+      });
+  }
+
+  removePending(userId) {
+    axios
+      .delete(
+        `${BASE_URL}/teams/` +
+          teamId +
+          `/users/${userId}/pending`
+      )
+      .then(() => {
+        console.log("Pending request deleted");
+      });
+  }
+
   render() {
     const { team, firstName, status } = this.props;
     return (
@@ -90,6 +133,8 @@ class AdminTeamSection extends Component {
                 status={member.status}
                 changeStatus={this.changeStatus}
                 isNotCurrentUser={true}
+                approveMember={this.approveMember}
+                removePending={this.removePending}
               />
             );
           })}
@@ -130,17 +175,29 @@ class AdminTeamMember extends Component {
       <div className="Admin-teamMember">
         <Icon className="Admin-teamMemberIcon" name={USER_ICON} size="large" />
         <Text baseClass="Admin">{this.props.name}</Text>
-        <Select
-          className="Admin-statusSelect"
-          options={statusOptions}
-          value={this.state.statusValue}
-          onChange={this.handleDropdownChange}
-        />
+        {this.state.statusValue == 'REQUESTED' 
+          ?
+            <Button 
+              primary 
+              className="Admin-approve" 
+              onClick={() => this.props.approveMember(this.props.id)}>
+              Approve
+            </Button>
+          :
+            <Select
+              className="Admin-statusSelect"
+              options={statusOptions}
+              value={this.state.statusValue}
+              onChange={this.handleDropdownChange}
+            />
+        }
         {this.props.isNotCurrentUser ? (
           <IconButton
             baseClass="Admin"
             icon={TRASH_ICON}
-            onClick={() => this.props.deleteMember(this.props.id)}
+            onClick={this.state.statusValue == 'REQUESTED'
+              ? () => this.props.removePending(this.props.id)
+              : () => this.props.deleteMember(this.props.id)}
           />
         ) : null}
       </div>
