@@ -9,6 +9,7 @@
     border-left: $border-black-2;
     overflow: scroll;
     transition: width 300ms ease-in-out;
+    height: 100%;
 
     @media (max-width: $small-screen)
     {

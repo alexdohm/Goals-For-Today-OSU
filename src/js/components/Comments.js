@@ -19,9 +19,9 @@ class Comments extends Component {
     this.toggleMenu = this.toggleMenu.bind(this);
   }
 
-  sortCommentsByTime(goalToCommentsMap) {
-    for (const goal in goalToCommentsMap) {
-      goalToCommentsMap[goal].sort((a, b) => {
+  sortCommentsByTime(commentsMap) {
+    for (const key in commentsMap) {
+      commentsMap[key].sort((a, b) => {
         let aDate = new Date(a.date_time);
         let bDate = new Date(b.date_time);
 
@@ -37,18 +37,56 @@ class Comments extends Component {
     }));
   }
 
-  render() {
-    const { team, selectedToDoName, selectedToDoDescription } = this.props;
-    const goalToCommentsMap = {};
+  renderGoalComments(goalToCommentsMap) {
+    return Object.keys(goalToCommentsMap).map((key) => {
+      return goalToCommentsMap[key].map((comment) => {
+        if (key == this.props.selectedToDoId) {
+          return (
+            <Comment
+                key={comment.comment_id}
+                firstName={comment.first_name}
+                lastName={comment.last_name}
+                body={comment.message}
+                date={new Date(comment.date_time)}
+            />
+          );
+        }
+      });
+    }).flat();
+  }
 
-    goalToCommentsMap[-1] = team.user_comments;
-    for (const member of team.team_members) {
-      goalToCommentsMap[-1] = goalToCommentsMap[-1].concat(
-        member.user_comments
+  renderUserComments(userToCommentsMap) {
+    return userToCommentsMap[this.props.selectedUserId].map((comment) => {
+      return (
+        <Comment
+          key={comment.comment_id}
+          firstName={comment.first_name}
+          lastName={comment.last_name}
+          body={comment.message}
+          date={new Date(comment.date_time)}
+        />
       );
+    });
+  }
+
+  render() {
+    const { currentUserId, team, selectedToDoName, selectedToDoId, selectedToDoDescription } = this.props;
+    const goalToCommentsMap = {};
+    const userToCommentsMap = {};
+
+    // goalToCommentsMap[-1] = team.user_comments;
+    for (const member of team.team_members) {
+      // goalToCommentsMap[-1] = goalToCommentsMap[-1].concat(
+      //   member.user_comments
+      // );
       for (const goal of member.goals) {
         goalToCommentsMap[goal.goal_id] = goal.comments;
       }
+    }
+
+    userToCommentsMap[currentUserId] = team.user_comments;
+    for (const member of team.team_members) {
+      userToCommentsMap[member.member_id] = member.user_comments;
     }
 
     for (const goal of team.goals) {
@@ -56,6 +94,7 @@ class Comments extends Component {
     }
 
     this.sortCommentsByTime(goalToCommentsMap);
+    this.sortCommentsByTime(userToCommentsMap);
 
     return (
       <div
@@ -81,23 +120,7 @@ class Comments extends Component {
             ) : null}
           </div>
           <div className="Comments-list">
-            {Object.keys(goalToCommentsMap)
-              .map((key) =>
-                goalToCommentsMap[key].map((comment) => {
-                  if (key == this.props.selectedToDoId) {
-                    return (
-                      <Comment
-                        key={comment.comment_id}
-                        firstName={comment.first_name}
-                        lastName={comment.last_name}
-                        body={comment.message}
-                        date={new Date(comment.date_time)}
-                      />
-                    );
-                  }
-                })
-              )
-              .flat()}
+            {selectedToDoId == -1 ? this.renderUserComments(userToCommentsMap) : this.renderGoalComments(goalToCommentsMap)}
           </div>
           <CommentForm
             updateData={this.props.updateData}
@@ -214,6 +237,7 @@ const mapStateToProps = (state) => ({
   selectedToDoId: state.toDos.selectedToDoId,
   selectedToDoName: state.toDos.selectedToDoName,
   selectedToDoDescription: state.toDos.selectedToDoDescription,
+  selectedUserId: state.toDos.selectedUserId,
   currentTeamId: state.teams.currentTeam,
 });
 
