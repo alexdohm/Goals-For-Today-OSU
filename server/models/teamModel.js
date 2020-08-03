@@ -378,7 +378,7 @@ const getTeamTimes = async function () {
 const getGoalsForUser = async function (email, teamId) {
   const query = `select g.task_name, g.task_description, g.status from goal as g
 inner join team_member as tm on tm.member_id = g.member_id
-where DATE(g.date_time) = '2020-07-09' and tm.email = $1 and g.team_id = $2;`;
+where DATE(g.date_time) = now() and tm.email = $1 and g.team_id = $2;`;
 
   const filter = [email, teamId];
   return Helpers.runQuery(query, filter);
@@ -395,13 +395,13 @@ const getGoalsSummary = async function (teamId) {
   INNER JOIN member_of AS mo ON mo.member_id = tm.member_id
   WHERE mo.team_id = $1
   AND approved = true
-  AND (date_left IS NULL OR date_left > '2020-07-09')) AS u1
+  AND (date_left IS NULL OR date_left > now())) AS u1
   LEFT OUTER JOIN (SELECT member_id,
   count(*)                                       as totalGoals,
       sum(case when status = true then 1 else 0 end) as finishedGoals
   FROM goal
   WHERE team_id = $1
-  AND DATE(date_time) = '2020-07-09'
+  AND DATE(date_time) = now()
   GROUP BY member_id) as u2
   ON u1.member_id = u2.member_id;`;
 

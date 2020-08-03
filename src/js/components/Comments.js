@@ -2,7 +2,12 @@ import React, { Component } from "react";
 import { Button, Form, Icon } from "semantic-ui-react";
 import { connect } from "react-redux";
 
-import { USER_ICON, EDIT_ICON, CLOSE_ICON, COMMENT_ICON } from "./common/constants";
+import {
+  USER_ICON,
+  EDIT_ICON,
+  CLOSE_ICON,
+  COMMENT_ICON,
+} from "./common/constants";
 import Heading from "./common/Heading";
 import Text from "./common/Text";
 import { dateToTimestampString } from "./common/helpers";
@@ -14,7 +19,7 @@ class Comments extends Component {
 
     this.state = {
       isExpanded: false,
-    }
+    };
 
     this.toggleMenu = this.toggleMenu.bind(this);
     this.renderComments = this.renderComments.bind(this);
@@ -49,25 +54,27 @@ class Comments extends Component {
   }
 
   renderGoalComments(goalToCommentsMap) {
-    return Object.keys(goalToCommentsMap).map((key) => {
-      return goalToCommentsMap[key].map((comment) => {
-        if (key == this.props.selectedToDoId) {
-          return (
-            <Comment
+    return Object.keys(goalToCommentsMap)
+      .map((key) => {
+        return goalToCommentsMap[key].map((comment) => {
+          if (key == this.props.selectedToDoId) {
+            return (
+              <Comment
                 key={comment.comment_id}
                 firstName={comment.first_name}
                 lastName={comment.last_name}
                 body={comment.message}
                 date={new Date(comment.date_time)}
-            />
-          );
-        }
-      });
-    }).flat();
+              />
+            );
+          }
+        });
+      })
+      .flat();
   }
 
   renderUserComments(userToCommentsMap) {
-    return userToCommentsMap[this.props.selectedUserId].map((comment) => {
+    return userToCommentsMap[this.props.currentUserId].map((comment) => {
       return (
         <Comment
           key={comment.comment_id}
@@ -82,14 +89,13 @@ class Comments extends Component {
 
   renderTeamComments() {
     if (this.props.teamComments.items && this.props.teamComments.items.length) {
-      console.log('in if statement');
       this.props.teamComments.items.sort((a, b) => {
         let aDate = new Date(a.date_time);
         let bDate = new Date(b.date_time);
 
         return aDate.getTime() - bDate.getTime();
       });
-      return this.props.teamComments.items.map( comment => {
+      return this.props.teamComments.items.map((comment) => {
         return (
           <Comment
             key={comment.comment_id}
@@ -104,7 +110,12 @@ class Comments extends Component {
   }
 
   render() {
-    const { currentUserId, team, selectedToDoName, selectedToDoDescription } = this.props;
+    const {
+      currentUserId,
+      team,
+      selectedToDoName,
+      selectedToDoDescription,
+    } = this.props;
     const goalToCommentsMap = {};
     const userToCommentsMap = {};
 

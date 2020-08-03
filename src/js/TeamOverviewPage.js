@@ -77,10 +77,10 @@ class TeamOverviewPage extends Component {
           teamInfo: data,
         });
         fetch("/teams/" + this.props.currentTeam + "/comments")
-          .then(response => response.json())
-          .then(data=> {
+          .then((response) => response.json())
+          .then((data) => {
             this.setState({
-              teamComments: data
+              teamComments: data,
             });
           });
       })
@@ -154,7 +154,9 @@ class TeamOverviewPage extends Component {
             team={data.team}
             updateData={this.fetchData}
             isTeamOverview={true}
-            teamComments={this.state.teamComments ? this.state.teamComments : {}}
+            teamComments={
+              this.state.teamComments ? this.state.teamComments : {}
+            }
           />
         </div>
       );

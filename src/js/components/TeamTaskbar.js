@@ -89,7 +89,11 @@ class TeamTaskbar extends Component {
             {/* render current user's card first */}
             <TaskbarItem
               key={currentUserId}
-              onClick={this.props.isTeamOverview ? this.navigateToHome : () => this.props.onUserSelected(currentUserId)}
+              onClick={
+                this.props.isTeamOverview
+                  ? this.navigateToHome
+                  : () => this.props.onUserSelected(currentUserId)
+              }
               icon={USER_ICON}
               isSelected={currentUserId == this.props.selectedUserId}
             >
@@ -101,7 +105,11 @@ class TeamTaskbar extends Component {
               ? team.team_members.map((user, index) => (
                   <TaskbarItem
                     key={user.member_id}
-                    onClick={this.props.isTeamOverview ? this.navigateToHome : () => this.props.onUserSelected(user.member_id)}
+                    onClick={
+                      this.props.isTeamOverview
+                        ? this.navigateToHome
+                        : () => this.props.onUserSelected(user.member_id)
+                    }
                     icon={USER_ICON}
                     isSelected={user.member_id == this.props.selectedUserId}
                   >

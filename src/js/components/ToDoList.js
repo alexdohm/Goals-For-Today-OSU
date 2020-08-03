@@ -174,7 +174,8 @@ class ToDoList extends Component {
             )
             .flat()}
         </div>
-        {this.props.selectedUserId == this.props.currentUserId && isSameDay(this.state.date, new Date()) ? (
+        {this.props.selectedUserId == this.props.currentUserId &&
+        isSameDay(this.state.date, new Date()) ? (
           <div className="ToDoList-addButtonContainer">
             <IconButton
               baseClass="ToDoList"
