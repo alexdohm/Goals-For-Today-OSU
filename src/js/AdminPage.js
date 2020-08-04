@@ -124,7 +124,7 @@ class AdminPage extends Component {
   }
 
   render() {
-    if (this.state.data) {
+    if (this.state.data && this.state.teamInfo) {
       console.log(this.state);
       return (
         <div className="Admin">
