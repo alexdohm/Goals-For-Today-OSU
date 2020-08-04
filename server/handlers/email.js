@@ -15,7 +15,7 @@ let transport = nodemailer.createTransport({
   pool: true,
   maxConnections: 1,
   rateDelta: 20000,
-  rateLimit: 5,
+  rateLimit: 3,
   tls: {
     ciphers: "SSLv3",
   },

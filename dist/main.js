@@ -45602,30 +45602,31 @@ object-assign
                   t = this.props,
                   n = t.team,
                   r = t.firstName,
-                  a = t.status;
+                  a = t.lastName,
+                  i = t.status;
                 return o.a.createElement(
                   "div",
                   { className: "Admin-teamSection Admin-form" },
                   o.a.createElement(
-                    Ur,
-                    { hLevel: 2, baseClass: "Admin" },
+                    "h2",
+                    { className: "Settings-header" },
                     n.team_name
                   ),
                   o.a.createElement(
                     "div",
                     { className: "Admin-teamMembers" },
                     o.a.createElement(yi, {
-                      name: r,
+                      name: r + " " + a,
                       id: this.props.currentUserId,
                       deleteMember: this.deleteMember,
-                      status: a,
+                      status: i,
                       changeStatus: this.changeStatus,
                     }),
                     n.team_members.map(function (t) {
                       return o.a.createElement(yi, {
                         key: t.member_id,
                         id: t.member_id,
-                        name: t.first_name,
+                        name: t.first_name + " " + t.last_name,
                         deleteMember: e.deleteMember,
                         status: t.status,
                         changeStatus: e.changeStatus,
@@ -45686,48 +45687,65 @@ object-assign
                 return o.a.createElement(
                   "div",
                   { className: "Admin-teamMember" },
-                  o.a.createElement(ea, {
-                    className: "Admin-teamMemberIcon",
-                    name: "user",
-                    size: "large",
-                  }),
                   o.a.createElement(
-                    Vr,
-                    { baseClass: "Admin" },
-                    this.props.name
-                  ),
-                  "REQUESTED" == this.state.statusValue
-                    ? o.a.createElement(
-                        Da,
-                        {
-                          primary: !0,
-                          className: "Admin-approve",
-                          onClick: function () {
-                            return e.props.approveMember(e.props.id);
-                          },
-                        },
-                        "Approve"
+                    "div",
+                    { className: "ui grid middle aligned Admin-grid" },
+                    o.a.createElement(
+                      "div",
+                      { className: "five wide column" },
+                      o.a.createElement(
+                        "div",
+                        { className: "row" },
+                        o.a.createElement(
+                          Vr,
+                          { baseClass: "Admin" },
+                          this.props.name
+                        )
                       )
-                    : o.a.createElement(wo, {
-                        className: "Admin-statusSelect",
-                        options: _i,
-                        value: this.state.statusValue,
-                        onChange: this.handleDropdownChange,
-                      }),
-                  this.props.isNotCurrentUser
-                    ? o.a.createElement(No, {
-                        baseClass: "Admin",
-                        icon: "trash alternate",
-                        onClick:
-                          "REQUESTED" == this.state.statusValue
-                            ? function () {
-                                return e.props.removePending(e.props.id);
-                              }
-                            : function () {
-                                return e.props.deleteMember(e.props.id);
+                    ),
+                    o.a.createElement(
+                      "div",
+                      { className: "seven wide column" },
+                      "REQUESTED" == this.state.statusValue
+                        ? o.a.createElement(
+                            Da,
+                            {
+                              primary: !0,
+                              className: "Admin-approve",
+                              onClick: function () {
+                                return e.props.approveMember(e.props.id);
                               },
-                      })
-                    : null
+                            },
+                            "Approve"
+                          )
+                        : o.a.createElement(wo, {
+                            className: "Admin-statusSelect",
+                            options: _i,
+                            fluid: !0,
+                            value: this.state.statusValue,
+                            onChange: this.handleDropdownChange,
+                          })
+                    ),
+                    o.a.createElement(
+                      "div",
+                      { className: "four wide column" },
+                      this.props.isNotCurrentUser
+                        ? o.a.createElement(No, {
+                            baseClass: "Admin",
+                            icon: "trash alternate",
+                            size: "large",
+                            onClick:
+                              "REQUESTED" == this.state.statusValue
+                                ? function () {
+                                    return e.props.removePending(e.props.id);
+                                  }
+                                : function () {
+                                    return e.props.deleteMember(e.props.id);
+                                  },
+                          })
+                        : null
+                    )
+                  )
                 );
               },
             },
@@ -46686,6 +46704,7 @@ object-assign
                         o.a.createElement(vi, {
                           team: this.state.data.team,
                           firstName: this.state.data.first_name,
+                          lastName: this.state.data.last_name,
                           status: this.state.data.team.team_admin
                             ? "ADMIN"
                             : "MEMBER",

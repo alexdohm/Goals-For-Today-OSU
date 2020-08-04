@@ -108,15 +108,13 @@ class AdminTeamSection extends Component {
   }
 
   render() {
-    const { team, firstName, status } = this.props;
+    const { team, firstName, lastName, status } = this.props;
     return (
       <div className="Admin-teamSection Admin-form">
-        <Heading hLevel={2} baseClass="Admin">
-          {team.team_name}
-        </Heading>
+        <h2 className="Settings-header">{team.team_name}</h2>
         <div className="Admin-teamMembers">
           <AdminTeamMember
-            name={firstName}
+            name={firstName + " " + lastName}
             id={this.props.currentUserId}
             deleteMember={this.deleteMember}
             status={status}
@@ -127,7 +125,7 @@ class AdminTeamSection extends Component {
               <AdminTeamMember
                 key={member.member_id}
                 id={member.member_id}
-                name={member.first_name}
+                name={member.first_name + " " + member.last_name}
                 deleteMember={this.deleteMember}
                 status={member.status}
                 changeStatus={this.changeStatus}
@@ -172,35 +170,46 @@ class AdminTeamMember extends Component {
   render() {
     return (
       <div className="Admin-teamMember">
-        <Icon className="Admin-teamMemberIcon" name={USER_ICON} size="large" />
-        <Text baseClass="Admin">{this.props.name}</Text>
-        {this.state.statusValue == "REQUESTED" ? (
-          <Button
-            primary
-            className="Admin-approve"
-            onClick={() => this.props.approveMember(this.props.id)}
-          >
-            Approve
-          </Button>
-        ) : (
-          <Select
-            className="Admin-statusSelect"
-            options={statusOptions}
-            value={this.state.statusValue}
-            onChange={this.handleDropdownChange}
-          />
-        )}
-        {this.props.isNotCurrentUser ? (
-          <IconButton
-            baseClass="Admin"
-            icon={TRASH_ICON}
-            onClick={
-              this.state.statusValue == "REQUESTED"
-                ? () => this.props.removePending(this.props.id)
-                : () => this.props.deleteMember(this.props.id)
-            }
-          />
-        ) : null}
+        <div className="ui grid middle aligned Admin-grid">
+          <div className="five wide column">
+            <div className="row">
+              <Text baseClass="Admin">{this.props.name}</Text>
+            </div>
+          </div>
+          <div className="seven wide column">
+            {this.state.statusValue == "REQUESTED" ? (
+              <Button
+                primary
+                className="Admin-approve"
+                onClick={() => this.props.approveMember(this.props.id)}
+              >
+                Approve
+              </Button>
+            ) : (
+              <Select
+                className="Admin-statusSelect"
+                options={statusOptions}
+                fluid
+                value={this.state.statusValue}
+                onChange={this.handleDropdownChange}
+              />
+            )}
+          </div>
+          <div className="four wide column">
+            {this.props.isNotCurrentUser ? (
+              <IconButton
+                baseClass="Admin"
+                icon={TRASH_ICON}
+                size="large"
+                onClick={
+                  this.state.statusValue == "REQUESTED"
+                    ? () => this.props.removePending(this.props.id)
+                    : () => this.props.deleteMember(this.props.id)
+                }
+              />
+            ) : null}
+          </div>
+        </div>
       </div>
     );
   }

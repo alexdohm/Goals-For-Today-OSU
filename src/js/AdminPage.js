@@ -141,6 +141,7 @@ class AdminPage extends Component {
             <AdminTeamSection
               team={this.state.data.team}
               firstName={this.state.data.first_name}
+              lastName={this.state.data.last_name}
               status={this.state.data.team.team_admin ? "ADMIN" : "MEMBER"}
               openInviteModal={this.openInviteModal}
               inviteTeamMember={this.inviteTeamMember}
