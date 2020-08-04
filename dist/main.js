@@ -45404,7 +45404,8 @@ object-assign
           r = "".concat(e.idPrefix, "-").concat(e.name.replace(" ", "-")),
           a = e.type ? e.type : "text",
           i = e.placeholder ? e.placeholder : e.name,
-          c = e.initialValue ? e.initialValue : null;
+          c = e.initialValue ? e.initialValue : null,
+          s = e.maxLength ? e.maxLength : null;
         return o.a.createElement(
           ii.Field,
           { className: t },
@@ -45415,6 +45416,7 @@ object-assign
             onChange: e.onChange,
             type: a,
             value: c,
+            maxLength: s,
           })
         );
       },
@@ -45493,11 +45495,12 @@ object-assign
     var hi = ""
         .concat(window.location.protocol, "//")
         .concat(window.location.host),
-      Mi = [
+      Mi = localStorage.getItem("jwtToken"),
+      _i = [
         { key: "MEMBER", value: "MEMBER", text: "Member" },
         { key: "ADMIN", value: "ADMIN", text: "Admin" },
       ],
-      _i = (function (e) {
+      bi = (function (e) {
         Bt()(n, e);
         var t = mi(n);
         function n(e) {
@@ -45535,7 +45538,8 @@ object-assign
                 var n = { admin_ind: "ADMIN" == t ? 1 : 0 },
                   r = JSON.stringify(n),
                   a = new Headers();
-                a.append("Content-Type", "application/json");
+                a.append("Content-Type", "application/json"),
+                  a.append("Authorization", "Bearer ".concat(Mi));
                 var o = {
                   method: "PATCH",
                   headers: a,
@@ -45557,7 +45561,8 @@ object-assign
                 var t = this,
                   n = JSON.stringify({ approved_ind: 1 }),
                   r = new Headers();
-                r.append("Content-Type", "application/json");
+                r.append("Content-Type", "application/json"),
+                  r.append("Authorization", "Bearer ".concat(Mi));
                 var a = {
                   method: "PATCH",
                   headers: r,
@@ -45609,7 +45614,7 @@ object-assign
                   o.a.createElement(
                     "div",
                     { className: "Admin-teamMembers" },
-                    o.a.createElement(bi, {
+                    o.a.createElement(yi, {
                       name: r,
                       id: this.props.currentUserId,
                       deleteMember: this.deleteMember,
@@ -45617,7 +45622,7 @@ object-assign
                       changeStatus: this.changeStatus,
                     }),
                     n.team_members.map(function (t) {
-                      return o.a.createElement(bi, {
+                      return o.a.createElement(yi, {
                         key: t.member_id,
                         id: t.member_id,
                         name: t.first_name,
@@ -45650,7 +45655,7 @@ object-assign
           n
         );
       })(a.Component),
-      bi = (function (e) {
+      yi = (function (e) {
         Bt()(n, e);
         var t = mi(n);
         function n(e) {
@@ -45705,7 +45710,7 @@ object-assign
                       )
                     : o.a.createElement(wo, {
                         className: "Admin-statusSelect",
-                        options: Mi,
+                        options: _i,
                         value: this.state.statusValue,
                         onChange: this.handleDropdownChange,
                       }),
@@ -45730,8 +45735,8 @@ object-assign
           n
         );
       })(a.Component),
-      yi = _i;
-    function vi(e, t) {
+      vi = bi;
+    function gi(e, t) {
       var n = Object.keys(e);
       if (Object.getOwnPropertySymbols) {
         var r = Object.getOwnPropertySymbols(e);
@@ -45743,16 +45748,16 @@ object-assign
       }
       return n;
     }
-    function gi(e) {
+    function Li(e) {
       for (var t = 1; t < arguments.length; t++) {
         var n = null != arguments[t] ? arguments[t] : {};
         t % 2
-          ? vi(Object(n), !0).forEach(function (t) {
+          ? gi(Object(n), !0).forEach(function (t) {
               Yt()(e, t, n[t]);
             })
           : Object.getOwnPropertyDescriptors
           ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(n))
-          : vi(Object(n)).forEach(function (t) {
+          : gi(Object(n)).forEach(function (t) {
               Object.defineProperty(
                 e,
                 t,
@@ -45762,7 +45767,7 @@ object-assign
       }
       return e;
     }
-    function Li(e) {
+    function Ai(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -45788,12 +45793,12 @@ object-assign
         return Rt()(this, n);
       };
     }
-    var Ai = ""
+    var wi = ""
         .concat(window.location.protocol, "//")
         .concat(window.location.host),
-      wi = (function (e) {
+      ki = (function (e) {
         Bt()(n, e);
-        var t = Li(n);
+        var t = Ai(n);
         function n(e) {
           var r;
           return (
@@ -45821,11 +45826,11 @@ object-assign
                   r = t.value;
                 this.setState(
                   function (e) {
-                    return gi(gi({}, e), {}, { updatedEveningTime: r });
+                    return Li(Li({}, e), {}, { updatedEveningTime: r });
                   },
                   function () {
                     di.a.patch(
-                      "".concat(Ai, "/teams/").concat(n.props.teamInfo.team_id),
+                      "".concat(wi, "/teams/").concat(n.props.teamInfo.team_id),
                       { evening_time: n.state.updatedEveningTime }
                     );
                   }
@@ -45839,11 +45844,11 @@ object-assign
                   r = t.value;
                 this.setState(
                   function (e) {
-                    return gi(gi({}, e), {}, { updatedTimeZone: r });
+                    return Li(Li({}, e), {}, { updatedTimeZone: r });
                   },
                   function () {
                     di.a.patch(
-                      "".concat(Ai, "/teams/").concat(n.props.teamInfo.team_id),
+                      "".concat(wi, "/teams/").concat(n.props.teamInfo.team_id),
                       { time_zone: n.state.updatedTimeZone }
                     );
                   }
@@ -45924,7 +45929,7 @@ object-assign
           n
         );
       })(a.Component),
-      ki = function (e) {
+      Ti = function (e) {
         return o.a.createElement(
           Da,
           {
@@ -45936,82 +45941,82 @@ object-assign
           "Delete Team"
         );
       };
-    function Ti(e) {
+    function Oi(e) {
       var t = e.children,
         n = e.className,
         a = e.content,
         i = En()("content", n),
-        c = hn(Ti, e),
-        s = Er(Ti, e);
+        c = hn(Oi, e),
+        s = Er(Oi, e);
       return o.a.createElement(
         s,
         Ut()({}, c, { className: i }),
         r.isNil(t) ? a : t
       );
     }
-    (Ti.handledProps = ["as", "children", "className", "content"]),
-      (Ti.propTypes = {});
-    var Oi = Ti;
-    function zi(e) {
+    (Oi.handledProps = ["as", "children", "className", "content"]),
+      (Oi.propTypes = {});
+    var zi = Oi;
+    function Di(e) {
       var t = e.children,
         n = e.className,
         a = e.content,
         i = En()("header", n),
-        c = hn(zi, e),
-        s = Er(zi, e);
+        c = hn(Di, e),
+        s = Er(Di, e);
       return o.a.createElement(
         s,
         Ut()({}, c, { className: i }),
         r.isNil(t) ? a : t
       );
     }
-    (zi.handledProps = ["as", "children", "className", "content"]),
-      (zi.propTypes = {}),
-      (zi.create = Cn(zi, function (e) {
+    (Di.handledProps = ["as", "children", "className", "content"]),
+      (Di.propTypes = {}),
+      (Di.create = Cn(Di, function (e) {
         return { content: e };
       }));
-    var Di = zi;
-    function Si(e) {
+    var Si = Di;
+    function Ni(e) {
       var t = e.children,
         n = e.className,
         a = e.content,
         i = En()("content", n),
-        c = hn(Si, e),
-        s = Er(Si, e);
+        c = hn(Ni, e),
+        s = Er(Ni, e);
       return o.a.createElement(
         s,
         Ut()({}, c, { className: i }),
         r.isNil(t) ? a : t
       );
     }
-    (Si.handledProps = ["as", "children", "className", "content"]),
-      (Si.propTypes = {}),
-      (Si.defaultProps = { as: "li" }),
-      (Si.create = Cn(Si, function (e) {
+    (Ni.handledProps = ["as", "children", "className", "content"]),
+      (Ni.propTypes = {}),
+      (Ni.defaultProps = { as: "li" }),
+      (Ni.create = Cn(Ni, function (e) {
         return { content: e };
       }));
-    var Ni = Si;
-    function Yi(e) {
+    var Yi = Ni;
+    function Ei(e) {
       var t = e.children,
         n = e.className,
         a = e.items,
         i = En()("list", n),
-        c = hn(Yi, e),
-        s = Er(Yi, e);
+        c = hn(Ei, e),
+        s = Er(Ei, e);
       return o.a.createElement(
         s,
         Ut()({}, c, { className: i }),
-        r.isNil(t) ? Aa()(a, Ni.create) : t
+        r.isNil(t) ? Aa()(a, Yi.create) : t
       );
     }
-    (Yi.handledProps = ["as", "children", "className", "items"]),
-      (Yi.propTypes = {}),
-      (Yi.defaultProps = { as: "ul" }),
-      (Yi.create = Cn(Yi, function (e) {
+    (Ei.handledProps = ["as", "children", "className", "items"]),
+      (Ei.propTypes = {}),
+      (Ei.defaultProps = { as: "ul" }),
+      (Ei.create = Cn(Ei, function (e) {
         return { items: e };
       }));
-    var Ei = Yi,
-      xi = (function (e) {
+    var xi = Ei,
+      Ci = (function (e) {
         function t() {
           var e, n;
           Vt()(this, t);
@@ -46088,10 +46093,10 @@ object-assign
                       ea.create(m, { autoGenerateKey: !1 }),
                       (!dn()(p) || !dn()(u) || !dn()(M)) &&
                         o.a.createElement(
-                          Oi,
+                          zi,
                           null,
-                          Di.create(p, { autoGenerateKey: !1 }),
-                          Ei.create(M, { autoGenerateKey: !1 }),
+                          Si.create(p, { autoGenerateKey: !1 }),
+                          xi.create(M, { autoGenerateKey: !1 }),
                           jn(u, { autoGenerateKey: !1 })
                         )
                     )
@@ -46102,11 +46107,11 @@ object-assign
           t
         );
       })(a.Component);
-    cn()(xi, "Content", Oi),
-      cn()(xi, "Header", Di),
-      cn()(xi, "List", Ei),
-      cn()(xi, "Item", Ni),
-      cn()(xi, "handledProps", [
+    cn()(Ci, "Content", zi),
+      cn()(Ci, "Header", Si),
+      cn()(Ci, "List", xi),
+      cn()(Ci, "Item", Yi),
+      cn()(Ci, "handledProps", [
         "as",
         "attached",
         "children",
@@ -46129,8 +46134,8 @@ object-assign
         "visible",
         "warning",
       ]),
-      (xi.propTypes = {});
-    var Ci = function (e) {
+      (Ci.propTypes = {});
+    var Pi = function (e) {
         return o.a.createElement(
           "div",
           { className: "Invite-overlay" },
@@ -46153,7 +46158,7 @@ object-assign
                 placeholder: "Enter Email",
               }),
               e.errorText
-                ? o.a.createElement(xi, { negative: !0, content: e.errorText })
+                ? o.a.createElement(Ci, { negative: !0, content: e.errorText })
                 : null,
               o.a.createElement(
                 "div",
@@ -46183,31 +46188,31 @@ object-assign
           )
         );
       },
-      Pi = ""
+      Wi = ""
         .concat(window.location.protocol, "//")
         .concat(window.location.host);
-    function Wi(e) {
+    function ji(e) {
       console.log(e),
         e
           ? (di.a.defaults.headers.common.Authorization = "Bearer ".concat(e))
           : delete di.a.defaults.headers.common.Authorization;
     }
-    function ji(e) {
+    function qi(e) {
       return { type: "SET_CURRENT_USER", user: e };
     }
-    var qi = function (e, t, n) {
+    var Bi = function (e, t, n) {
         return {
           type: "SELECT_TODO",
           payload: { toDoID: e, toDoName: t, toDoDescription: n },
         };
       },
-      Bi = function (e) {
+      Hi = function (e) {
         return { type: "SELECT_USER", payload: { userID: e } };
       },
-      Hi = function (e) {
+      Ri = function (e) {
         return { type: "SELECT_TEAM", payload: { teamID: e } };
       };
-    function Ri(e, t) {
+    function Xi(e, t) {
       var n = Object.keys(e);
       if (Object.getOwnPropertySymbols) {
         var r = Object.getOwnPropertySymbols(e);
@@ -46219,16 +46224,16 @@ object-assign
       }
       return n;
     }
-    function Xi(e) {
+    function Ii(e) {
       for (var t = 1; t < arguments.length; t++) {
         var n = null != arguments[t] ? arguments[t] : {};
         t % 2
-          ? Ri(Object(n), !0).forEach(function (t) {
+          ? Xi(Object(n), !0).forEach(function (t) {
               Yt()(e, t, n[t]);
             })
           : Object.getOwnPropertyDescriptors
           ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(n))
-          : Ri(Object(n)).forEach(function (t) {
+          : Xi(Object(n)).forEach(function (t) {
               Object.defineProperty(
                 e,
                 t,
@@ -46238,7 +46243,7 @@ object-assign
       }
       return e;
     }
-    function Ii(e) {
+    function Fi(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -46264,9 +46269,9 @@ object-assign
         return Rt()(this, n);
       };
     }
-    var Fi = (function (e) {
+    var Ui = (function (e) {
         Bt()(n, e);
-        var t = Ii(n);
+        var t = Fi(n);
         function n(e) {
           var r;
           return (
@@ -46317,7 +46322,7 @@ object-assign
               key: "toggleMenu",
               value: function () {
                 this.setState(function (e) {
-                  return Xi(Xi({}, e), {}, { isExpanded: !e.isExpanded });
+                  return Ii(Ii({}, e), {}, { isExpanded: !e.isExpanded });
                 });
               },
             },
@@ -46350,7 +46355,7 @@ object-assign
                       "div",
                       { className: "TeamTaskbar-members" },
                       o.a.createElement(
-                        Ui,
+                        Gi,
                         {
                           key: n,
                           onClick: this.props.isTeamOverview
@@ -46368,7 +46373,7 @@ object-assign
                       i.team_members
                         ? i.team_members.map(function (t, n) {
                             return o.a.createElement(
-                              Ui,
+                              Gi,
                               {
                                 key: t.member_id,
                                 onClick: e.props.isTeamOverview
@@ -46394,7 +46399,7 @@ object-assign
                       { className: "TeamTaskbar-bottom" },
                       i.team_name
                         ? o.a.createElement(
-                            Ui,
+                            Gi,
                             {
                               icon: "group",
                               onClick: this.navigateToTeamOverview,
@@ -46404,7 +46409,7 @@ object-assign
                         : null,
                       i.team_admin
                         ? o.a.createElement(
-                            Ui,
+                            Gi,
                             {
                               icon: "user secret",
                               onClick: this.navigateToAdmin,
@@ -46435,7 +46440,7 @@ object-assign
           n
         );
       })(a.Component),
-      Ui = function (e) {
+      Gi = function (e) {
         var t = "TaskbarItem".concat(
           e.isSelected ? " TaskbarItem--selected" : ""
         );
@@ -46450,7 +46455,7 @@ object-assign
           o.a.createElement(Vr, { baseClass: "TaskbarItem" }, e.children)
         );
       },
-      Gi = te(
+      Vi = te(
         at(
           function (e) {
             return {
@@ -46461,16 +46466,16 @@ object-assign
           function (e) {
             return {
               onUserSelected: function (t) {
-                return e(Bi(t));
+                return e(Hi(t));
               },
               logout: function () {
-                localStorage.removeItem("jwtToken"), Wi(!1), e(ji({}));
+                localStorage.removeItem("jwtToken"), ji(!1), e(qi({}));
               },
             };
           }
-        )(Fi)
+        )(Ui)
       );
-    function Vi(e, t) {
+    function Ki(e, t) {
       var n = Object.keys(e);
       if (Object.getOwnPropertySymbols) {
         var r = Object.getOwnPropertySymbols(e);
@@ -46482,16 +46487,16 @@ object-assign
       }
       return n;
     }
-    function Ki(e) {
+    function Ji(e) {
       for (var t = 1; t < arguments.length; t++) {
         var n = null != arguments[t] ? arguments[t] : {};
         t % 2
-          ? Vi(Object(n), !0).forEach(function (t) {
+          ? Ki(Object(n), !0).forEach(function (t) {
               Yt()(e, t, n[t]);
             })
           : Object.getOwnPropertyDescriptors
           ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(n))
-          : Vi(Object(n)).forEach(function (t) {
+          : Ki(Object(n)).forEach(function (t) {
               Object.defineProperty(
                 e,
                 t,
@@ -46501,7 +46506,7 @@ object-assign
       }
       return e;
     }
-    function Ji(e) {
+    function Qi(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -46527,9 +46532,9 @@ object-assign
         return Rt()(this, n);
       };
     }
-    var Qi = (function (e) {
+    var $i = (function (e) {
         Bt()(n, e);
-        var t = Ji(n);
+        var t = Qi(n);
         function n(e) {
           var r;
           return (
@@ -46640,7 +46645,7 @@ object-assign
               value: function (e) {
                 var t = e.target.value;
                 this.setState(function (e) {
-                  return Ki(Ki({}, e), {}, { inviteEmail: t });
+                  return Ji(Ji({}, e), {}, { inviteEmail: t });
                 });
               },
             },
@@ -46659,12 +46664,12 @@ object-assign
             {
               key: "render",
               value: function () {
-                return this.state.data
+                return this.state.data && this.state.teamInfo
                   ? (console.log(this.state),
                     o.a.createElement(
                       "div",
                       { className: "Admin" },
-                      o.a.createElement(Gi, {
+                      o.a.createElement(Vi, {
                         currentUserId: this.state.data.member_id,
                         currentUserFirstName: this.state.data.first_name,
                         currentUserLastName: this.state.data.last_name,
@@ -46678,7 +46683,7 @@ object-assign
                           { hLevel: 2, baseClass: "Settings" },
                           "Admin Page"
                         ),
-                        o.a.createElement(yi, {
+                        o.a.createElement(vi, {
                           team: this.state.data.team,
                           firstName: this.state.data.first_name,
                           status: this.state.data.team.team_admin
@@ -46693,15 +46698,15 @@ object-assign
                         o.a.createElement("div", {
                           className: "ui hidden divider",
                         }),
-                        o.a.createElement(wi, {
+                        o.a.createElement(ki, {
                           teamInfo: this.state.teamInfo,
                         }),
                         o.a.createElement("div", {
                           className: "ui hidden divider",
                         }),
-                        o.a.createElement(ki, { onClick: this.deleteTeam }),
+                        o.a.createElement(Ti, { onClick: this.deleteTeam }),
                         this.state.showInviteModal
-                          ? o.a.createElement(Ci, {
+                          ? o.a.createElement(Pi, {
                               handleEmailChange: this.handleEmailChange,
                               closeModal: this.closeModal,
                               handleAction: this.inviteTeamMember,
@@ -46728,7 +46733,7 @@ object-assign
           n
         );
       })(a.Component),
-      $i = at(function (e) {
+      Zi = at(function (e) {
         return {
           userEmail:
             e.auth && e.auth.user && e.auth.user.user && e.auth.user.user.length
@@ -46736,8 +46741,8 @@ object-assign
               : null,
           currentTeam: e.teams.currentTeam,
         };
-      })(Qi);
-    function Zi(e, t) {
+      })($i);
+    function ec(e, t) {
       var n = Object.keys(e);
       if (Object.getOwnPropertySymbols) {
         var r = Object.getOwnPropertySymbols(e);
@@ -46749,16 +46754,16 @@ object-assign
       }
       return n;
     }
-    function ec(e) {
+    function tc(e) {
       for (var t = 1; t < arguments.length; t++) {
         var n = null != arguments[t] ? arguments[t] : {};
         t % 2
-          ? Zi(Object(n), !0).forEach(function (t) {
+          ? ec(Object(n), !0).forEach(function (t) {
               Yt()(e, t, n[t]);
             })
           : Object.getOwnPropertyDescriptors
           ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(n))
-          : Zi(Object(n)).forEach(function (t) {
+          : ec(Object(n)).forEach(function (t) {
               Object.defineProperty(
                 e,
                 t,
@@ -46768,7 +46773,7 @@ object-assign
       }
       return e;
     }
-    function tc(e) {
+    function nc(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -46794,12 +46799,12 @@ object-assign
         return Rt()(this, n);
       };
     }
-    var nc = RegExp(
+    var rc = RegExp(
         /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
       ),
-      rc = (function (e) {
+      ac = (function (e) {
         Bt()(n, e);
-        var t = tc(n);
+        var t = nc(n);
         function n(e) {
           var r;
           return (
@@ -46831,7 +46836,7 @@ object-assign
               value: function (e) {
                 var t = e.target.value;
                 this.setState(function (e) {
-                  return ec(ec({}, e), {}, { firstName: t });
+                  return tc(tc({}, e), {}, { firstName: t });
                 });
               },
             },
@@ -46840,17 +46845,19 @@ object-assign
               value: function (e) {
                 var t = e.target.value;
                 this.setState(function (e) {
-                  return ec(ec({}, e), {}, { lastName: t });
+                  return tc(tc({}, e), {}, { lastName: t });
                 });
               },
             },
             {
               key: "handleEmailChange",
               value: function (e) {
-                var t = e.target.value;
-                this.setState(function (e) {
-                  return ec(ec({}, e), {}, { email: t });
-                }, this.errorCheckEmail);
+                var t = e.target.value,
+                  n = this.state.errors;
+                (n.emailTaken = ""),
+                  this.setState(function (e) {
+                    return tc(tc({}, e), {}, { email: t, errors: n });
+                  }, this.errorCheckEmail);
               },
             },
             {
@@ -46858,7 +46865,7 @@ object-assign
               value: function (e) {
                 var t = e.target.value;
                 this.setState(function (e) {
-                  return ec(ec({}, e), {}, { password: t });
+                  return tc(tc({}, e), {}, { password: t });
                 });
               },
             },
@@ -46867,7 +46874,7 @@ object-assign
               value: function (e) {
                 var t = e.target.value;
                 this.setState(function (e) {
-                  return ec(ec({}, e), {}, { passwordConfirm: t });
+                  return tc(tc({}, e), {}, { passwordConfirm: t });
                 }, this.errorCheckConfirmPassword);
               },
             },
@@ -46875,11 +46882,11 @@ object-assign
               key: "errorCheckEmail",
               value: function () {
                 var e = this.state.errors;
-                (e.emailFormat = nc.test(this.state.email)
+                (e.emailFormat = rc.test(this.state.email)
                   ? ""
                   : "Email address is not valid"),
                   this.setState(function (t) {
-                    return ec(ec({}, t), {}, { errors: e });
+                    return tc(tc({}, t), {}, { errors: e });
                   });
               },
             },
@@ -46892,7 +46899,7 @@ object-assign
                     ? ""
                     : "Passwords do not match"),
                   this.setState(function (t) {
-                    return ec(ec({}, t), {}, { errors: e });
+                    return tc(tc({}, t), {}, { errors: e });
                   });
               },
             },
@@ -46920,7 +46927,7 @@ object-assign
                           ? "This email address is already registered"
                           : t.message),
                         e.setState(function (e) {
-                          return ec(ec({}, e), {}, { errors: n });
+                          return tc(tc({}, e), {}, { errors: n });
                         });
                     }
                   );
@@ -46967,7 +46974,7 @@ object-assign
                       onChange: this.handleEmailChange,
                     }),
                     e.emailFormat.length > 0
-                      ? o.a.createElement(xi, {
+                      ? o.a.createElement(Ci, {
                           negative: !0,
                           content: e.emailFormat,
                         })
@@ -46987,7 +46994,7 @@ object-assign
                       onChange: this.handlePasswordConfirmChange,
                     }),
                     e.passwordMatch
-                      ? o.a.createElement(xi, {
+                      ? o.a.createElement(Ci, {
                           negative: !0,
                           content: e.passwordMatch,
                         })
@@ -47004,14 +47011,14 @@ object-assign
                       "Create Account"
                     ),
                     e.emailTaken
-                      ? o.a.createElement(xi, {
+                      ? o.a.createElement(Ci, {
                           negative: !0,
                           content: e.emailTaken,
                         })
                       : null
                   ),
                   this.state.registrationComplete
-                    ? o.a.createElement(xi, {
+                    ? o.a.createElement(Ci, {
                         success: !0,
                         header: "Your user registration was successful",
                         content: o.a.createElement(
@@ -47028,17 +47035,17 @@ object-assign
           n
         );
       })(a.Component);
-    rc.propTypes = { signup: l.a.func.isRequired };
-    var ac = te(
+    ac.propTypes = { signup: l.a.func.isRequired };
+    var oc = te(
         at(null, {
           signup: function (e) {
             return function (t) {
-              return di.a.post("".concat(Pi, "/auth/signup"), e);
+              return di.a.post("".concat(Wi, "/auth/signup"), e);
             };
           },
-        })(rc)
+        })(ac)
       ),
-      oc = function () {
+      ic = function () {
         return o.a.createElement(
           "div",
           { className: "CreateAccount" },
@@ -47052,10 +47059,10 @@ object-assign
             { baseClass: "CreateAccount" },
             "Create Account"
           ),
-          o.a.createElement(ac, null)
+          o.a.createElement(oc, null)
         );
       },
-      ic = function (e) {
+      cc = function (e) {
         var t = e.modifiers ? " ".concat(e.modifiers) : "",
           n = "".concat(e.baseClass, "-link").concat(t);
         return o.a.createElement(
@@ -47064,7 +47071,7 @@ object-assign
           e.children
         );
       };
-    function cc(e, t) {
+    function sc(e, t) {
       var n = Object.keys(e);
       if (Object.getOwnPropertySymbols) {
         var r = Object.getOwnPropertySymbols(e);
@@ -47076,16 +47083,16 @@ object-assign
       }
       return n;
     }
-    function sc(e) {
+    function uc(e) {
       for (var t = 1; t < arguments.length; t++) {
         var n = null != arguments[t] ? arguments[t] : {};
         t % 2
-          ? cc(Object(n), !0).forEach(function (t) {
+          ? sc(Object(n), !0).forEach(function (t) {
               Yt()(e, t, n[t]);
             })
           : Object.getOwnPropertyDescriptors
           ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(n))
-          : cc(Object(n)).forEach(function (t) {
+          : sc(Object(n)).forEach(function (t) {
               Object.defineProperty(
                 e,
                 t,
@@ -47095,7 +47102,7 @@ object-assign
       }
       return e;
     }
-    function uc(e) {
+    function lc(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -47121,9 +47128,9 @@ object-assign
         return Rt()(this, n);
       };
     }
-    var lc = (function (e) {
+    var dc = (function (e) {
       Bt()(n, e);
-      var t = uc(n);
+      var t = lc(n);
       function n(e) {
         var r;
         return (
@@ -47146,7 +47153,7 @@ object-assign
             value: function (e) {
               var t = e.target.value;
               this.setState(function (e) {
-                return sc(sc({}, e), {}, { emailInput: t });
+                return uc(uc({}, e), {}, { emailInput: t });
               });
             },
           },
@@ -47155,7 +47162,7 @@ object-assign
             value: function (e) {
               var t = e.target.value;
               this.setState(function (e) {
-                return sc(sc({}, e), {}, { passwordInput: t });
+                return uc(uc({}, e), {}, { passwordInput: t });
               });
             },
           },
@@ -47176,7 +47183,7 @@ object-assign
                         ? "Email and password not recognized"
                         : t.message),
                       e.setState(function (e) {
-                        return sc(sc({}, e), {}, { errors: n });
+                        return uc(uc({}, e), {}, { errors: n });
                       });
                   }
                 );
@@ -47215,7 +47222,7 @@ object-assign
                   "Login"
                 ),
                 e.emailPasswordNotFound.length > 0
-                  ? o.a.createElement(xi, {
+                  ? o.a.createElement(Ci, {
                       negative: !0,
                       content: e.emailPasswordNotFound,
                     })
@@ -47227,23 +47234,23 @@ object-assign
         n
       );
     })(a.Component);
-    lc.propTypes = { login: l.a.func.isRequired };
-    var dc = te(
+    dc.propTypes = { login: l.a.func.isRequired };
+    var pc = te(
         at(null, {
           login: function (e) {
             return function (t) {
               return di.a
-                .post("".concat(Pi, "/auth/login"), e)
+                .post("".concat(Wi, "/auth/login"), e)
                 .then(function (e) {
                   var n = e.data;
-                  localStorage.setItem("jwtToken", n), Wi(n), t(ji(St()(n)));
+                  localStorage.setItem("jwtToken", n), ji(n), t(qi(St()(n)));
                 });
             };
           },
-          selectTeam: Hi,
-        })(lc)
+          selectTeam: Ri,
+        })(dc)
       ),
-      pc = function () {
+      fc = function () {
         return o.a.createElement(
           "div",
           { className: "Login" },
@@ -47257,22 +47264,22 @@ object-assign
             { baseClass: "Login" },
             "Login to Your Account"
           ),
-          o.a.createElement(dc, null),
+          o.a.createElement(pc, null),
           o.a.createElement(
-            ic,
+            cc,
             { baseClass: "Login", href: "/create-account" },
             "New? Create an account!"
           )
         );
       };
-    function fc(e, t) {
+    function mc(e, t) {
       var n;
       if ("undefined" == typeof Symbol || null == e[Symbol.iterator]) {
         if (
           Array.isArray(e) ||
           (n = (function (e, t) {
             if (!e) return;
-            if ("string" == typeof e) return mc(e, t);
+            if ("string" == typeof e) return hc(e, t);
             var n = Object.prototype.toString.call(e).slice(8, -1);
             "Object" === n && e.constructor && (n = e.constructor.name);
             if ("Map" === n || "Set" === n) return Array.from(e);
@@ -47280,7 +47287,7 @@ object-assign
               "Arguments" === n ||
               /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)
             )
-              return mc(e, t);
+              return hc(e, t);
           })(e)) ||
           (t && e && "number" == typeof e.length)
         ) {
@@ -47325,12 +47332,12 @@ object-assign
         },
       };
     }
-    function mc(e, t) {
+    function hc(e, t) {
       (null == t || t > e.length) && (t = e.length);
       for (var n = 0, r = new Array(t); n < t; n++) r[n] = e[n];
       return r;
     }
-    function hc(e, t) {
+    function Mc(e, t) {
       var n = Object.keys(e);
       if (Object.getOwnPropertySymbols) {
         var r = Object.getOwnPropertySymbols(e);
@@ -47342,16 +47349,16 @@ object-assign
       }
       return n;
     }
-    function Mc(e) {
+    function _c(e) {
       for (var t = 1; t < arguments.length; t++) {
         var n = null != arguments[t] ? arguments[t] : {};
         t % 2
-          ? hc(Object(n), !0).forEach(function (t) {
+          ? Mc(Object(n), !0).forEach(function (t) {
               Yt()(e, t, n[t]);
             })
           : Object.getOwnPropertyDescriptors
           ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(n))
-          : hc(Object(n)).forEach(function (t) {
+          : Mc(Object(n)).forEach(function (t) {
               Object.defineProperty(
                 e,
                 t,
@@ -47361,7 +47368,7 @@ object-assign
       }
       return e;
     }
-    function _c(e) {
+    function bc(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -47387,9 +47394,9 @@ object-assign
         return Rt()(this, n);
       };
     }
-    var bc = (function (e) {
+    var yc = (function (e) {
         Bt()(n, e);
-        var t = _c(n);
+        var t = bc(n);
         function n(e) {
           var r;
           return (
@@ -47417,23 +47424,18 @@ object-assign
               key: "toggleMenu",
               value: function () {
                 this.setState(function (e) {
-                  return Mc(Mc({}, e), {}, { isExpanded: !e.isExpanded });
+                  return _c(_c({}, e), {}, { isExpanded: !e.isExpanded });
                 });
               },
             },
             {
               key: "renderComments",
               value: function (e, t) {
-                return (
-                  console.log("user to comment map"),
-                  console.log(e),
-                  console.log(this.props.currentUserId),
-                  this.props.isTeamOverview
-                    ? this.renderTeamComments()
-                    : -1 == this.props.selectedToDoId
-                    ? this.renderUserComments(e)
-                    : this.renderGoalComments(t)
-                );
+                return this.props.isTeamOverview
+                  ? this.renderTeamComments()
+                  : -1 == this.props.selectedToDoId
+                  ? this.renderUserComments(e)
+                  : this.renderGoalComments(t);
               },
             },
             {
@@ -47444,7 +47446,7 @@ object-assign
                   .map(function (n) {
                     return e[n].map(function (e) {
                       if (n == t.props.selectedToDoId)
-                        return o.a.createElement(yc, {
+                        return o.a.createElement(vc, {
                           key: e.comment_id,
                           firstName: e.first_name,
                           lastName: e.last_name,
@@ -47459,18 +47461,15 @@ object-assign
             {
               key: "renderUserComments",
               value: function (e) {
-                return (
-                  console.log(e[this.props.selectedUserId]),
-                  e[this.props.currentUserId].map(function (e) {
-                    return o.a.createElement(yc, {
-                      key: e.comment_id,
-                      firstName: e.first_name,
-                      lastName: e.last_name,
-                      body: e.message,
-                      date: new Date(e.date_time),
-                    });
-                  })
-                );
+                return e[this.props.currentUserId].map(function (e) {
+                  return o.a.createElement(vc, {
+                    key: e.comment_id,
+                    firstName: e.first_name,
+                    lastName: e.last_name,
+                    body: e.message,
+                    date: new Date(e.date_time),
+                  });
+                });
               },
             },
             {
@@ -47487,7 +47486,7 @@ object-assign
                       return n.getTime() - r.getTime();
                     }),
                     this.props.teamComments.items.map(function (e) {
-                      return o.a.createElement(yc, {
+                      return o.a.createElement(vc, {
                         key: e.comment_id,
                         firstName: e.first_name,
                         lastName: e.last_name,
@@ -47509,11 +47508,11 @@ object-assign
                   i = t.selectedToDoDescription,
                   c = {},
                   s = {},
-                  u = fc(r.team_members);
+                  u = mc(r.team_members);
                 try {
                   for (u.s(); !(e = u.n()).done; ) {
                     var l,
-                      d = fc(e.value.goals);
+                      d = mc(e.value.goals);
                     try {
                       for (d.s(); !(l = d.n()).done; ) {
                         var p = l.value;
@@ -47532,7 +47531,7 @@ object-assign
                 }
                 s[n] = r.user_comments;
                 var f,
-                  m = fc(r.team_members);
+                  m = mc(r.team_members);
                 try {
                   for (m.s(); !(f = m.n()).done; ) {
                     var h = f.value;
@@ -47544,7 +47543,7 @@ object-assign
                   m.f();
                 }
                 var M,
-                  _ = fc(r.goals);
+                  _ = mc(r.goals);
                 try {
                   for (_.s(); !(M = _.n()).done; ) {
                     var b = M.value;
@@ -47597,7 +47596,7 @@ object-assign
                         { className: "Comments-list" },
                         this.renderComments(s, c)
                       ),
-                      o.a.createElement(vc, {
+                      o.a.createElement(gc, {
                         updateData: this.props.updateData,
                         selectedToDoId: this.props.selectedToDoId,
                         selectedUserId: this.props.selectedUserId,
@@ -47613,7 +47612,7 @@ object-assign
           n
         );
       })(a.Component),
-      yc = function (e) {
+      vc = function (e) {
         return o.a.createElement(
           "div",
           { className: "Comment" },
@@ -47658,9 +47657,9 @@ object-assign
           )
         );
       },
-      vc = (function (e) {
+      gc = (function (e) {
         Bt()(n, e);
-        var t = _c(n);
+        var t = bc(n);
         function n(e) {
           var r;
           return (
@@ -47678,7 +47677,7 @@ object-assign
               value: function (e) {
                 var t = e.target.value;
                 this.setState(function (e) {
-                  return Mc(Mc({}, e), {}, { newCommentText: t });
+                  return _c(_c({}, e), {}, { newCommentText: t });
                 });
               },
             },
@@ -47713,7 +47712,7 @@ object-assign
                     .then(function (t) {
                       console.log(t),
                         e.setState(function (e) {
-                          return Mc(Mc({}, e), {}, { newCommentText: "" });
+                          return _c(_c({}, e), {}, { newCommentText: "" });
                         }),
                         e.props.updateData();
                     })
@@ -47746,7 +47745,7 @@ object-assign
           n
         );
       })(a.Component),
-      gc = at(function (e) {
+      Lc = at(function (e) {
         return {
           selectedToDoId: e.toDos.selectedToDoId,
           selectedToDoName: e.toDos.selectedToDoName,
@@ -47754,10 +47753,10 @@ object-assign
           selectedUserId: e.toDos.selectedUserId,
           currentTeamId: e.teams.currentTeam,
         };
-      })(bc),
-      Lc = n(75),
-      Ac = n.n(Lc),
-      wc =
+      })(yc),
+      Ac = n(75),
+      wc = n.n(Ac),
+      kc =
         (n(514),
         function (e) {
           return o.a.createElement(
@@ -47780,6 +47779,7 @@ object-assign
                   name: "task name",
                   onChange: e.handleTaskNameChange,
                   initialValue: e.nameValue ? e.nameValue : null,
+                  maxLength: "50",
                 }),
                 o.a.createElement(ii.TextArea, {
                   className: "ToDoList-taskDescription",
@@ -47815,15 +47815,15 @@ object-assign
             )
           );
         });
-    wc.propTypes = {
+    kc.propTypes = {
       heading: l.a.string.isRequired,
       handleTaskNameChange: l.a.func.isRequired,
       handleTaskDescriptionChange: l.a.func.isRequired,
       closeModal: l.a.func.isRequired,
       submitText: l.a.string.isRequired,
     };
-    var kc = wc;
-    function Tc(e, t) {
+    var Tc = kc;
+    function Oc(e, t) {
       var n = Object.keys(e);
       if (Object.getOwnPropertySymbols) {
         var r = Object.getOwnPropertySymbols(e);
@@ -47835,16 +47835,16 @@ object-assign
       }
       return n;
     }
-    function Oc(e) {
+    function zc(e) {
       for (var t = 1; t < arguments.length; t++) {
         var n = null != arguments[t] ? arguments[t] : {};
         t % 2
-          ? Tc(Object(n), !0).forEach(function (t) {
+          ? Oc(Object(n), !0).forEach(function (t) {
               Yt()(e, t, n[t]);
             })
           : Object.getOwnPropertyDescriptors
           ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(n))
-          : Tc(Object(n)).forEach(function (t) {
+          : Oc(Object(n)).forEach(function (t) {
               Object.defineProperty(
                 e,
                 t,
@@ -47854,7 +47854,7 @@ object-assign
       }
       return e;
     }
-    function zc(e) {
+    function Dc(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -47880,12 +47880,13 @@ object-assign
         return Rt()(this, n);
       };
     }
-    var Dc = ""
+    var Sc = ""
         .concat(window.location.protocol, "//")
         .concat(window.location.host),
-      Sc = (function (e) {
+      Nc = localStorage.getItem("jwtToken"),
+      Yc = (function (e) {
         Bt()(n, e);
-        var t = zc(n);
+        var t = Dc(n);
         function n(e) {
           var r;
           return (
@@ -47914,7 +47915,8 @@ object-assign
               value: function () {
                 var e = this,
                   t = new Headers();
-                t.append("Content-Type", "application/json");
+                t.append("Content-Type", "application/json"),
+                  t.append("Authorization", "Bearer ".concat(Nc));
                 var n = {
                     name: this.state.updatedTaskName,
                     description: this.state.updatedTaskDescription,
@@ -47925,14 +47927,14 @@ object-assign
                     body: JSON.stringify(n),
                     redirect: "follow",
                   };
-                fetch("".concat(Dc, "/goals/").concat(this.props.id), r)
+                fetch("".concat(Sc, "/goals/").concat(this.props.id), r)
                   .then(function (e) {
                     return e.text();
                   })
                   .then(function (t) {
                     console.log(t),
                       e.setState(function (e) {
-                        return Oc(Oc({}, e), {}, { showEditModal: !1 });
+                        return zc(zc({}, e), {}, { showEditModal: !1 });
                       }),
                       e.props.updateData();
                   })
@@ -47946,8 +47948,8 @@ object-assign
               value: function () {
                 var e = this;
                 this.setState(function (t) {
-                  return Oc(
-                    Oc({}, t),
+                  return zc(
+                    zc({}, t),
                     {},
                     {
                       showEditModal: !0,
@@ -47962,7 +47964,7 @@ object-assign
               key: "handleCancel",
               value: function () {
                 this.setState(function (e) {
-                  return Oc(Oc({}, e), {}, { showEditModal: !1 });
+                  return zc(zc({}, e), {}, { showEditModal: !1 });
                 });
               },
             },
@@ -47971,7 +47973,7 @@ object-assign
               value: function (e) {
                 var t = e.target.value;
                 this.setState(function (e) {
-                  return Oc(Oc({}, e), {}, { updatedTaskDescription: t });
+                  return zc(zc({}, e), {}, { updatedTaskDescription: t });
                 });
               },
             },
@@ -47980,7 +47982,7 @@ object-assign
               value: function (e) {
                 var t = e.target.value;
                 this.setState(function (e) {
-                  return Oc(Oc({}, e), {}, { updatedTaskName: t });
+                  return zc(zc({}, e), {}, { updatedTaskName: t });
                 });
               },
             },
@@ -47989,7 +47991,7 @@ object-assign
               value: function () {
                 var e = this;
                 di.a
-                  .delete("".concat(Dc, "/goals/").concat(this.props.id))
+                  .delete("".concat(Sc, "/goals/").concat(this.props.id))
                   .then(function () {
                     console.log("Goal deleted"), e.props.updateData();
                   });
@@ -47999,7 +48001,7 @@ object-assign
               key: "updateGoalStatus",
               value: function (e, t) {
                 var n = t.checked;
-                di.a.patch("".concat(Dc, "/goals/").concat(this.props.id), {
+                di.a.patch("".concat(Sc, "/goals/").concat(this.props.id), {
                   status: n,
                 });
               },
@@ -48060,7 +48062,7 @@ object-assign
                       )
                     : null,
                   this.state.showEditModal
-                    ? o.a.createElement(kc, {
+                    ? o.a.createElement(Tc, {
                         heading: "Edit Task " + this.props.id,
                         handleAction: this.handleUpdateTask,
                         handleTaskNameChange: this.handleTaskNameChange,
@@ -48079,14 +48081,14 @@ object-assign
           n
         );
       })(a.Component);
-    function Nc(e, t) {
+    function Ec(e, t) {
       var n;
       if ("undefined" == typeof Symbol || null == e[Symbol.iterator]) {
         if (
           Array.isArray(e) ||
           (n = (function (e, t) {
             if (!e) return;
-            if ("string" == typeof e) return Yc(e, t);
+            if ("string" == typeof e) return xc(e, t);
             var n = Object.prototype.toString.call(e).slice(8, -1);
             "Object" === n && e.constructor && (n = e.constructor.name);
             if ("Map" === n || "Set" === n) return Array.from(e);
@@ -48094,7 +48096,7 @@ object-assign
               "Arguments" === n ||
               /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)
             )
-              return Yc(e, t);
+              return xc(e, t);
           })(e)) ||
           (t && e && "number" == typeof e.length)
         ) {
@@ -48139,12 +48141,12 @@ object-assign
         },
       };
     }
-    function Yc(e, t) {
+    function xc(e, t) {
       (null == t || t > e.length) && (t = e.length);
       for (var n = 0, r = new Array(t); n < t; n++) r[n] = e[n];
       return r;
     }
-    function Ec(e, t) {
+    function Cc(e, t) {
       var n = Object.keys(e);
       if (Object.getOwnPropertySymbols) {
         var r = Object.getOwnPropertySymbols(e);
@@ -48156,16 +48158,16 @@ object-assign
       }
       return n;
     }
-    function xc(e) {
+    function Pc(e) {
       for (var t = 1; t < arguments.length; t++) {
         var n = null != arguments[t] ? arguments[t] : {};
         t % 2
-          ? Ec(Object(n), !0).forEach(function (t) {
+          ? Cc(Object(n), !0).forEach(function (t) {
               Yt()(e, t, n[t]);
             })
           : Object.getOwnPropertyDescriptors
           ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(n))
-          : Ec(Object(n)).forEach(function (t) {
+          : Cc(Object(n)).forEach(function (t) {
               Object.defineProperty(
                 e,
                 t,
@@ -48175,7 +48177,7 @@ object-assign
       }
       return e;
     }
-    function Cc(e) {
+    function Wc(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -48201,9 +48203,10 @@ object-assign
         return Rt()(this, n);
       };
     }
-    var Pc = (function (e) {
+    var jc = localStorage.getItem("jwtToken"),
+      qc = (function (e) {
         Bt()(n, e);
-        var t = Cc(n);
+        var t = Wc(n);
         function n(e) {
           var r;
           return (
@@ -48241,8 +48244,8 @@ object-assign
               key: "openAddModal",
               value: function () {
                 this.setState(function (e) {
-                  return xc(
-                    xc({}, e),
+                  return Pc(
+                    Pc({}, e),
                     {},
                     {
                       showAddModal: !0,
@@ -48258,7 +48261,7 @@ object-assign
               value: function (e) {
                 var t = e.target.value;
                 this.setState(function (e) {
-                  return xc(xc({}, e), {}, { newTaskName: t });
+                  return Pc(Pc({}, e), {}, { newTaskName: t });
                 });
               },
             },
@@ -48267,7 +48270,7 @@ object-assign
               value: function (e) {
                 var t = e.target.value;
                 this.setState(function (e) {
-                  return xc(xc({}, e), {}, { newTaskDescription: t });
+                  return Pc(Pc({}, e), {}, { newTaskDescription: t });
                 });
               },
             },
@@ -48291,6 +48294,7 @@ object-assign
                   s = JSON.stringify(c),
                   u = new Headers();
                 u.append("Content-Type", "application/json"),
+                  u.append("Authorization", "Bearer ".concat(jc)),
                   fetch("/goals", {
                     method: "POST",
                     headers: u,
@@ -48314,7 +48318,7 @@ object-assign
               key: "handleCancel",
               value: function () {
                 this.setState(function (e) {
-                  return xc(xc({}, e), {}, { showAddModal: !1 });
+                  return Pc(Pc({}, e), {}, { showAddModal: !1 });
                 });
               },
             },
@@ -48334,7 +48338,7 @@ object-assign
                   a = {};
                 a[n] = r.goals;
                 var i,
-                  c = Nc(r.team_members);
+                  c = Ec(r.team_members);
                 try {
                   for (c.s(); !(i = c.n()).done; ) {
                     var s = i.value;
@@ -48353,7 +48357,7 @@ object-assign
                   o.a.createElement(
                     "div",
                     { className: "ToDoList-datePickerContainer" },
-                    o.a.createElement(Ac.a, {
+                    o.a.createElement(wc.a, {
                       className: "ToDoList-datePicker",
                       selected: this.state.date,
                       onChange: this.handleDateChange,
@@ -48386,7 +48390,7 @@ object-assign
                             t == e.props.selectedUserId &&
                             si(e.state.date, new Date(r.date_time))
                           )
-                            return o.a.createElement(Sc, {
+                            return o.a.createElement(Yc, {
                               key: r.goal_id,
                               id: r.goal_id,
                               selected: e.props.selectedToDoId == r.goal_id,
@@ -48421,7 +48425,7 @@ object-assign
                       )
                     : null,
                   this.state.showAddModal
-                    ? o.a.createElement(kc, {
+                    ? o.a.createElement(Tc, {
                         heading: "Add New Task",
                         handleAction: this.handleAddTask,
                         handleTaskNameChange: this.handleNewTaskNameChange,
@@ -48438,7 +48442,7 @@ object-assign
           n
         );
       })(a.Component),
-      Wc = at(
+      Bc = at(
         function (e) {
           return {
             selectedToDoId: e.toDos.selectedToDoId,
@@ -48449,12 +48453,12 @@ object-assign
         function (e) {
           return {
             onToDoSelected: function (t, n, r) {
-              return e(qi(t, n, r));
+              return e(Bi(t, n, r));
             },
           };
         }
-      )(Pc),
-      jc = function () {
+      )(qc),
+      Hc = function () {
         return o.a.createElement(
           "div",
           { className: "Welcome" },
@@ -48465,7 +48469,7 @@ object-assign
           )
         );
       };
-    function qc(e) {
+    function Rc(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -48491,9 +48495,9 @@ object-assign
         return Rt()(this, n);
       };
     }
-    var Bc = (function (e) {
+    var Xc = (function (e) {
         Bt()(n, e);
-        var t = qc(n);
+        var t = Rc(n);
         function n(e) {
           var r;
           return (
@@ -48546,21 +48550,21 @@ object-assign
                   return o.a.createElement(
                     "div",
                     { className: "Home" },
-                    o.a.createElement(Gi, {
+                    o.a.createElement(Vi, {
                       currentUserId: e.member_id,
                       currentUserFirstName: e.first_name,
                       currentUserLastName: e.last_name,
                       team: e.team,
                     }),
                     Object.keys(e.team).length
-                      ? o.a.createElement(Wc, {
+                      ? o.a.createElement(Bc, {
                           currentUserId: e.member_id,
                           team: e.team,
                           updateData: this.fetchData,
                         })
-                      : o.a.createElement(jc, null),
+                      : o.a.createElement(Hc, null),
                     Object.keys(e.team).length
-                      ? o.a.createElement(gc, {
+                      ? o.a.createElement(Lc, {
                           currentUserId: e.member_id,
                           team: e.team,
                           updateData: this.fetchData,
@@ -48583,7 +48587,7 @@ object-assign
           n
         );
       })(a.Component),
-      Hc = at(
+      Ic = at(
         function (e) {
           return {
             userEmail:
@@ -48599,24 +48603,24 @@ object-assign
         function (e) {
           return {
             selectUser: function (t) {
-              return e(Bi(t));
-            },
-            selectTeam: function (t) {
               return e(Hi(t));
             },
+            selectTeam: function (t) {
+              return e(Ri(t));
+            },
             selectToDo: function (t, n, r) {
-              return e(qi(t, n, r));
+              return e(Bi(t, n, r));
             },
           };
         }
-      )(Bc),
-      Rc = n(76),
-      Xc = n.n(Rc),
-      Ic = n(142),
-      Fc = n.n(Ic),
-      Uc = n(3),
-      Gc = n.n(Uc);
-    function Vc(e, t) {
+      )(Xc),
+      Fc = n(76),
+      Uc = n.n(Fc),
+      Gc = n(142),
+      Vc = n.n(Gc),
+      Kc = n(3),
+      Jc = n.n(Kc);
+    function Qc(e, t) {
       var n = Object.keys(e);
       if (Object.getOwnPropertySymbols) {
         var r = Object.getOwnPropertySymbols(e);
@@ -48628,16 +48632,16 @@ object-assign
       }
       return n;
     }
-    function Kc(e) {
+    function $c(e) {
       for (var t = 1; t < arguments.length; t++) {
         var n = null != arguments[t] ? arguments[t] : {};
         t % 2
-          ? Vc(Object(n), !0).forEach(function (t) {
+          ? Qc(Object(n), !0).forEach(function (t) {
               Yt()(e, t, n[t]);
             })
           : Object.getOwnPropertyDescriptors
           ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(n))
-          : Vc(Object(n)).forEach(function (t) {
+          : Qc(Object(n)).forEach(function (t) {
               Object.defineProperty(
                 e,
                 t,
@@ -48647,7 +48651,7 @@ object-assign
       }
       return e;
     }
-    function Jc(e) {
+    function Zc(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -48673,12 +48677,12 @@ object-assign
         return Rt()(this, n);
       };
     }
-    var Qc = ""
+    var es = ""
         .concat(window.location.protocol, "//")
         .concat(window.location.host),
-      $c = (function (e) {
+      ts = (function (e) {
         Bt()(n, e);
-        var t = Jc(n);
+        var t = Zc(n);
         function n(e) {
           var r;
           return (
@@ -48709,11 +48713,11 @@ object-assign
                   r = t.value;
                 this.setState(
                   function (e) {
-                    return Kc(Kc({}, e), {}, { updatedMorningTime: r });
+                    return $c($c({}, e), {}, { updatedMorningTime: r });
                   },
                   function () {
                     di.a.patch(
-                      "".concat(Qc, "/users/").concat(n.props.user.member_id),
+                      "".concat(es, "/users/").concat(n.props.user.member_id),
                       { morning_time: n.state.updatedMorningTime }
                     );
                   }
@@ -48727,11 +48731,11 @@ object-assign
                   r = t.value;
                 this.setState(
                   function (e) {
-                    return Kc(Kc({}, e), {}, { updatedEveningTime: r });
+                    return $c($c({}, e), {}, { updatedEveningTime: r });
                   },
                   function () {
                     di.a.patch(
-                      "".concat(Qc, "/users/").concat(n.props.user.member_id),
+                      "".concat(es, "/users/").concat(n.props.user.member_id),
                       { evening_time: n.state.updatedEveningTime }
                     );
                   }
@@ -48745,11 +48749,11 @@ object-assign
                   r = t.value;
                 this.setState(
                   function (e) {
-                    return Kc(Kc({}, e), {}, { updatedTimeZone: r });
+                    return $c($c({}, e), {}, { updatedTimeZone: r });
                   },
                   function () {
                     di.a.patch(
-                      "".concat(Qc, "/users/").concat(n.props.user.member_id),
+                      "".concat(es, "/users/").concat(n.props.user.member_id),
                       { time_zone: n.state.updatedTimeZone }
                     );
                   }
@@ -48860,7 +48864,7 @@ object-assign
           n
         );
       })(a.Component);
-    function Zc(e) {
+    function ns(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -48886,9 +48890,9 @@ object-assign
         return Rt()(this, n);
       };
     }
-    var es = (function (e) {
+    var rs = (function (e) {
       Bt()(n, e);
-      var t = Zc(n);
+      var t = ns(n);
       function n(e) {
         var r;
         return (
@@ -48911,13 +48915,13 @@ object-assign
             value: function () {
               return this.state.visible
                 ? "negative" === this.props.style
-                  ? o.a.createElement(xi, {
+                  ? o.a.createElement(Ci, {
                       onDismiss: this.handleDismiss,
                       header: this.props.header,
                       content: this.props.content,
                       negative: !0,
                     })
-                  : o.a.createElement(xi, {
+                  : o.a.createElement(Ci, {
                       onDismiss: this.handleDismiss,
                       header: this.props.header,
                       content: this.props.content,
@@ -48930,14 +48934,14 @@ object-assign
         n
       );
     })(a.Component);
-    function ts(e, t) {
+    function as(e, t) {
       var n;
       if ("undefined" == typeof Symbol || null == e[Symbol.iterator]) {
         if (
           Array.isArray(e) ||
           (n = (function (e, t) {
             if (!e) return;
-            if ("string" == typeof e) return ns(e, t);
+            if ("string" == typeof e) return os(e, t);
             var n = Object.prototype.toString.call(e).slice(8, -1);
             "Object" === n && e.constructor && (n = e.constructor.name);
             if ("Map" === n || "Set" === n) return Array.from(e);
@@ -48945,7 +48949,7 @@ object-assign
               "Arguments" === n ||
               /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)
             )
-              return ns(e, t);
+              return os(e, t);
           })(e)) ||
           (t && e && "number" == typeof e.length)
         ) {
@@ -48990,12 +48994,12 @@ object-assign
         },
       };
     }
-    function ns(e, t) {
+    function os(e, t) {
       (null == t || t > e.length) && (t = e.length);
       for (var n = 0, r = new Array(t); n < t; n++) r[n] = e[n];
       return r;
     }
-    function rs(e, t) {
+    function is(e, t) {
       var n = Object.keys(e);
       if (Object.getOwnPropertySymbols) {
         var r = Object.getOwnPropertySymbols(e);
@@ -49007,16 +49011,16 @@ object-assign
       }
       return n;
     }
-    function as(e) {
+    function cs(e) {
       for (var t = 1; t < arguments.length; t++) {
         var n = null != arguments[t] ? arguments[t] : {};
         t % 2
-          ? rs(Object(n), !0).forEach(function (t) {
+          ? is(Object(n), !0).forEach(function (t) {
               Yt()(e, t, n[t]);
             })
           : Object.getOwnPropertyDescriptors
           ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(n))
-          : rs(Object(n)).forEach(function (t) {
+          : is(Object(n)).forEach(function (t) {
               Object.defineProperty(
                 e,
                 t,
@@ -49026,7 +49030,7 @@ object-assign
       }
       return e;
     }
-    function os(e) {
+    function ss(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -49052,9 +49056,9 @@ object-assign
         return Rt()(this, n);
       };
     }
-    var is = (function (e) {
+    var us = (function (e) {
         Bt()(n, e);
-        var t = os(n);
+        var t = ss(n);
         function n(e) {
           var r;
           return (
@@ -49090,9 +49094,9 @@ object-assign
               value: function (e, t) {
                 var n = t.value;
                 this.setState(function (e) {
-                  return as(as({}, e), {}, { currentTeamDisplayed: n });
+                  return cs(cs({}, e), {}, { currentTeamDisplayed: n });
                 }),
-                  this.props.dispatch(Hi(n));
+                  this.props.dispatch(Ri(n));
               },
             },
             {
@@ -49100,8 +49104,8 @@ object-assign
               value: function (e) {
                 var t = e.target.value;
                 this.setState(function (e) {
-                  return as(
-                    as({}, e),
+                  return cs(
+                    cs({}, e),
                     {},
                     { newTeamName: t, newTeamNameError: "" }
                   );
@@ -49112,8 +49116,8 @@ object-assign
               key: "handleDismissMsg",
               value: function () {
                 this.setState(function (e) {
-                  return as(
-                    as({}, e),
+                  return cs(
+                    cs({}, e),
                     {},
                     {
                       newTeamName: "",
@@ -49140,7 +49144,7 @@ object-assign
               key: "teamCreateError",
               value: function () {
                 if (this.state.newTeamNameError)
-                  return o.a.createElement(xi, {
+                  return o.a.createElement(Ci, {
                     negative: !0,
                     header: "Error!",
                     content: this.state.newTeamNameError,
@@ -49151,7 +49155,7 @@ object-assign
               key: "teamCreateSuccess",
               value: function () {
                 if (!this.state.newTeamNameError)
-                  return o.a.createElement(es, {
+                  return o.a.createElement(rs, {
                     header: "Success!",
                     style: "success",
                     content: "Team was successfully created",
@@ -49165,10 +49169,11 @@ object-assign
                 this.props
                   .onAddTeam(this.state.newTeamName)
                   .then(function (t) {
-                    console.log("RESULT: ".concat(t)),
+                    (document.getElementById("settings-teamRequest").value =
+                      ""),
                       e.setState(function (e) {
-                        return as(
-                          as({}, e),
+                        return cs(
+                          cs({}, e),
                           {},
                           { newTeamName: "", newTeamSuccess: !0 }
                         );
@@ -49178,8 +49183,8 @@ object-assign
                     console.log(t),
                       "Request failed with status code 403" === t.message &&
                         e.setState(function (e) {
-                          return as(
-                            as({}, e),
+                          return cs(
+                            cs({}, e),
                             {},
                             {
                               newTeamNameError:
@@ -49205,7 +49210,7 @@ object-assign
                   });
                 delete r.self,
                   this.setState(function (e) {
-                    return as(as({}, e), {}, { joinTeamRequest: r });
+                    return cs(cs({}, e), {}, { joinTeamRequest: r });
                   });
               },
             },
@@ -49214,7 +49219,7 @@ object-assign
               value: function (e) {
                 var t,
                   n = [],
-                  r = ts(e);
+                  r = as(e);
                 try {
                   for (r.s(); !(t = r.n()).done; ) {
                     var a = t.value;
@@ -49238,7 +49243,7 @@ object-assign
                 var n,
                   r = this,
                   a = [],
-                  o = ts(e);
+                  o = as(e);
                 try {
                   var i = function () {
                     var e = n.value;
@@ -49385,7 +49390,7 @@ object-assign
                       this.teamCreateError()
                     ),
                     this.state.newTeamSuccess
-                      ? o.a.createElement(es, {
+                      ? o.a.createElement(rs, {
                           header: "Success!",
                           style: "success",
                           content: "Team was successfully created",
@@ -49400,10 +49405,10 @@ object-assign
           n
         );
       })(a.Component),
-      cs = at(function (e) {
+      ls = at(function (e) {
         return { currentTeam: e.teams.currentTeam };
-      })(is);
-    function ss(e) {
+      })(us);
+    function ds(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -49429,9 +49434,9 @@ object-assign
         return Rt()(this, n);
       };
     }
-    var us = (function (e) {
+    var ps = (function (e) {
         Bt()(n, e);
-        var t = ss(n);
+        var t = ds(n);
         function n(e) {
           var r;
           return (
@@ -49503,7 +49508,7 @@ object-assign
           n
         );
       })(a.Component),
-      ls = function (e) {
+      fs = function (e) {
         return o.a.createElement(
           Da,
           {
@@ -49515,7 +49520,7 @@ object-assign
           "Delete Account"
         );
       };
-    function ds(e, t) {
+    function ms(e, t) {
       var n = Object.keys(e);
       if (Object.getOwnPropertySymbols) {
         var r = Object.getOwnPropertySymbols(e);
@@ -49527,16 +49532,16 @@ object-assign
       }
       return n;
     }
-    function ps(e) {
+    function hs(e) {
       for (var t = 1; t < arguments.length; t++) {
         var n = null != arguments[t] ? arguments[t] : {};
         t % 2
-          ? ds(Object(n), !0).forEach(function (t) {
+          ? ms(Object(n), !0).forEach(function (t) {
               Yt()(e, t, n[t]);
             })
           : Object.getOwnPropertyDescriptors
           ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(n))
-          : ds(Object(n)).forEach(function (t) {
+          : ms(Object(n)).forEach(function (t) {
               Object.defineProperty(
                 e,
                 t,
@@ -49546,7 +49551,7 @@ object-assign
       }
       return e;
     }
-    function fs(e) {
+    function Ms(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -49572,14 +49577,14 @@ object-assign
         return Rt()(this, n);
       };
     }
-    var ms = ""
+    var _s = ""
         .concat(window.location.protocol, "//")
         .concat(window.location.host),
-      hs = (function (e) {
+      bs = (function (e) {
         Bt()(a, e);
         var t,
           n,
-          r = fs(a);
+          r = Ms(a);
         function a(e) {
           var t;
           return (
@@ -49603,10 +49608,10 @@ object-assign
             {
               key: "componentDidMount",
               value:
-                ((n = Fc()(
-                  Xc.a.mark(function e() {
+                ((n = Vc()(
+                  Uc.a.mark(function e() {
                     var t, n, r, a, o, i, c, s;
-                    return Xc.a.wrap(
+                    return Uc.a.wrap(
                       function (e) {
                         for (;;)
                           switch ((e.prev = e.next)) {
@@ -49679,7 +49684,7 @@ object-assign
                   di.a
                     .delete(
                       ""
-                        .concat(ms, "/users/")
+                        .concat(_s, "/users/")
                         .concat(this.props.currentUserId, "/?date=") + t
                     )
                     .then(function () {
@@ -49698,7 +49703,7 @@ object-assign
               value: function (e) {
                 var t = this.state.pending.concat(e);
                 this.setState(function (e) {
-                  return ps(ps({}, e), {}, { pending: t });
+                  return hs(hs({}, e), {}, { pending: t });
                 });
                 var n = new Date(),
                   r = String(n.getDate()).padStart(2, "0"),
@@ -49707,7 +49712,7 @@ object-assign
                 (n = o + "-" + a + "-" + r),
                   di.a
                     .put(
-                      "".concat(ms, "/teams/") +
+                      "".concat(_s, "/teams/") +
                         e.team_id +
                         "/users/".concat(this.props.currentUserId),
                       { approved_ind: 0, date_added: n }
@@ -49724,11 +49729,11 @@ object-assign
                   return t.team_id !== e;
                 });
                 this.setState(function (e) {
-                  return ps(ps({}, e), {}, { pending: t });
+                  return hs(hs({}, e), {}, { pending: t });
                 }),
                   di.a
                     .delete(
-                      "".concat(ms, "/teams/") +
+                      "".concat(_s, "/teams/") +
                         e +
                         "/users/".concat(this.props.currentUserId, "/pending")
                     )
@@ -49740,16 +49745,16 @@ object-assign
             {
               key: "addTeam",
               value:
-                ((t = Fc()(
-                  Xc.a.mark(function e(t) {
+                ((t = Vc()(
+                  Uc.a.mark(function e(t) {
                     var n, r;
-                    return Xc.a.wrap(
+                    return Uc.a.wrap(
                       function (e) {
                         for (;;)
                           switch ((e.prev = e.next)) {
                             case 0:
                               return (
-                                (n = Gc()(new Date()).format("YYYY-MM-DD")),
+                                (n = Jc()(new Date()).format("YYYY-MM-DD")),
                                 console.log(
                                   "Adding ".concat(t, " on ").concat(n)
                                 ),
@@ -49775,8 +49780,8 @@ object-assign
                             case 8:
                               (r = e.sent),
                                 this.setState(function (e) {
-                                  return ps(
-                                    ps({}, e),
+                                  return hs(
+                                    hs({}, e),
                                     {},
                                     { teams: r.data.items }
                                   );
@@ -49812,14 +49817,14 @@ object-assign
                         { hLevel: 2, baseClass: "Settings" },
                         "Settings"
                       ),
-                      o.a.createElement($c, {
+                      o.a.createElement(ts, {
                         teams: this.state.teams,
                         user: this.state.userInfo,
                       }),
                       o.a.createElement("div", {
                         className: "ui hidden divider",
                       }),
-                      o.a.createElement(cs, {
+                      o.a.createElement(ls, {
                         teams: this.state.data.items,
                         currentTeams: this.state.teams ? this.state.teams : [],
                         pending: this.state.pending,
@@ -49830,13 +49835,13 @@ object-assign
                       o.a.createElement("div", {
                         className: "ui hidden divider",
                       }),
-                      o.a.createElement(us, {
+                      o.a.createElement(ps, {
                         pending: this.state.pending,
                         onRemovePending: this.removePending,
                       }),
-                      o.a.createElement(ls, { onClick: this.deleteAccount }),
+                      o.a.createElement(fs, { onClick: this.deleteAccount }),
                       this.state.deleteUserError
-                        ? o.a.createElement(xi, {
+                        ? o.a.createElement(Ci, {
                             negative: !0,
                             content: this.state.deleteUserError,
                           })
@@ -49863,7 +49868,7 @@ object-assign
           a
         );
       })(a.Component),
-      Ms = at(
+      ys = at(
         function (e) {
           var t = null;
           return (
@@ -49879,14 +49884,14 @@ object-assign
           mapDispatchToProps: function (e) {
             return {
               logout: function () {
-                localStorage.removeItem("jwtToken"), Wi(!1), e(ji({}));
+                localStorage.removeItem("jwtToken"), ji(!1), e(qi({}));
               },
             };
           },
-          selectTeam: Hi,
+          selectTeam: Ri,
         }
-      )(hs);
-    function _s(e) {
+      )(bs);
+    function vs(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -49912,9 +49917,9 @@ object-assign
         return Rt()(this, n);
       };
     }
-    var bs = (function (e) {
+    var gs = (function (e) {
         Bt()(n, e);
-        var t = _s(n);
+        var t = vs(n);
         function n(e) {
           var r;
           xt()(this, n), (r = t.call(this, e));
@@ -50035,7 +50040,7 @@ object-assign
                   return o.a.createElement(
                     "div",
                     { className: "TeamOverview" },
-                    o.a.createElement(Gi, {
+                    o.a.createElement(Vi, {
                       currentUserId: e.member_id,
                       currentUserFirstName: e.first_name,
                       currentUserLastName: e.last_name,
@@ -50044,7 +50049,7 @@ object-assign
                     }),
                     o.a.createElement(
                       "div",
-                      { classname: "TeamOverview-container" },
+                      { className: "TeamOverview-container" },
                       o.a.createElement(
                         "div",
                         { class: "TeamOverview-datepickers" },
@@ -50056,7 +50061,7 @@ object-assign
                             { baseClass: "TeamOverview", hLevel: 3 },
                             "Begin Date"
                           ),
-                          o.a.createElement(Ac.a, {
+                          o.a.createElement(wc.a, {
                             className: "ToDoList-datePicker",
                             selected: this.state.beginDate,
                             onChange: this.handleBeginDateChange,
@@ -50065,13 +50070,13 @@ object-assign
                         ),
                         o.a.createElement(
                           "div",
-                          { class: "TeamOverview-endDate" },
+                          { className: "TeamOverview-endDate" },
                           o.a.createElement(
                             Ur,
                             { baseClass: "TeamOverview", hLevel: 3 },
                             "End Date"
                           ),
-                          o.a.createElement(Ac.a, {
+                          o.a.createElement(wc.a, {
                             className: "ToDoList-datePicker",
                             selected: this.state.endDate,
                             onChange: this.handleEndDateChange,
@@ -50090,7 +50095,7 @@ object-assign
                         "TODO: place charts here"
                       )
                     ),
-                    o.a.createElement(gc, {
+                    o.a.createElement(Lc, {
                       currentUserId: e.member_id,
                       team: e.team,
                       updateData: this.fetchData,
@@ -50116,7 +50121,7 @@ object-assign
           n
         );
       })(a.Component),
-      ys = at(function (e) {
+      Ls = at(function (e) {
         return {
           userEmail:
             e.auth && e.auth.user && e.auth.user.user && e.auth.user.user.length
@@ -50124,8 +50129,8 @@ object-assign
               : null,
           currentTeam: e.teams.currentTeam,
         };
-      })(bs);
-    function vs(e) {
+      })(gs);
+    function As(e) {
       return function (t) {
         var n = t.dispatch,
           r = t.getState;
@@ -50136,14 +50141,14 @@ object-assign
         };
       };
     }
-    var gs = vs();
-    gs.withExtraArgument = vs;
-    var Ls = gs,
-      As = n(351),
-      ws = n.n(As),
-      ks = n(352),
-      Ts = n.n(ks);
-    function Os(e, t) {
+    var ws = As();
+    ws.withExtraArgument = As;
+    var ks = ws,
+      Ts = n(351),
+      Os = n.n(Ts),
+      zs = n(352),
+      Ds = n.n(zs);
+    function Ss(e, t) {
       var n = Object.keys(e);
       if (Object.getOwnPropertySymbols) {
         var r = Object.getOwnPropertySymbols(e);
@@ -50155,16 +50160,16 @@ object-assign
       }
       return n;
     }
-    function zs(e) {
+    function Ns(e) {
       for (var t = 1; t < arguments.length; t++) {
         var n = null != arguments[t] ? arguments[t] : {};
         t % 2
-          ? Os(Object(n), !0).forEach(function (t) {
+          ? Ss(Object(n), !0).forEach(function (t) {
               Yt()(e, t, n[t]);
             })
           : Object.getOwnPropertyDescriptors
           ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(n))
-          : Os(Object(n)).forEach(function (t) {
+          : Ss(Object(n)).forEach(function (t) {
               Object.defineProperty(
                 e,
                 t,
@@ -50174,7 +50179,7 @@ object-assign
       }
       return e;
     }
-    var Ds = {
+    var Ys = {
         selectedToDoId: -1,
         selectedToDoName: "General Comments",
         selectedToDoDescription: "",
@@ -50183,12 +50188,12 @@ object-assign
         isAuthenticated: !1,
         user: {},
       },
-      Ss = {
+      Es = {
         toDos: function () {
           var e =
               arguments.length > 0 && void 0 !== arguments[0]
                 ? arguments[0]
-                : Ds,
+                : Ys,
             t = arguments.length > 1 ? arguments[1] : void 0,
             n = t.type,
             r = t.payload;
@@ -50197,8 +50202,8 @@ object-assign
               var a = r.toDoID,
                 o = r.toDoName,
                 i = r.toDoDescription,
-                c = zs(
-                  zs({}, e),
+                c = Ns(
+                  Ns({}, e),
                   {},
                   {
                     selectedToDoId: a,
@@ -50209,7 +50214,7 @@ object-assign
               return c;
             case "SELECT_USER":
               var s = r.userID,
-                u = zs(zs({}, e), {}, { selectedUserId: s });
+                u = Ns(Ns({}, e), {}, { selectedUserId: s });
               return u;
             default:
               return e;
@@ -50219,12 +50224,12 @@ object-assign
           var e =
               arguments.length > 0 && void 0 !== arguments[0]
                 ? arguments[0]
-                : Ds,
+                : Ys,
             t = arguments.length > 1 ? arguments[1] : void 0;
           switch (t.type) {
             case "SET_CURRENT_USER":
-              return zs(
-                zs({}, e),
+              return Ns(
+                Ns({}, e),
                 {},
                 { isAuthenticated: !!Object.keys(t.user).length, user: t.user }
               );
@@ -50236,22 +50241,22 @@ object-assign
           var e =
               arguments.length > 0 && void 0 !== arguments[0]
                 ? arguments[0]
-                : Ds,
+                : Ys,
             t = arguments.length > 1 ? arguments[1] : void 0,
             n = t.type,
             r = t.payload;
           switch (n) {
             case "SELECT_TEAM":
               var a = r.teamID,
-                o = zs(zs({}, e), {}, { currentTeam: a });
+                o = Ns(Ns({}, e), {}, { currentTeam: a });
               return o;
             default:
               return e;
           }
         },
       },
-      Ns = gt({ key: "root", storage: ws.a, stateReconciler: Ts.a }, qe(Ss));
-    function Ys(e) {
+      xs = gt({ key: "root", storage: Os.a, stateReconciler: Ds.a }, qe(Es));
+    function Cs(e) {
       var t = (function () {
         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
         if (Reflect.construct.sham) return !1;
@@ -50277,10 +50282,10 @@ object-assign
         return Rt()(this, n);
       };
     }
-    var Es = function (e) {
+    var Ps = function (e) {
       var t = (function (t) {
         Bt()(r, t);
-        var n = Ys(r);
+        var n = Cs(r);
         function r() {
           return xt()(this, r), n.apply(this, arguments);
         }
@@ -50315,16 +50320,16 @@ object-assign
       );
     };
     n(363);
-    var xs,
-      Cs,
-      Ps,
-      Ws,
+    var Ws,
       js,
       qs,
       Bs,
       Hs,
-      Rs = document.querySelector("#container"),
-      Xs = function () {
+      Rs,
+      Xs,
+      Is,
+      Fs = document.querySelector("#container"),
+      Us = function () {
         return o.a.createElement(
           oe,
           null,
@@ -50334,31 +50339,31 @@ object-assign
             o.a.createElement(
               ee,
               null,
-              o.a.createElement(V, { exact: !0, path: "/", component: pc }),
+              o.a.createElement(V, { exact: !0, path: "/", component: fc }),
               o.a.createElement(V, {
                 exact: !0,
                 path: "/home",
-                component: Es(Hc),
+                component: Ps(Ic),
               }),
               o.a.createElement(V, {
                 exact: !0,
                 path: "/create-account",
-                component: oc,
+                component: ic,
               }),
               o.a.createElement(V, {
                 exact: !0,
                 path: "/settings",
-                component: Es(Ms),
+                component: Ps(ys),
               }),
               o.a.createElement(V, {
                 exact: !0,
                 path: "/team-overview",
-                component: Es(ys),
+                component: Ps(Ls),
               }),
               o.a.createElement(V, {
                 exact: !0,
                 path: "/admin",
-                component: Es($i),
+                component: Ps(Zi),
               }),
               o.a.createElement(V, {
                 render: function () {
@@ -50373,8 +50378,8 @@ object-assign
           )
         );
       },
-      Is = We(
-        Ns,
+      Gs = We(
+        xs,
         Ie(
           (function () {
             for (var e = arguments.length, t = new Array(e), n = 0; n < e; n++)
@@ -50401,27 +50406,27 @@ object-assign
                 });
               };
             };
-          })(Ls)
+          })(ks)
         )
       ),
-      Fs =
-        ((xs = Is),
-        (Ws = Ps || !1),
-        (js = We(Ot, Tt, Cs && Cs.enhancer ? Cs.enhancer : void 0)),
-        (qs = function (e) {
-          js.dispatch({ type: ct, key: e });
+      Vs =
+        ((Ws = Gs),
+        (Bs = qs || !1),
+        (Hs = We(Ot, Tt, js && js.enhancer ? js.enhancer : void 0)),
+        (Rs = function (e) {
+          Hs.dispatch({ type: ct, key: e });
         }),
-        (Bs = function (e, t, n) {
+        (Xs = function (e, t, n) {
           var r = { type: it, payload: t, err: n, key: e };
-          xs.dispatch(r),
-            js.dispatch(r),
-            Ws && Hs.getState().bootstrapped && (Ws(), (Ws = !1));
+          Ws.dispatch(r),
+            Hs.dispatch(r),
+            Bs && Is.getState().bootstrapped && (Bs(), (Bs = !1));
         }),
-        (Hs = wt({}, js, {
+        (Is = wt({}, Hs, {
           purge: function () {
             var e = [];
             return (
-              xs.dispatch({
+              Ws.dispatch({
                 type: "persist/PURGE",
                 result: function (t) {
                   e.push(t);
@@ -50433,7 +50438,7 @@ object-assign
           flush: function () {
             var e = [];
             return (
-              xs.dispatch({
+              Ws.dispatch({
                 type: "persist/FLUSH",
                 result: function (t) {
                   e.push(t);
@@ -50443,41 +50448,41 @@ object-assign
             );
           },
           pause: function () {
-            xs.dispatch({ type: "persist/PAUSE" });
+            Ws.dispatch({ type: "persist/PAUSE" });
           },
           persist: function () {
-            xs.dispatch({
+            Ws.dispatch({
               type: "persist/PERSIST",
-              register: qs,
-              rehydrate: Bs,
+              register: Rs,
+              rehydrate: Xs,
             });
           },
         })),
-        (Cs && Cs.manualPersist) || Hs.persist(),
-        Hs);
+        (js && js.manualPersist) || Is.persist(),
+        Is);
     if (localStorage.jwtToken) {
-      Wi(localStorage.jwtToken);
+      ji(localStorage.jwtToken);
       try {
-        Is.dispatch(ji(St()(localStorage.jwtToken)));
+        Gs.dispatch(qi(St()(localStorage.jwtToken)));
       } catch (e) {
-        Is.dispatch(ji({}));
+        Gs.dispatch(qi({}));
       }
     }
-    Rs &&
+    Fs &&
       c.a.render(
         o.a.createElement(
           ye,
-          { store: Is },
+          { store: Gs },
           o.a.createElement(
             zt.PersistGate,
             {
               loading: o.a.createElement("div", null, "Loading..."),
-              persistor: Fs,
+              persistor: Vs,
             },
-            o.a.createElement(Xs, null)
+            o.a.createElement(Us, null)
           )
         ),
-        Rs
+        Fs
       );
   },
   function (e, t, n) {

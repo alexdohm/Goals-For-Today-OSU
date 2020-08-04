@@ -19,6 +19,7 @@ const ToDoForm = (props) => {
             name="task name"
             onChange={props.handleTaskNameChange}
             initialValue={props.nameValue ? props.nameValue : null}
+            maxLength="50"
           />
           <Form.TextArea
             className="ToDoList-taskDescription"

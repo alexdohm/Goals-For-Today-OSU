@@ -8,6 +8,7 @@ export const FormFieldHelper = (props) => {
   const type = props.type ? props.type : "text";
   const placeholder = props.placeholder ? props.placeholder : props.name;
   const initialValue = props.initialValue ? props.initialValue : null;
+  const maxLength = props.maxLength ? props.maxLength : null;
 
   return (
     <Form.Field className={fieldClass}>
@@ -20,6 +21,7 @@ export const FormFieldHelper = (props) => {
         onChange={props.onChange}
         type={type}
         value={initialValue}
+        maxLength={maxLength}
       />
     </Form.Field>
   );
