@@ -10,6 +10,7 @@ import { selectToDo } from "../redux/actions";
 import ToDoItem from "./ToDoItem";
 import ToDoForm from "./ToDoForm";
 import { isSameDay } from "./common/helpers";
+const token = localStorage.getItem("jwtToken");
 
 class ToDoList extends Component {
   constructor(props) {
@@ -80,7 +81,7 @@ class ToDoList extends Component {
     const raw = JSON.stringify(body);
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-
+    myHeaders.append("Authorization", `Bearer ${token}`);
     const requestOptions = {
       method: "POST",
       headers: myHeaders,

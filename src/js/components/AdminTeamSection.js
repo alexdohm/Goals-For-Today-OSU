@@ -8,6 +8,7 @@ import { dateToQueryString } from "./common/helpers";
 import axios from "axios";
 
 const BASE_URL = `${window.location.protocol}//${window.location.host}`;
+const token = localStorage.getItem("jwtToken");
 
 const statusOptions = [
   {
@@ -51,6 +52,7 @@ class AdminTeamSection extends Component {
     const raw = JSON.stringify(body);
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${token}`);
 
     const requestOptions = {
       method: "PATCH",
@@ -74,6 +76,7 @@ class AdminTeamSection extends Component {
     const raw = JSON.stringify(body);
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${token}`);
 
     const requestOptions = {
       method: "PATCH",
