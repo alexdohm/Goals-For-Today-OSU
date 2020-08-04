@@ -119,7 +119,7 @@ class TeamOverviewPage extends Component {
             team={data.team}
             isTeamOverview={true}
           />
-          <div classname="TeamOverview-container">
+          <div className="TeamOverview-container">
             <div class="TeamOverview-datepickers">
               <div class="TeamOverview-beginDate">
                 <Heading baseClass="TeamOverview" hLevel={3}>
@@ -132,7 +132,7 @@ class TeamOverviewPage extends Component {
                   placeholderText="Select Date"
                 />
               </div>
-              <div class="TeamOverview-endDate">
+              <div className="TeamOverview-endDate">
                 <Heading baseClass="TeamOverview" hLevel={3}>
                   End Date
                 </Heading>
