@@ -125,7 +125,10 @@ class TeamSettings extends Component {
     this.props
       .onAddTeam(this.state.newTeamName)
       .then((result) => {
-        console.log(`RESULT: ${result}`);
+        // this is so wrong
+        var el = document.getElementById("settings-teamRequest");
+        // and bad
+        el.value = "";
         this.setState((prevState) => ({
           ...prevState,
           newTeamName: "",

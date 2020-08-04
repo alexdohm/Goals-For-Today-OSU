@@ -55,10 +55,15 @@ class CreateAccountForm extends Component {
   handleEmailChange(event) {
     const { value } = event.target;
 
+    // clear out email taken error if exists when typing occurs
+    const errs = this.state.errors;
+    errs.emailTaken = "";
+
     this.setState(
       (prevState) => ({
         ...prevState,
         email: value,
+        errors: errs,
       }),
       this.errorCheckEmail
     );
