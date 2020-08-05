@@ -74,7 +74,7 @@ class Comments extends Component {
   }
 
   renderUserComments(userToCommentsMap) {
-    return userToCommentsMap[this.props.currentUserId].map((comment) => {
+    return userToCommentsMap[this.props.selectedUserId].map((comment) => {
       return (
         <Comment
           key={comment.comment_id}
@@ -137,7 +137,6 @@ class Comments extends Component {
     for (const goal of team.goals) {
       goalToCommentsMap[goal.goal_id] = goal.comments;
     }
-
     this.sortCommentsByTime(goalToCommentsMap);
     this.sortCommentsByTime(userToCommentsMap);
 

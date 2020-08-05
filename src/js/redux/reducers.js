@@ -34,6 +34,9 @@ export const toDos = (state = initialState, action) => {
       const newState = {
         ...state,
         selectedUserId: userID,
+        selectedToDoId: -1,
+        selectedToDoName: "General Comments",
+        selectedToDoDescription: "",
       };
       return newState;
     }

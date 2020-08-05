@@ -32,14 +32,15 @@ class HomePage extends Component {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        this.setState({
-          data: data,
-        });
-        this.props.selectTeam(data.team.team_id);
         if (isInitialLoad) {
           this.props.selectUser(data.member_id);
           this.props.selectToDo(-1, "General Comments", "");
         }
+
+        this.setState({
+          data: data,
+        });
+        this.props.selectTeam(data.team.team_id);
       });
   }
 
