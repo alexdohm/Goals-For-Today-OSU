@@ -20,6 +20,7 @@ class ToDoItem extends Component {
       showEditModal: false,
       updatedTaskName: "",
       updatedTaskDescription: "",
+      enableSubmit: true,
     };
 
     this.openEditForm = this.openEditForm.bind(this);
@@ -31,8 +32,17 @@ class ToDoItem extends Component {
     this.handleCancel = this.handleCancel.bind(this);
     this.handleUpdateTask = this.handleUpdateTask.bind(this);
     this.updateGoalStatus = this.updateGoalStatus.bind(this);
+    this.enableSubmit = this.enableSubmit.bind(this);
   }
-
+  enableSubmit() {
+    let enableSubmitButton =
+      this.state.updatedTaskDescription && this.state.updatedTaskName
+        ? true
+        : false;
+    this.setState({
+      enableSubmit: enableSubmitButton,
+    });
+  }
   handleUpdateTask() {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -83,18 +93,24 @@ class ToDoItem extends Component {
 
   handleTaskDescriptionChange(event) {
     const { value } = event.target;
-    this.setState((prevState) => ({
-      ...prevState,
-      updatedTaskDescription: value,
-    }));
+    this.setState(
+      (prevState) => ({
+        ...prevState,
+        updatedTaskDescription: value,
+      }),
+      this.enableSubmit
+    );
   }
 
   handleTaskNameChange(event) {
     const { value } = event.target;
-    this.setState((prevState) => ({
-      ...prevState,
-      updatedTaskName: value,
-    }));
+    this.setState(
+      (prevState) => ({
+        ...prevState,
+        updatedTaskName: value,
+      }),
+      this.enableSubmit
+    );
   }
 
   handleDelete() {
@@ -158,6 +174,7 @@ class ToDoItem extends Component {
             submitText="Update"
             nameValue={this.state.updatedTaskName}
             descriptionValue={this.state.updatedTaskDescription}
+            enableSubmitButton={this.state.enableSubmit}
           />
         ) : null}
       </div>
