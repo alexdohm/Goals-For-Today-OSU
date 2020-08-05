@@ -172,6 +172,7 @@ class Comments extends Component {
             selectedUserId={this.props.selectedUserId}
             currentUserId={this.props.currentUserId}
             currentTeamId={this.props.currentTeamId}
+            isTeamOverview={this.props.isTeamOverview}
           />
         </div>
       </div>
@@ -238,7 +239,11 @@ class CommentForm extends Component {
     };
 
     let fetchPath;
-    if (this.props.selectedToDoId == -1) {
+
+    if (this.props.isTeamOverview) {
+      // post a team comment
+      fetchPath = "/teams/" + this.props.currentTeamId + "/comments";
+    } else if (this.props.selectedToDoId == -1) {
       //post a general comment
       fetchPath = "/users/" + this.props.selectedUserId + "/comments";
     } else {
