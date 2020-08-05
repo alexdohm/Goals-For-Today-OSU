@@ -102,20 +102,22 @@ class TeamTaskbar extends Component {
 
             {/* then render rest of teammates */}
             {team.team_members
-              ? team.team_members.map((user, index) => (
-                  <TaskbarItem
-                    key={user.member_id}
-                    onClick={
-                      this.props.isTeamOverview
-                        ? this.navigateToHome
-                        : () => this.props.onUserSelected(user.member_id)
-                    }
-                    icon={USER_ICON}
-                    isSelected={user.member_id == this.props.selectedUserId}
-                  >
-                    {user.first_name} {user.last_name}
-                  </TaskbarItem>
-                ))
+              ? team.team_members
+                  .filter((obj) => obj.status !== "REQUESTED")
+                  .map((user, index) => (
+                    <TaskbarItem
+                      key={user.member_id}
+                      onClick={
+                        this.props.isTeamOverview
+                          ? this.navigateToHome
+                          : () => this.props.onUserSelected(user.member_id)
+                      }
+                      icon={USER_ICON}
+                      isSelected={user.member_id == this.props.selectedUserId}
+                    >
+                      {user.first_name} {user.last_name}
+                    </TaskbarItem>
+                  ))
               : null}
           </div>
           <div className="TeamTaskbar-bottom">
