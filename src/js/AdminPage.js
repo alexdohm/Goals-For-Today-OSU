@@ -15,6 +15,7 @@ class AdminPage extends Component {
     this.state = {
       data: null,
       teamInfo: null,
+      nonTeamMembers: null,
       showInviteModal: false,
       inviteEmail: "",
       inviteError: "",
@@ -49,6 +50,13 @@ class AdminPage extends Component {
       .then((data) => {
         this.setState({
           teamInfo: data,
+        });
+      });
+    fetch(`/teams/${this.props.currentTeam}/non_members`)
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({
+          nonTeamMembers: data,
         });
       });
   }
@@ -124,8 +132,7 @@ class AdminPage extends Component {
   }
 
   render() {
-    if (this.state.data && this.state.teamInfo) {
-      console.log(this.state);
+    if (this.state.data && this.state.teamInfo && this.state.nonTeamMembers) {
       return (
         <div className="Admin">
           <TeamTaskbar
@@ -159,6 +166,7 @@ class AdminPage extends Component {
                 closeModal={this.closeModal}
                 handleAction={this.inviteTeamMember}
                 errorText={this.state.inviteError}
+                nonTeamMembers={this.state.nonTeamMembers.items}
               />
             ) : null}
           </div>
