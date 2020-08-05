@@ -8,6 +8,7 @@ import AdminEmailSection from "./components/AdminEmailSection";
 import AdminDeleteButton from "./components/AdminDeleteButton";
 import InviteForm from "./components/InviteForm";
 import TeamTaskbar from "./components/TeamTaskbar";
+const token = localStorage.getItem("jwtToken");
 
 class AdminPage extends Component {
   constructor(props) {
@@ -33,11 +34,21 @@ class AdminPage extends Component {
   }
 
   fetchData() {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
     fetch(
       "/users/login/" +
         this.props.userEmail +
         "/team_id/" +
-        this.props.currentTeam
+        this.props.currentTeam,
+      requestOptions
     )
       .then((response) => response.json())
       .then((data) => {
@@ -45,14 +56,14 @@ class AdminPage extends Component {
           data: data,
         });
       });
-    fetch("/teams/" + this.props.currentTeam)
+    fetch("/teams/" + this.props.currentTeam, requestOptions)
       .then((response) => response.json())
       .then((data) => {
         this.setState({
           teamInfo: data,
         });
       });
-    fetch(`/teams/${this.props.currentTeam}/non_members`)
+    fetch(`/teams/${this.props.currentTeam}/non_members`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
         this.setState({
