@@ -41,6 +41,7 @@ const ToDoForm = (props) => {
               className="ToDoList-submit"
               type="submit"
               onClick={props.handleAction}
+              disabled={!props.enableSubmitButton}
             >
               {props.submitText}
             </Button>

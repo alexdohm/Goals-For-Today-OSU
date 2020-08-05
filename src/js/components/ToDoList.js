@@ -22,6 +22,7 @@ class ToDoList extends Component {
       newTaskName: "",
       newTaskDescription: "",
       date: new Date(),
+      enableSubmit: false,
     };
 
     this.selectItem = this.selectItem.bind(this);
@@ -33,11 +34,20 @@ class ToDoList extends Component {
     this.handleCancel = this.handleCancel.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleAddTask = this.handleAddTask.bind(this);
+    this.enableSubmit = this.enableSubmit.bind(this);
   }
 
   selectItem(index) {
     this.setState({
       selected: index,
+    });
+  }
+
+  enableSubmit() {
+    let enableSubmitButton =
+      this.state.newTaskDescription && this.state.newTaskName ? true : false;
+    this.setState({
+      enableSubmit: enableSubmitButton,
     });
   }
 
@@ -52,18 +62,24 @@ class ToDoList extends Component {
 
   handleNewTaskNameChange(event) {
     const { value } = event.target;
-    this.setState((prevState) => ({
-      ...prevState,
-      newTaskName: value,
-    }));
+    this.setState(
+      (prevState) => ({
+        ...prevState,
+        newTaskName: value,
+      }),
+      this.enableSubmit
+    );
   }
 
   handleNewTaskDescriptionChange(event) {
     const { value } = event.target;
-    this.setState((prevState) => ({
-      ...prevState,
-      newTaskDescription: value,
-    }));
+    this.setState(
+      (prevState) => ({
+        ...prevState,
+        newTaskDescription: value,
+      }),
+      this.enableSubmit
+    );
   }
 
   handleAddTask() {
@@ -194,6 +210,7 @@ class ToDoList extends Component {
             handleTaskDescriptionChange={this.handleNewTaskDescriptionChange}
             closeModal={this.handleCancel}
             submitText="Submit"
+            enableSubmitButton={this.state.enableSubmit}
           />
         ) : null}
       </div>
