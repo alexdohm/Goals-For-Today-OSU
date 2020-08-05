@@ -29,7 +29,7 @@ class InviteForm extends Component {
   renderResults(res) {
     return (
       <div>
-        {`${res.first_name} ${res.last_name}`}
+        {`${res.title}`}
         <br />
         {res.email}
       </div>
@@ -63,12 +63,19 @@ class InviteForm extends Component {
       if (this.state.value.length < 1) return this.setState(initialState);
 
       const re = new RegExp(_.escapeRegExp(this.state.value), "i");
-      const isMatch = (result) => re.test(result.email);
+      const isMatch = (result) => re.test(`${result.title} ${result.email}`);
 
       this.setState(
         {
           isLoading: false,
-          results: _.filter(this.props.nonTeamMembers, isMatch),
+          results: _.filter(
+            this.props.nonTeamMembers.map((el) => ({
+              title: `${el.first_name} ${el.last_name}`,
+              key: el.member_id,
+              ...el,
+            })),
+            isMatch
+          ),
         },
         this.buttonDisableCheck
       );
@@ -78,7 +85,6 @@ class InviteForm extends Component {
   render() {
     const { isLoading, value, results, inviteDisabled } = this.state;
 
-    debugger;
     return (
       <div className="Invite-overlay">
         <div className="Invite-formWrapper">
