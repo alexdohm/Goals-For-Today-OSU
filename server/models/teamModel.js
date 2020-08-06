@@ -214,7 +214,21 @@ const removeTeamMember = async function (userId, teamId, date) {
   WHERE member_id = $2
     AND team_id = $3;`;
 
-  return Helpers.updateData(removalQuery, [date, userId, teamId]);
+  const removalResult = await Helpers.updateData(removalQuery, [
+    date,
+    userId,
+    teamId,
+  ]);
+
+  // also delete from manages if they were an admin
+  const deleteAdminRowQuery = `DELETE from manages where team_id = $1 AND member_id = $2`;
+
+  const deleteResult = await Helpers.deleteData(deleteAdminRowQuery, [
+    teamId,
+    userId,
+  ]);
+
+  return removalResult;
 };
 
 /**
