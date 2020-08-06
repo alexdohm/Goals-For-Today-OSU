@@ -80,12 +80,31 @@ const sendEmail = function (users, time, serverOffset) {
   for (let i = 0; i < users.length; i++) {
     let rule = createRule(hour[i], minute[i]);
     let j = schedule.scheduleJob("User" + i + time, rule, function () {
-      console.log("sending email to " + users[i].first_name + " | " + time);
+      console.log(
+        "sending email to " +
+          users[i].first_name +
+          " | " +
+          time +
+          " | " +
+          hour[i] +
+          ":" +
+          minute[i] +
+          " | timezone: " +
+          users[i].time_zone +
+          " | morning: " +
+          users[i].morning_time +
+          " | evening: " +
+          users[i].evening_time
+      );
+      console.log();
+
       users[i].filename = "user-reminder";
       users[i].reminder_type = time;
       send(users[i])
         .then((res) => {})
-        .catch((err) => {});
+        .catch((err) => {
+          console.log(err);
+        });
     });
   }
 };
@@ -102,14 +121,24 @@ const sendTeamEmails = function (teams) {
   let serverOffset = moment.tz(servertz).utcOffset();
   let hour = buildHours(teams.teams, "Evening", serverOffset);
   let minute = buildMinutes(teams.teams, "Evening", serverOffset);
-
   for (let i = 0; i < teams.teams.length; i++) {
     let rule = createRule(hour[i], minute[i]);
     let j = schedule.scheduleJob(
       "Team" + teams.teams[i].team_id,
       rule,
       function () {
-        console.log("sending team update email to " + teams.teams[i].team_name);
+        console.log(
+          "sending team update email to " +
+            teams.teams[i].team_name +
+            " time: " +
+            hour[i] +
+            ":" +
+            minute[i] +
+            " | timezone: " +
+            teams.teams[i].time_zone +
+            " | original time: " +
+            teams.teams[i].evening_time
+        );
         for (let j = 0; j < teams.teams[i].members.length; j++) {
           teams.teams[i].filename = "team-summary";
           teams.teams[i].reminder_type = "Team Summary";
@@ -153,7 +182,7 @@ const biDailyUpdate = async function () {
       console.log(err);
     });
 
-  let j = schedule.scheduleJob("Update", "0 0,12 * * *", function () {
+  let j = schedule.scheduleJob("Update", "*/15 * * * * *", function () {
     console.log("Bi Daily Update - Executing");
     let date = new Date();
     console.log(date);
