@@ -103,7 +103,8 @@ class AdminPage extends Component {
             "/teams/" + this.props.currentTeam + "/users/" + data.member_id,
             requestOptions
           )
-            .then((response) => response.json())
+            // no body is returned with PUT
+            // .then((response) => response.json())
             .then((data) => {
               this.setState({
                 inviteError: "",
@@ -161,6 +162,7 @@ class AdminPage extends Component {
               firstName={this.state.data.first_name}
               lastName={this.state.data.last_name}
               status={this.state.data.team.team_admin ? "ADMIN" : "MEMBER"}
+              soleAdmin={this.state.data.sole_admin}
               openInviteModal={this.openInviteModal}
               inviteTeamMember={this.inviteTeamMember}
               currentTeam={this.props.currentTeam}

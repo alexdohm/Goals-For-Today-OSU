@@ -12,7 +12,9 @@ class DismissibleMessage extends Component {
 
   handleDismiss() {
     this.setState({ visible: false });
-    this.props.handleDismiss();
+    if (this.props.handleDismiss) {
+      this.props.handleDismiss();
+    }
   }
 
   render() {

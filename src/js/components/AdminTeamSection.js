@@ -5,6 +5,7 @@ import { Icon, Button, Select, Loader, Confirm } from "semantic-ui-react";
 import { USER_ICON, TRASH_ICON } from "./common/constants";
 import IconButton from "./common/IconButton";
 import { dateToQueryString } from "./common/helpers";
+import DismissibleMessage from "./MessageDismissible";
 import axios from "axios";
 
 const BASE_URL = `${window.location.protocol}//${window.location.host}`;
@@ -65,7 +66,8 @@ class AdminTeamSection extends Component {
       "/teams/" + this.props.currentTeam + "/users/" + userId,
       requestOptions
     )
-      .then((response) => response.json())
+      // no body is returned
+      // .then((response) => response.json())
       .then((data) => {
         //this.props.updateData();
         console.log(data);
@@ -128,6 +130,9 @@ class AdminTeamSection extends Component {
             deleteMember={this.deleteMember}
             status={status}
             changeStatus={this.changeStatus}
+            isCurrentUser={true}
+            isSoleAdmin={this.props.soleAdmin}
+            updateData={this.props.updateData}
           />
           {team.team_members.map((member) => {
             return (
@@ -166,6 +171,7 @@ class AdminTeamMember extends Component {
     this.state = {
       statusValue: this.props.status,
       showDeleteConfirm: false,
+      showAdminWarningMsg: false,
     };
     this.handleDropdownChange = this.handleDropdownChange.bind(this);
     this.handleApproveMember = this.handleApproveMember.bind(this);
@@ -175,12 +181,24 @@ class AdminTeamMember extends Component {
   }
 
   handleDropdownChange(e, { value }) {
-    this.setState((prevState) => ({
-      ...prevState,
-      statusValue: value,
-    }));
-    this.props.changeStatus(this.props.id, value);
-    this.props.updateData();
+    if (
+      this.props.isCurrentUser &&
+      this.props.isSoleAdmin &&
+      value === "MEMBER"
+    ) {
+      this.setState((prevState) => ({
+        ...prevState,
+        showAdminWarningMsg: true,
+        statusValue: "ADMIN",
+      }));
+    } else {
+      this.setState((prevState) => ({
+        ...prevState,
+        statusValue: value,
+      }));
+      this.props.changeStatus(this.props.id, value);
+      this.props.updateData();
+    }
   }
 
   handleApproveMember(e) {
@@ -275,6 +293,17 @@ class AdminTeamMember extends Component {
                 />
               </div>
             ) : null}
+            <div>
+              {this.state.showAdminWarningMsg ? (
+                <div>
+                  <DismissibleMessage
+                    header="Error!"
+                    style="negative"
+                    content="You must assign Admin status to one other member before changing your own status."
+                  />
+                </div>
+              ) : null}
+            </div>
           </div>
         </div>
       );
