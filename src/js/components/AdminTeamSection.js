@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Heading from "./common/Heading";
 import Text from "./common/Text";
-import { Icon, Button, Select, Loader } from "semantic-ui-react";
+import { Icon, Button, Select, Loader, Confirm } from "semantic-ui-react";
 import { USER_ICON, TRASH_ICON } from "./common/constants";
 import IconButton from "./common/IconButton";
 import { dateToQueryString } from "./common/helpers";
@@ -165,9 +165,13 @@ class AdminTeamMember extends Component {
     super(props);
     this.state = {
       statusValue: this.props.status,
+      showDeleteConfirm: false,
     };
     this.handleDropdownChange = this.handleDropdownChange.bind(this);
     this.handleApproveMember = this.handleApproveMember.bind(this);
+    this.handleConfirmClose = this.handleConfirmClose.bind(this);
+    this.handleConfirmOpen = this.handleConfirmOpen.bind(this);
+    this.handleConfirmDelete = this.handleConfirmDelete.bind(this);
   }
 
   handleDropdownChange(e, { value }) {
@@ -178,6 +182,7 @@ class AdminTeamMember extends Component {
     this.props.changeStatus(this.props.id, value);
     this.props.updateData();
   }
+
   handleApproveMember(e) {
     this.props.approveMember(this.props.id);
     this.setState(
@@ -187,6 +192,30 @@ class AdminTeamMember extends Component {
       }),
       this.props.updateData()
     );
+  }
+
+  handleConfirmClose() {
+    this.setState((prevState) => ({
+      ...prevState,
+      showDeleteConfirm: false,
+    }));
+  }
+
+  handleConfirmDelete() {
+    this.setState(
+      (prevState) => ({
+        ...prevState,
+        showDeleteConfirm: false,
+      }),
+      this.props.deleteMember(this.props.id)
+    );
+  }
+
+  handleConfirmOpen() {
+    this.setState((prevState) => ({
+      ...prevState,
+      showDeleteConfirm: true,
+    }));
   }
 
   render() {
@@ -229,11 +258,23 @@ class AdminTeamMember extends Component {
                   onClick={
                     this.state.statusValue == "REQUESTED"
                       ? () => this.props.removePending(this.props.id)
-                      : () => this.props.deleteMember(this.props.id)
+                      : () => this.handleConfirmOpen()
                   }
                 />
               ) : null}
             </div>
+            {this.state.showDeleteConfirm ? (
+              <div>
+                <Confirm
+                  open={true}
+                  onConfirm={this.handleConfirmDelete}
+                  onCancel={this.handleConfirmClose}
+                  content={`This action is permanent. Once someone is removed from a team they cannot be added back. Do you want to permanently remove ${this.props.name}?`}
+                  header={"WARNING!"}
+                  confirmButton={"Remove"}
+                />
+              </div>
+            ) : null}
           </div>
         </div>
       );
