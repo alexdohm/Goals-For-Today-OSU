@@ -56540,10 +56540,12 @@ object-assign
                   o.a.createElement(
                     "div",
                     { className: "ToDoItem-container" },
-                    o.a.createElement(wi, {
-                      onChange: this.updateGoalStatus,
-                      defaultChecked: this.props.status,
-                    }),
+                    this.props.showButtons
+                      ? o.a.createElement(wi, {
+                          onChange: this.updateGoalStatus,
+                          defaultChecked: this.props.status,
+                        })
+                      : null,
                     o.a.createElement(
                       "div",
                       { className: "ToDoItem-info" },
