@@ -223,10 +223,12 @@ class CommentForm extends Component {
 
     this.state = {
       newCommentText: "",
+      replyLoading: false,
     };
 
     this.handleCommentChange = this.handleCommentChange.bind(this);
     this.postComment = this.postComment.bind(this);
+    this.handleReply = this.handleReply.bind(this);
   }
 
   handleCommentChange(event) {
@@ -235,6 +237,15 @@ class CommentForm extends Component {
       ...prevState,
       newCommentText: value,
     }));
+  }
+  handleReply() {
+    this.setState(
+      (prevState) => ({
+        ...prevState,
+        replyLoading: true,
+      }),
+      this.postComment
+    );
   }
 
   postComment() {
@@ -276,6 +287,7 @@ class CommentForm extends Component {
         this.setState((prevState) => ({
           ...prevState,
           newCommentText: "",
+          replyLoading: false,
         }));
         this.props.updateData();
       })
@@ -293,8 +305,9 @@ class CommentForm extends Component {
           content="Add Reply"
           labelPosition="left"
           icon={EDIT_ICON}
-          onClick={this.postComment}
+          onClick={this.handleReply}
           primary
+          loading={this.state.replyLoading}
         />
       </Form>
     );

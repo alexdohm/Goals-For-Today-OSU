@@ -42,6 +42,7 @@ const ToDoForm = (props) => {
               type="submit"
               onClick={props.handleAction}
               disabled={!props.enableSubmitButton}
+              loading={props.loadingSubmit}
             >
               {props.submitText}
             </Button>

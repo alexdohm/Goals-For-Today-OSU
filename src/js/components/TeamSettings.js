@@ -60,7 +60,6 @@ class TeamSettings extends Component {
   }
 
   handleTeamCreateChange(event) {
-    //debugger;
     const { value } = event.target;
 
     this.setState(
@@ -98,7 +97,6 @@ class TeamSettings extends Component {
 
   teamCreateError() {
     if (this.state.newTeamNameError) {
-      debugger;
       return (
         <Message
           negative

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Checkbox } from "semantic-ui-react";
+import { Checkbox, Loader } from "semantic-ui-react";
 import { connect } from "react-redux";
 
 import IconButton from "./common/IconButton";
@@ -21,6 +21,7 @@ class ToDoItem extends Component {
       updatedTaskName: "",
       updatedTaskDescription: "",
       enableSubmit: true,
+      showSpinner: false,
     };
 
     this.openEditForm = this.openEditForm.bind(this);
@@ -33,6 +34,7 @@ class ToDoItem extends Component {
     this.handleUpdateTask = this.handleUpdateTask.bind(this);
     this.updateGoalStatus = this.updateGoalStatus.bind(this);
     this.enableSubmit = this.enableSubmit.bind(this);
+    this.handlePendingDelete = this.handlePendingDelete.bind(this);
   }
   enableSubmit() {
     let enableSubmitButton =
@@ -91,6 +93,16 @@ class ToDoItem extends Component {
     }));
   }
 
+  handlePendingDelete() {
+    this.setState(
+      (prevState) => ({
+        ...prevState,
+        showSpinner: true,
+      }),
+      this.handleDelete
+    );
+  }
+
   handleTaskDescriptionChange(event) {
     const { value } = event.target;
     this.setState(
@@ -116,6 +128,10 @@ class ToDoItem extends Component {
   handleDelete() {
     axios.delete(`${BASE_URL}/goals/${this.props.id}`).then(() => {
       console.log("Goal deleted");
+      if (this.props.selected) {
+        this.props.onDelete();
+      }
+
       this.props.updateData();
     });
   }
@@ -131,56 +147,65 @@ class ToDoItem extends Component {
       ? "ToDoItem ToDoItem--selected"
       : "ToDoItem";
 
-    return (
-      <div
-        className={topLevelClass}
-        onClick={() => this.props.onClick(this.props.id)}
-      >
-        <div className="ToDoItem-container">
+    if (this.state.showSpinner) {
+      return (
+        <div>
+          <br />
+          <Loader active inline="centered" />
+        </div>
+      );
+    } else {
+      return (
+        <div
+          className={topLevelClass}
+          onClick={() => this.props.onClick(this.props.id)}
+        >
+          <div className="ToDoItem-container">
+            {this.props.showButtons ? (
+              <Checkbox
+                onChange={this.updateGoalStatus}
+                defaultChecked={this.props.status}
+              />
+            ) : null}
+            <div className="ToDoItem-info">
+              <Heading hlevel={3} baseClass="ToDoItem">
+                {this.props.title}
+              </Heading>
+              <Text baseClass="ToDoItem">{this.props.description}</Text>
+            </div>
+          </div>
           {this.props.showButtons ? (
-            <Checkbox
-              onChange={this.updateGoalStatus}
-              defaultChecked={this.props.status}
+            <div className="ToDoItem-buttons">
+              <IconButton
+                baseClass="ToDoItem"
+                onClick={this.openEditForm}
+                icon={EDIT_ICON}
+                size="large"
+              />
+              <IconButton
+                baseClass="ToDoItem"
+                onClick={this.handlePendingDelete}
+                icon={TRASH_ICON}
+                size="large"
+              />
+            </div>
+          ) : null}
+          {this.state.showEditModal ? (
+            <ToDoForm
+              heading={"Edit Task " + this.props.id}
+              handleAction={this.handleUpdateTask}
+              handleTaskNameChange={this.handleTaskNameChange}
+              handleTaskDescriptionChange={this.handleTaskDescriptionChange}
+              closeModal={this.handleCancel}
+              submitText="Update"
+              nameValue={this.state.updatedTaskName}
+              descriptionValue={this.state.updatedTaskDescription}
+              enableSubmitButton={this.state.enableSubmit}
             />
           ) : null}
-          <div className="ToDoItem-info">
-            <Heading hlevel={3} baseClass="ToDoItem">
-              {this.props.title}
-            </Heading>
-            <Text baseClass="ToDoItem">{this.props.description}</Text>
-          </div>
         </div>
-        {this.props.showButtons ? (
-          <div className="ToDoItem-buttons">
-            <IconButton
-              baseClass="ToDoItem"
-              onClick={this.openEditForm}
-              icon={EDIT_ICON}
-              size="large"
-            />
-            <IconButton
-              baseClass="ToDoItem"
-              onClick={this.handleDelete}
-              icon={TRASH_ICON}
-              size="large"
-            />
-          </div>
-        ) : null}
-        {this.state.showEditModal ? (
-          <ToDoForm
-            heading={"Edit Task " + this.props.id}
-            handleAction={this.handleUpdateTask}
-            handleTaskNameChange={this.handleTaskNameChange}
-            handleTaskDescriptionChange={this.handleTaskDescriptionChange}
-            closeModal={this.handleCancel}
-            submitText="Update"
-            nameValue={this.state.updatedTaskName}
-            descriptionValue={this.state.updatedTaskDescription}
-            enableSubmitButton={this.state.enableSubmit}
-          />
-        ) : null}
-      </div>
-    );
+      );
+    }
   }
 }
 

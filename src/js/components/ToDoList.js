@@ -23,6 +23,7 @@ class ToDoList extends Component {
       newTaskDescription: "",
       date: new Date(),
       enableSubmit: false,
+      loadingSubmit: false,
     };
 
     this.selectItem = this.selectItem.bind(this);
@@ -35,6 +36,7 @@ class ToDoList extends Component {
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleAddTask = this.handleAddTask.bind(this);
     this.enableSubmit = this.enableSubmit.bind(this);
+    this.disableSubmit = this.disableSubmit.bind(this);
   }
 
   selectItem(index) {
@@ -49,6 +51,17 @@ class ToDoList extends Component {
     this.setState({
       enableSubmit: enableSubmitButton,
     });
+  }
+
+  disableSubmit() {
+    if (this.state.loadingSubmit === false) {
+      this.setState(
+        {
+          loadingSubmit: true,
+        },
+        this.handleAddTask
+      );
+    }
   }
 
   openAddModal() {
@@ -111,6 +124,7 @@ class ToDoList extends Component {
         console.log(result);
         this.setState({
           showAddModal: false,
+          loadingSubmit: false,
         });
         this.props.updateData();
       })
@@ -182,6 +196,9 @@ class ToDoList extends Component {
                             goal.task_description
                           )
                         }
+                        onDelete={() =>
+                          this.props.onToDoSelected(-1, "General Comments", "")
+                        }
                         updateData={this.props.updateData}
                       />
                     );
@@ -205,12 +222,13 @@ class ToDoList extends Component {
         {this.state.showAddModal ? (
           <ToDoForm
             heading="Add New Task"
-            handleAction={this.handleAddTask}
+            handleAction={this.disableSubmit}
             handleTaskNameChange={this.handleNewTaskNameChange}
             handleTaskDescriptionChange={this.handleNewTaskDescriptionChange}
             closeModal={this.handleCancel}
             submitText="Submit"
             enableSubmitButton={this.state.enableSubmit}
+            loadingSubmit={this.state.loadingSubmit}
           />
         ) : null}
       </div>
