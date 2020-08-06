@@ -182,7 +182,7 @@ const biDailyUpdate = async function () {
       console.log(err);
     });
 
-  let j = schedule.scheduleJob("Update", "*/15 * * * * *", function () {
+  let j = schedule.scheduleJob("Update", "0 0,12 * * *", function () {
     console.log("Bi Daily Update - Executing");
     let date = new Date();
     console.log(date);
