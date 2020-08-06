@@ -7,6 +7,7 @@ import TeamTaskbar from "./components/TeamTaskbar";
 import ToDoList from "./components/ToDoList";
 import WelcomeModal from "./components/WelcomeModal";
 import { selectTeam, selectToDo, selectUser } from "./redux/actions";
+const token = localStorage.getItem("jwtToken");
 
 class HomePage extends Component {
   constructor(props) {
@@ -23,11 +24,22 @@ class HomePage extends Component {
   }
 
   fetchData(isInitialLoad = false) {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
     fetch(
       "/users/login/" +
         this.props.userEmail +
         "/team_id/" +
-        this.props.currentTeam
+        this.props.currentTeam,
+      requestOptions
     )
       .then((response) => response.json())
       .then((data) => {

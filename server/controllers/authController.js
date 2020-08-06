@@ -74,14 +74,14 @@ router.post("/login", function (req, res) {
       } else {
         const token = jwt.sign({ user }, jwtKey, {
           algorithm: "HS256",
-          expiresIn: jwtExpirySeconds,
+          //expiresIn: jwtExpirySeconds,
         });
-        console.log("token:", token);
+        //console.log("token:", token);
 
         // set the cookie as the token string, with a similar max age as the token
         // here, the max age is in milliseconds, so we multiply by 1000
         // https://dev.to/mr_cea/remaining-stateless-jwt-cookies-in-node-js-3lle
-        res.cookie("token", token, { maxAge: jwtExpirySeconds * 1000 });
+        res.cookie("token", token);
         res.status(200);
         res.send(token);
         res.end();

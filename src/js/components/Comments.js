@@ -12,6 +12,7 @@ import Heading from "./common/Heading";
 import Text from "./common/Text";
 import { dateToTimestampString } from "./common/helpers";
 import IconButton from "./common/IconButton";
+const token = localStorage.getItem("jwtToken");
 
 class Comments extends Component {
   constructor(props) {
@@ -247,7 +248,7 @@ class CommentForm extends Component {
     const raw = JSON.stringify(body);
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-
+    myHeaders.append("Authorization", `Bearer ${token}`);
     const requestOptions = {
       method: "POST",
       headers: myHeaders,

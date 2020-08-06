@@ -15,6 +15,7 @@ import {
   selectTeam,
 } from "./redux/actions";
 const BASE_URL = `${window.location.protocol}//${window.location.host}`;
+const token = localStorage.getItem("jwtToken");
 
 class SettingsPage extends Component {
   constructor(props) {
@@ -34,24 +35,39 @@ class SettingsPage extends Component {
   }
 
   async componentDidMount() {
-    const response = await fetch("/teams");
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    const response = await fetch("/teams", requestOptions);
     const json = await response.json();
     this.setState({ data: json });
 
     const response2 = await fetch(
-      "/users/" + this.props.currentUserId + "/teams"
+      "/users/" + this.props.currentUserId + "/teams",
+      requestOptions
     );
     const json2 = await response2.json();
     this.setState({ teams: json2.items });
 
     const response4 = await fetch(
-      "/users/" + this.props.currentUserId + "/pending"
+      "/users/" + this.props.currentUserId + "/pending",
+      requestOptions
     );
     const json4 = await response4.json();
     this.setState({ pending: json4 });
 
     //this needs to be listed last
-    const response3 = await fetch("/users/" + this.props.currentUserId);
+    const response3 = await fetch(
+      "/users/" + this.props.currentUserId,
+      requestOptions
+    );
     const json3 = await response3.json();
     this.setState({ userInfo: json3 });
 

@@ -7,6 +7,7 @@ import Heading from "./components/common/Heading";
 import TeamTaskbar from "./components/TeamTaskbar";
 import Comments from "./components/Comments";
 import { dateToQueryString } from "./components/common/helpers";
+const token = localStorage.getItem("jwtToken");
 
 class TeamOverviewPage extends Component {
   constructor(props) {
@@ -58,11 +59,21 @@ class TeamOverviewPage extends Component {
   }
 
   fetchData() {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
     fetch(
       "/users/login/" +
         this.props.userEmail +
         "/team_id/" +
-        this.props.currentTeam
+        this.props.currentTeam,
+      requestOptions
     )
       .then((response) => response.json())
       .then((data) => {
@@ -70,13 +81,13 @@ class TeamOverviewPage extends Component {
           data: data,
         });
       });
-    fetch("/teams/" + this.props.currentTeam)
+    fetch("/teams/" + this.props.currentTeam, requestOptions)
       .then((response) => response.json())
       .then((data) => {
         this.setState({
           teamInfo: data,
         });
-        fetch("/teams/" + this.props.currentTeam + "/comments")
+        fetch("/teams/" + this.props.currentTeam + "/comments", requestOptions)
           .then((response) => response.json())
           .then((data) => {
             this.setState({
@@ -90,13 +101,24 @@ class TeamOverviewPage extends Component {
   }
 
   updateStatistics() {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
     fetch(
       "/teams/" +
         this.props.currentTeam +
         "/statistics?beginDate=" +
         dateToQueryString(this.state.beginDate) +
         "&endDate=" +
-        dateToQueryString(this.state.endDate)
+        dateToQueryString(this.state.endDate),
+      requestOptions
     )
       .then((response) => response.json())
       .then((data) => {
