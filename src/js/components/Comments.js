@@ -109,6 +109,17 @@ class Comments extends Component {
     }
   }
 
+  scrollToBottom() {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+  }
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+
   render() {
     const {
       currentUserId,
@@ -173,6 +184,12 @@ class Comments extends Component {
             currentUserId={this.props.currentUserId}
             currentTeamId={this.props.currentTeamId}
             isTeamOverview={this.props.isTeamOverview}
+          />
+          <div
+            style={{ float: "left", clear: "both" }}
+            ref={(el) => {
+              this.messagesEnd = el;
+            }}
           />
         </div>
       </div>

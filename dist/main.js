@@ -55974,65 +55974,84 @@ object-assign
               },
             },
             {
+              key: "scrollToBottom",
+              value: function () {
+                this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+              },
+            },
+            {
+              key: "componentDidMount",
+              value: function () {
+                this.scrollToBottom();
+              },
+            },
+            {
+              key: "componentDidUpdate",
+              value: function () {
+                this.scrollToBottom();
+              },
+            },
+            {
               key: "render",
               value: function () {
                 var e,
-                  t = this.props,
-                  n = t.currentUserId,
-                  r = t.team,
-                  a = t.selectedToDoName,
-                  i = t.selectedToDoDescription,
-                  c = {},
+                  t = this,
+                  n = this.props,
+                  r = n.currentUserId,
+                  a = n.team,
+                  i = n.selectedToDoName,
+                  c = n.selectedToDoDescription,
                   s = {},
-                  u = ks(r.team_members);
+                  u = {},
+                  l = ks(a.team_members);
                 try {
-                  for (u.s(); !(e = u.n()).done; ) {
-                    var l,
-                      d = ks(e.value.goals);
+                  for (l.s(); !(e = l.n()).done; ) {
+                    var d,
+                      p = ks(e.value.goals);
                     try {
-                      for (d.s(); !(l = d.n()).done; ) {
-                        var p = l.value;
-                        c[p.goal_id] = p.comments;
+                      for (p.s(); !(d = p.n()).done; ) {
+                        var f = d.value;
+                        s[f.goal_id] = f.comments;
                       }
                     } catch (e) {
-                      d.e(e);
+                      p.e(e);
                     } finally {
-                      d.f();
+                      p.f();
                     }
                   }
                 } catch (e) {
-                  u.e(e);
+                  l.e(e);
                 } finally {
-                  u.f();
+                  l.f();
                 }
-                s[n] = r.user_comments;
-                var f,
-                  m = ks(r.team_members);
+                u[r] = a.user_comments;
+                var m,
+                  h = ks(a.team_members);
                 try {
-                  for (m.s(); !(f = m.n()).done; ) {
-                    var h = f.value;
-                    s[h.member_id] = h.user_comments;
+                  for (h.s(); !(m = h.n()).done; ) {
+                    var M = m.value;
+                    u[M.member_id] = M.user_comments;
                   }
                 } catch (e) {
-                  m.e(e);
+                  h.e(e);
                 } finally {
-                  m.f();
+                  h.f();
                 }
-                var M,
-                  _ = ks(r.goals);
+                var _,
+                  b = ks(a.goals);
                 try {
-                  for (_.s(); !(M = _.n()).done; ) {
-                    var b = M.value;
-                    c[b.goal_id] = b.comments;
+                  for (b.s(); !(_ = b.n()).done; ) {
+                    var y = _.value;
+                    s[y.goal_id] = y.comments;
                   }
                 } catch (e) {
-                  _.e(e);
+                  b.e(e);
                 } finally {
-                  _.f();
+                  b.f();
                 }
                 return (
-                  this.sortCommentsByTime(c),
                   this.sortCommentsByTime(s),
+                  this.sortCommentsByTime(u),
                   o.a.createElement(
                     "div",
                     {
@@ -56057,20 +56076,20 @@ object-assign
                         o.a.createElement(
                           Vr,
                           { baseClass: "Comments", hLevel: 2 },
-                          a
+                          i
                         ),
-                        i
+                        c
                           ? o.a.createElement(
                               Vr,
                               { baseClass: "Comments", hLevel: 4 },
-                              i
+                              c
                             )
                           : null
                       ),
                       o.a.createElement(
                         "div",
                         { className: "Comments-list" },
-                        this.renderComments(s, c)
+                        this.renderComments(u, s)
                       ),
                       o.a.createElement(Es, {
                         updateData: this.props.updateData,
@@ -56079,6 +56098,12 @@ object-assign
                         currentUserId: this.props.currentUserId,
                         currentTeamId: this.props.currentTeamId,
                         isTeamOverview: this.props.isTeamOverview,
+                      }),
+                      o.a.createElement("div", {
+                        style: { float: "left", clear: "both" },
+                        ref: function (e) {
+                          t.messagesEnd = e;
+                        },
                       })
                     )
                   )
