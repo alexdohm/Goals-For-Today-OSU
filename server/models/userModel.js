@@ -420,6 +420,12 @@ const loadUserInfoOnLogin = async function (userEmail, teamId) {
       userInfo.member_id,
       userTeams.items[0].team_id
     );
+    const soleAdmin = await isUserSoleAdmin(
+      userTeams.items[0].team_id,
+      userInfo.member_id
+    );
+    userDataJson.sole_admin = soleAdmin;
+
     return userDataJson;
   }
 };
@@ -603,6 +609,44 @@ const getNonTeamsForUser = async function (userId) {
       items: [],
     };
   }
+};
+
+const isUserSoleAdmin = async function (teamId, userId) {
+  const soleAdminQuery = `SELECT n1.team_name
+  FROM (SELECT t.team_name, count(*) AS totalRows
+        FROM team AS t
+                 INNER JOIN member_of AS mo ON mo.team_id = t.team_id
+        WHERE mo.approved = true
+        AND mo.date_left IS NULL
+        GROUP BY t.team_name
+        HAVING count(*) > 1) AS n1
+           INNER JOIN (SELECT q1.team_name
+                       FROM (SELECT t.team_name, count(*) AS totalRows
+                             FROM team AS t
+                                      INNER JOIN manages m ON m.team_id = t.team_id
+                             GROUP BY t.team_name
+                             HAVING count(*) = 1) AS q1
+                                INNER JOIN (SELECT t.team_name
+                                            FROM team AS t
+                                                     INNER JOIN manages m ON m.team_id = t.team_id
+                                            WHERE member_id = $1) AS q2
+                                           ON (q2.team_name = q1.team_name)) AS n2
+                      ON n1.team_name = n2.team_name;`;
+
+  let soleAdmin = false;
+  const adminResult = await Helpers.runQuery(soleAdminQuery, [userId]);
+
+  const teamDetails = await Team.getTeamById(teamId);
+
+  if (adminResult) {
+    adminResult.forEach((team) => {
+      if (team.team_name === teamDetails.team_name) {
+        soleAdmin = true;
+      }
+    });
+  }
+
+  return soleAdmin;
 };
 
 /**
