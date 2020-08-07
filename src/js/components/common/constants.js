@@ -264,3 +264,12 @@ export const TIME_OPTIONS = [
     key: "23:30",
   },
 ];
+
+export const COLORS = [
+  '#FF6358',
+  '#FFD246',
+  '#78D237',
+  '#28B4c8',
+  '#2D73F5',
+  '#AA46BE'
+]

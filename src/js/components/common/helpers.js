@@ -68,3 +68,26 @@ export const dateToQueryString = (date) => {
 
   return month + "-" + day + "-" + year;
 };
+
+export const dateToAxisString = (date) => {
+  let month = date.getMonth() + 1;
+  if (month < 10) {
+    month = "0" + month;
+  }
+  let day = date.getDate();
+  if (day < 10) {
+    day = "0" + day;
+  }
+  const year = date.getFullYear();
+
+  return month + "/" + day + "/" + year;
+}
+
+export const getRandomColor = () => {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}

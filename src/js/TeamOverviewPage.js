@@ -8,6 +8,7 @@ import TeamTaskbar from "./components/TeamTaskbar";
 import Comments from "./components/Comments";
 import { dateToQueryString } from "./components/common/helpers";
 import UserStats from "./components/UserStats";
+import UserPercentageStats from "./components/UserPercentageStats";
 
 class TeamOverviewPage extends Component {
   constructor(props) {
@@ -183,7 +184,9 @@ class TeamOverviewPage extends Component {
             <div className="TeamOverview-userStats">
               {this.generateUserStatsToday()}
             </div>
-            <div className="TeamOverview-stats">TODO: place charts here</div>
+            <div className="TeamOverview-stats">
+              <UserPercentageStats perMemberInPeriod={this.state.stats.completedPerMemberInPeriod} />
+            </div>
             
           </div>
           <Comments
