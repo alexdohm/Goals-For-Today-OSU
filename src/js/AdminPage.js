@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Dimmer, Loader } from "semantic-ui-react";
+import { Dimmer, Loader, Modal } from "semantic-ui-react";
 import { connect } from "react-redux";
+import axios from "axios";
 
 import Heading from "./components/common/Heading";
 import AdminTeamSection from "./components/AdminTeamSection";
@@ -8,7 +9,7 @@ import AdminEmailSection from "./components/AdminEmailSection";
 import AdminDeleteButton from "./components/AdminDeleteButton";
 import InviteForm from "./components/InviteForm";
 import TeamTaskbar from "./components/TeamTaskbar";
-
+import ConfirmModal from "./components/ConfirmModal";
 
 class AdminPage extends Component {
   constructor(props) {
@@ -20,8 +21,15 @@ class AdminPage extends Component {
       showInviteModal: false,
       inviteEmail: "",
       inviteError: "",
+      showDeleteConfirm: false,
     };
     this.deleteTeam = this.deleteTeam.bind(this);
+    this.handleDeleteTeamConfirmOpen = this.handleDeleteTeamConfirmOpen.bind(
+      this
+    );
+    this.handleDeleteTeamConfirmClose = this.handleDeleteTeamConfirmClose.bind(
+      this
+    );
     this.openInviteModal = this.openInviteModal.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -73,9 +81,33 @@ class AdminPage extends Component {
       });
   }
 
+  handleDeleteTeamConfirmOpen() {
+    this.setState({
+      showDeleteConfirm: true,
+    });
+  }
+
+  handleDeleteTeamConfirmClose() {
+    this.setState({
+      showDeleteConfirm: false,
+    });
+  }
+
   deleteTeam() {
-    //TODO: implement
-    alert("you deleted a team");
+    this.setState({
+      showDeleteConfirm: false,
+    });
+    const BASE_URL = `${window.location.protocol}//${window.location.host}`;
+
+    axios
+      .delete(`${BASE_URL}/teams/${this.props.currentTeam}`)
+      .then(() => {
+        //TODO not sure if this is the right way to do this, if they hit "back" it causes errors
+        this.props.history.push("/settings");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   inviteTeamMember() {
@@ -89,7 +121,7 @@ class AdminPage extends Component {
       redirect: "follow",
     };
 
-    fetch("/users/" + this.state.inviteEmail + "?type=email",requestOptions)
+    fetch("/users/" + this.state.inviteEmail + "?type=email", requestOptions)
       .then((response) => response.json())
       .then((data) => {
         if (data.Error) {
@@ -116,8 +148,6 @@ class AdminPage extends Component {
             "/teams/" + this.props.currentTeam + "/users/" + data.member_id,
             requestOptions
           )
-            // no body is returned with PUT
-            // .then((response) => response.json())
             .then((data) => {
               this.setState({
                 inviteError: "",
@@ -185,7 +215,6 @@ class AdminPage extends Component {
             <div className="ui hidden divider"></div>
             <AdminEmailSection teamInfo={this.state.teamInfo} />
             <div className="ui hidden divider"></div>
-            <AdminDeleteButton onClick={this.deleteTeam} />
             {this.state.showInviteModal ? (
               <InviteForm
                 handleEmailChange={this.handleEmailChange}
@@ -195,6 +224,18 @@ class AdminPage extends Component {
                 nonTeamMembers={this.state.nonTeamMembers.items}
               />
             ) : null}
+
+            <ConfirmModal
+              trigger={
+                <AdminDeleteButton onClick={this.handleDeleteTeamConfirmOpen} />
+              }
+              message="Do you want to delete this team? This cannot be undone."
+              header="Are you sure?"
+              buttonLabel="Yes"
+              onAction={this.deleteTeam}
+              open={this.state.showDeleteConfirm}
+              onClose={this.handleDeleteTeamConfirmClose}
+            />
           </div>
         </div>
       );
