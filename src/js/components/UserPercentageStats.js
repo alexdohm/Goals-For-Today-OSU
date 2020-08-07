@@ -66,7 +66,12 @@ const getData = (perMemberInPeriod, nameList) => {
       userIdToNameMap[userId] = item.first_name + " " + item.last_name;
     }
 
-    const percentage = Math.floor(item.finishedgoals / item.totalgoals * 100);
+    let percentage;
+    if (item.totalgoals == 0) {
+      percentage = 0.0;
+    } else {
+      percentage = Math.floor(item.finishedgoals / item.totalgoals * 100);
+    }
     dateToDataMap[dateString][userId] = percentage;
   }
 

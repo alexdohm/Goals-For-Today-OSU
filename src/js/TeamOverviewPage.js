@@ -9,6 +9,7 @@ import Comments from "./components/Comments";
 import { dateToQueryString } from "./components/common/helpers";
 import UserStats from "./components/UserStats";
 import UserPercentageStats from "./components/UserPercentageStats";
+import TeamStats from "./components/TeamStats";
 
 class TeamOverviewPage extends Component {
   constructor(props) {
@@ -158,6 +159,16 @@ class TeamOverviewPage extends Component {
           return (
             <div className="TeamOverview-stats">
               <UserPercentageStats perMemberInPeriod={this.state.stats.completedPerMemberInPeriod} />
+            </div>
+          )
+        }
+      },
+      {
+        menuItem: 'Team Completion',
+        render: () => {
+          return (
+            <div className="TeamOverview-teamStats">
+              <TeamStats teamCompletedInPeriod={this.state.stats.teamCompletedInPeriod} />
             </div>
           )
         }
