@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Dimmer, Loader, Modal } from "semantic-ui-react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 
 import Heading from "./components/common/Heading";
@@ -22,6 +23,7 @@ class AdminPage extends Component {
       inviteEmail: "",
       inviteError: "",
       showDeleteConfirm: false,
+      deleteComplete: false,
     };
     this.deleteTeam = this.deleteTeam.bind(this);
     this.handleDeleteTeamConfirmOpen = this.handleDeleteTeamConfirmOpen.bind(
@@ -102,8 +104,9 @@ class AdminPage extends Component {
     axios
       .delete(`${BASE_URL}/teams/${this.props.currentTeam}`)
       .then(() => {
-        //TODO not sure if this is the right way to do this, if they hit "back" it causes errors
-        this.props.history.push("/settings");
+        this.setState({
+          deleteComplete: true,
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -237,6 +240,7 @@ class AdminPage extends Component {
               onClose={this.handleDeleteTeamConfirmClose}
             />
           </div>
+          {this.state.deleteComplete ? <Redirect to="/settings" /> : null}
         </div>
       );
     } else {
