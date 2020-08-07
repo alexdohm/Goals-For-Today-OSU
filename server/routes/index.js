@@ -8,12 +8,17 @@ const jwtKey = "my_secret_key";
 router.use("/", async function (req, res, next) {
   let validToken = false;
   let user_info = {};
-  let token = req.headers["authorization"];
+  let token = req.headers["authorization"] || req.headers.cookie;
 
   if (token) {
     try {
-      // strip "Bearer " from string
-      token = token.slice(7, token.length);
+      if (token.indexOf("token=") !== -1) {
+        // we got the cookie
+        token = token.slice(6, token.length);
+      } else {
+        // strip "Bearer " from string
+        token = token.slice(7, token.length);
+      }
 
       // this throws if not valid
       user_info = await jwt.verify(token, jwtKey);
