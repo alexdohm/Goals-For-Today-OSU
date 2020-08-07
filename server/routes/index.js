@@ -31,7 +31,10 @@ router.use("/", async function (req, res, next) {
     }
   }
   if (!validToken) {
-    res.status(401).json({ Error: "Missing or invalid JWT." });
+    console.log("Invalid token");
+    console.log(req.headers);
+    next();
+    //res.status(401).json({ Error: "Missing or invalid JWT." });
   } else {
     next();
   }
