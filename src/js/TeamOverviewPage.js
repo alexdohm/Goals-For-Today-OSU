@@ -7,6 +7,7 @@ import Heading from "./components/common/Heading";
 import TeamTaskbar from "./components/TeamTaskbar";
 import Comments from "./components/Comments";
 import { dateToQueryString } from "./components/common/helpers";
+import UserStats from "./components/UserStats";
 const token = localStorage.getItem("jwtToken");
 
 class TeamOverviewPage extends Component {
@@ -128,6 +129,12 @@ class TeamOverviewPage extends Component {
       });
   }
 
+  generateUserStatsToday() {
+    return this.state.stats.completedPerMemberDate.map( userData => {
+      return <UserStats userData={userData} />
+    });
+  }
+
   render() {
     if (this.state.data && this.state.teamInfo && this.state.stats) {
       console.log(this.state);
@@ -166,10 +173,17 @@ class TeamOverviewPage extends Component {
                 />
               </div>
             </div>
-            <Heading hLevel={1} baseClass="TeamOverview">
+            <Heading hLevel={1} baseClass="TeamOverview" modifier="teamName">
               {this.state.teamInfo.team_name}
             </Heading>
+            <Heading hLevel={2} baseClass="TeamOverview" modifier="userStats">
+              Goals Completed Today Per User
+            </Heading>
+            <div className="TeamOverview-userStats">
+              {this.generateUserStatsToday()}
+            </div>
             <div className="TeamOverview-stats">TODO: place charts here</div>
+            
           </div>
           <Comments
             currentUserId={data.member_id}

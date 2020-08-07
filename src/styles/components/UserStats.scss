@@ -1,0 +1,20 @@
+.UserStats
+{
+  width: 100%;
+  margin-bottom: 32px;
+
+  @media (min-width: $small-screen)
+  {
+    width: 50%;
+  }
+
+  @media (min-width: $large-screen)
+  {
+    width: percentage(1 / 3);
+  }
+
+  &-heading
+  {
+    text-align: center;
+  }
+}
