@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Heading from "./common/Heading";
+import { Redirect } from "react-router-dom";
 import Text from "./common/Text";
 import { Icon, Button, Select, Loader, Confirm } from "semantic-ui-react";
 import { USER_ICON, TRASH_ICON } from "./common/constants";
@@ -9,7 +10,6 @@ import DismissibleMessage from "./MessageDismissible";
 import axios from "axios";
 
 const BASE_URL = `${window.location.protocol}//${window.location.host}`;
-
 
 const statusOptions = [
   {
@@ -65,13 +65,9 @@ class AdminTeamSection extends Component {
     fetch(
       "/teams/" + this.props.currentTeam + "/users/" + userId,
       requestOptions
-    )
-      // no body is returned
-      // .then((response) => response.json())
-      .then((data) => {
-        this.props.updateData();
-        //console.log(data);
-      });
+    ).then((data) => {
+      this.props.updateData();
+    });
   }
 
   approveMember(userId) {
@@ -94,7 +90,6 @@ class AdminTeamSection extends Component {
       "/teams/" + this.props.currentTeam + "/users/" + userId,
       requestOptions
     )
-      //.then((response) => response.json())
       .then((data) => {
         console.log(data);
         this.props.updateData();
@@ -172,6 +167,7 @@ class AdminTeamMember extends Component {
       statusValue: this.props.status,
       showDeleteConfirm: false,
       showAdminWarningMsg: false,
+      adminDemotedSelf: false,
     };
     this.handleDropdownChange = this.handleDropdownChange.bind(this);
     this.handleApproveMember = this.handleApproveMember.bind(this);
@@ -191,6 +187,14 @@ class AdminTeamMember extends Component {
         showAdminWarningMsg: true,
         statusValue: "ADMIN",
       }));
+    } else if (this.props.isCurrentUser && value === "MEMBER") {
+      this.props.changeStatus(this.props.id, value);
+      this.setState((prevState) => ({
+        ...prevState,
+        statusValue: value,
+        adminDemotedSelf: true,
+      }));
+      this.props.changeStatus(this.props.id, value);
     } else {
       this.setState((prevState) => ({
         ...prevState,
@@ -303,6 +307,7 @@ class AdminTeamMember extends Component {
                   />
                 </div>
               ) : null}
+              {this.state.adminDemotedSelf ? <Redirect to="/home" /> : null}
             </div>
           </div>
         </div>
