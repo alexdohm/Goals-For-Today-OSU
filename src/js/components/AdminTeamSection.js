@@ -69,8 +69,8 @@ class AdminTeamSection extends Component {
       // no body is returned
       // .then((response) => response.json())
       .then((data) => {
-        //this.props.updateData();
-        console.log(data);
+        this.props.updateData();
+        //console.log(data);
       });
   }
 
