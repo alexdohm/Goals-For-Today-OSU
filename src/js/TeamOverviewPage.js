@@ -7,7 +7,7 @@ import Heading from "./components/common/Heading";
 import TeamTaskbar from "./components/TeamTaskbar";
 import Comments from "./components/Comments";
 import { dateToQueryString } from "./components/common/helpers";
-const token = localStorage.getItem("jwtToken");
+
 
 class TeamOverviewPage extends Component {
   constructor(props) {
@@ -59,6 +59,7 @@ class TeamOverviewPage extends Component {
   }
 
   fetchData() {
+    const token = localStorage.getItem("jwtToken");
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${token}`);
@@ -101,6 +102,7 @@ class TeamOverviewPage extends Component {
   }
 
   updateStatistics() {
+    const token = localStorage.getItem("jwtToken");
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${token}`);

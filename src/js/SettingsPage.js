@@ -15,7 +15,7 @@ import {
   selectTeam,
 } from "./redux/actions";
 const BASE_URL = `${window.location.protocol}//${window.location.host}`;
-const token = localStorage.getItem("jwtToken");
+
 
 class SettingsPage extends Component {
   constructor(props) {
@@ -35,6 +35,7 @@ class SettingsPage extends Component {
   }
 
   async componentDidMount() {
+    const token = localStorage.getItem("jwtToken");
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${token}`);

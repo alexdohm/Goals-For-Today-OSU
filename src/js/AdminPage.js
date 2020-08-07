@@ -8,7 +8,7 @@ import AdminEmailSection from "./components/AdminEmailSection";
 import AdminDeleteButton from "./components/AdminDeleteButton";
 import InviteForm from "./components/InviteForm";
 import TeamTaskbar from "./components/TeamTaskbar";
-const token = localStorage.getItem("jwtToken");
+
 
 class AdminPage extends Component {
   constructor(props) {
@@ -34,6 +34,7 @@ class AdminPage extends Component {
   }
 
   fetchData() {
+    const token = localStorage.getItem("jwtToken");
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${token}`);
@@ -78,7 +79,17 @@ class AdminPage extends Component {
   }
 
   inviteTeamMember() {
-    fetch("/users/" + this.state.inviteEmail + "?type=email")
+    const token = localStorage.getItem("jwtToken");
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch("/users/" + this.state.inviteEmail + "?type=email",requestOptions)
       .then((response) => response.json())
       .then((data) => {
         if (data.Error) {
@@ -90,6 +101,7 @@ class AdminPage extends Component {
             date_added: new Date(),
             approved_ind: 1,
           };
+          const token = localStorage.getItem("jwtToken");
           const raw = JSON.stringify(body);
           const myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");

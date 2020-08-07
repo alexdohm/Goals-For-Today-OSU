@@ -9,7 +9,7 @@ import DismissibleMessage from "./MessageDismissible";
 import axios from "axios";
 
 const BASE_URL = `${window.location.protocol}//${window.location.host}`;
-const token = localStorage.getItem("jwtToken");
+
 
 const statusOptions = [
   {
@@ -50,7 +50,7 @@ class AdminTeamSection extends Component {
     const body = {
       admin_ind: value == "ADMIN" ? 1 : 0,
     };
-
+    const token = localStorage.getItem("jwtToken");
     const raw = JSON.stringify(body);
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -78,7 +78,7 @@ class AdminTeamSection extends Component {
     const body = {
       approved_ind: 1,
     };
-
+    const token = localStorage.getItem("jwtToken");
     const raw = JSON.stringify(body);
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");

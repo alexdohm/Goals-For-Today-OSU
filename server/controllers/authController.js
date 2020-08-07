@@ -74,9 +74,7 @@ router.post("/login", function (req, res) {
       } else {
         const token = jwt.sign({ user }, jwtKey, {
           algorithm: "HS256",
-          //expiresIn: jwtExpirySeconds,
         });
-        //console.log("token:", token);
 
         // set the cookie as the token string, with a similar max age as the token
         // here, the max age is in milliseconds, so we multiply by 1000

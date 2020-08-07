@@ -10,7 +10,7 @@ import ToDoForm from "./ToDoForm";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 const BASE_URL = `${window.location.protocol}//${window.location.host}`;
-const token = localStorage.getItem("jwtToken");
+
 
 class ToDoItem extends Component {
   constructor(props) {
@@ -46,6 +46,7 @@ class ToDoItem extends Component {
     });
   }
   handleUpdateTask() {
+    const token = localStorage.getItem("jwtToken");
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${token}`);

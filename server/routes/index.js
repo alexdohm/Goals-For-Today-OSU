@@ -16,8 +16,7 @@ router.use("/", async function (req, res, next) {
       token = token.slice(7, token.length);
 
       // this throws if not valid
-      //user_info = await jwt.decode(token); //verify(token);
-      user_info = await jwt.verify(token, jwtKey); //verify(token);
+      user_info = await jwt.verify(token, jwtKey);
       if (user_info) {
         validToken = true;
       }
@@ -29,7 +28,6 @@ router.use("/", async function (req, res, next) {
   if (!validToken) {
     res.status(401).json({ Error: "Missing or invalid JWT." });
   } else {
-    //req.session.user_info = user_info;
     next();
   }
 });

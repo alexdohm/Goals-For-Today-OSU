@@ -10,7 +10,7 @@ import { selectToDo } from "../redux/actions";
 import ToDoItem from "./ToDoItem";
 import ToDoForm from "./ToDoForm";
 import { isSameDay } from "./common/helpers";
-const token = localStorage.getItem("jwtToken");
+
 
 class ToDoList extends Component {
   constructor(props) {
@@ -106,7 +106,7 @@ class ToDoList extends Component {
       team_id: currentTeamId,
       member_id: currentUserId,
     };
-
+    const token = localStorage.getItem("jwtToken");
     const raw = JSON.stringify(body);
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
