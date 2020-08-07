@@ -19,7 +19,7 @@ const UserStats = (props) => {
         <PieChart
           data={data}
           lineWidth={25}
-          label={({ dataEntry }) => dataEntry.value}
+          label={({ dataEntry }) => dataEntry.value == 0.5 ? 0 : dataEntry.value}
           labelStyle={(index) => ({
             fill: data[index].color,
             fontSize: '16px',
@@ -42,9 +42,13 @@ const buildData = (userData) => {
   const red = '#CF0819';
   const green = '#3AE314';
 
-  const total = userData.totalgoals;
-  const completed = userData.finishedgoals;
-  const incomplete = total - completed;
+  const total = userData.totalgoals || 0;
+  let completed = userData.finishedgoals || 0;
+  let incomplete = total - completed;
+  if (completed == 0 && incomplete == 0) {
+    completed = null;
+    incomplete = 0.5; //can use as a flag since these will always be whole numbers in normal circumstances
+  }
 
   return [
     { title: 'Complete', value: completed, color: green },

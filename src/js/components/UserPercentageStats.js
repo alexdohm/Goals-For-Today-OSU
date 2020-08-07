@@ -1,5 +1,14 @@
 import React from 'react';
-import { BarChart, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from 'recharts';
+import { BarChart, 
+          ResponsiveContainer, 
+          CartesianGrid, 
+          XAxis,
+          YAxis, 
+          Tooltip, 
+          Legend, 
+          Bar, 
+          LineChart, 
+          Line } from 'recharts';
 
 import { dateToAxisString, getRandomColor } from './common/helpers';
 import { COLORS } from './common/constants';
@@ -10,13 +19,21 @@ const UserPercentageStats = (props) => {
   const nameList = [];
 
   const data = getData(perMemberInPeriod, nameList);
-  console.log('user percentage data', data);
-  console.log('name list', nameList);
 
   if (data && data.length) {
     return (
       <div className="UserPercentageStats">
-        <ResponsiveContainer height={400} width="100%">
+        <ResponsiveContainer className="UserPercentageStats-chart" height={400} width="100%">
+          <LineChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name"/>
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            {generateLines(nameList)}
+          </LineChart>
+        </ResponsiveContainer>
+        <ResponsiveContainer className="UserPercentageStats-chart" height={400} width="100%">
           <BarChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name"/>
@@ -82,6 +99,12 @@ const getData = (perMemberInPeriod, nameList) => {
 const generateBars = (nameList) => {
   return nameList.map( (name, index) => {
     return <Bar dataKey={name} fill={getColor(index)} />
+  });
+}
+
+const generateLines = (nameList) => {
+  return nameList.map( (name, index) => {
+    return <Line type="monotone" dataKey={name} stroke={getColor(index)} />
   });
 }
 

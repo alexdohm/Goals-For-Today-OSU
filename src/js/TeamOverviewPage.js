@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Dimmer, Loader } from "semantic-ui-react";
+import { Dimmer, Loader, Tab } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 
 import Heading from "./components/common/Heading";
@@ -137,6 +137,36 @@ class TeamOverviewPage extends Component {
     });
   }
 
+  getTabPanes() {
+    const panes = [
+      {
+        menuItem: 'Today',
+        render: () => {
+          return (
+            <div className="TeamOverview-userStats">
+              <Heading hLevel={2} baseClass="TeamOverview" modifier="userStats">
+                Goals Completed Today Per User
+              </Heading>
+              {this.generateUserStatsToday()}
+            </div>
+          )
+        }
+      },
+      {
+        menuItem: 'User Completion',
+        render: () => {
+          return (
+            <div className="TeamOverview-stats">
+              <UserPercentageStats perMemberInPeriod={this.state.stats.completedPerMemberInPeriod} />
+            </div>
+          )
+        }
+      }
+    ]
+
+    return panes;
+  }
+
   render() {
     if (this.state.data && this.state.teamInfo && this.state.stats) {
       console.log(this.state);
@@ -178,16 +208,7 @@ class TeamOverviewPage extends Component {
             <Heading hLevel={1} baseClass="TeamOverview" modifier="teamName">
               {this.state.teamInfo.team_name}
             </Heading>
-            <Heading hLevel={2} baseClass="TeamOverview" modifier="userStats">
-              Goals Completed Today Per User
-            </Heading>
-            <div className="TeamOverview-userStats">
-              {this.generateUserStatsToday()}
-            </div>
-            <div className="TeamOverview-stats">
-              <UserPercentageStats perMemberInPeriod={this.state.stats.completedPerMemberInPeriod} />
-            </div>
-            
+            <Tab panes={this.getTabPanes()} />
           </div>
           <Comments
             currentUserId={data.member_id}
