@@ -215,6 +215,7 @@ const mapDispatchToProps = (dispatch) => ({
     setAuthorizationToken(false);
     dispatch(setCurrentUser({}));
   },
+  selectTeam: (teamID) => dispatch(selectTeam(teamID))
 });
 
 const mapStateToProps = (state) => {
@@ -233,6 +234,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { mapDispatchToProps, selectTeam })(
-  SettingsPage
-);
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsPage);
