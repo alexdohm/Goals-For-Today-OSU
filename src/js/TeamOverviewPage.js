@@ -133,15 +133,15 @@ class TeamOverviewPage extends Component {
   }
 
   generateUserStatsToday() {
-    return this.state.stats.completedPerMemberDate.map( userData => {
-      return <UserStats userData={userData} />
+    return this.state.stats.completedPerMemberDate.map((userData) => {
+      return <UserStats userData={userData} />;
     });
   }
 
   getTabPanes() {
     const panes = [
       {
-        menuItem: 'Today',
+        menuItem: "Today",
         render: () => {
           return (
             <div className="TeamOverview-userStats">
@@ -150,30 +150,34 @@ class TeamOverviewPage extends Component {
               </Heading>
               {this.generateUserStatsToday()}
             </div>
-          )
-        }
+          );
+        },
       },
       {
-        menuItem: 'User Completion',
+        menuItem: "User Completion",
         render: () => {
           return (
             <div className="TeamOverview-stats">
-              <UserPercentageStats perMemberInPeriod={this.state.stats.completedPerMemberInPeriod} />
+              <UserPercentageStats
+                perMemberInPeriod={this.state.stats.completedPerMemberInPeriod}
+              />
             </div>
-          )
-        }
+          );
+        },
       },
       {
-        menuItem: 'Team Completion',
+        menuItem: "Team Completion",
         render: () => {
           return (
             <div className="TeamOverview-teamStats">
-              <TeamStats teamCompletedInPeriod={this.state.stats.teamCompletedInPeriod} />
+              <TeamStats
+                teamCompletedInPeriod={this.state.stats.teamCompletedInPeriod}
+              />
             </div>
-          )
-        }
-      }
-    ]
+          );
+        },
+      },
+    ];
 
     return panes;
   }

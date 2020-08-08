@@ -1,12 +1,10 @@
-import React from 'react';
-import { PieChart } from 'react-minimal-pie-chart';
+import React from "react";
+import { PieChart } from "react-minimal-pie-chart";
 
-import Heading from './common/Heading';
-
+import Heading from "./common/Heading";
 
 const UserStats = (props) => {
-
-  const { userData } = props
+  const { userData } = props;
 
   const data = buildData(userData);
 
@@ -19,28 +17,30 @@ const UserStats = (props) => {
         <PieChart
           data={data}
           lineWidth={25}
-          label={({ dataEntry }) => dataEntry.value == 0.5 ? 0 : dataEntry.value}
+          label={({ dataEntry }) =>
+            dataEntry.value == 0.5 ? 0 : dataEntry.value
+          }
           labelStyle={(index) => ({
             fill: data[index].color,
-            fontSize: '16px',
+            fontSize: "16px",
           })}
           labelPosition={60}
-          style={{ height: '200px' }}
+          style={{ height: "200px" }}
           animate
           animationDuration={1000}
         />
       </div>
     );
   }
-}
+};
 
 const buildData = (userData) => {
   if (!userData) {
     return null;
   }
 
-  const red = '#CF0819';
-  const green = '#3AE314';
+  const red = "#CF0819";
+  const green = "#3AE314";
 
   const total = userData.totalgoals || 0;
   let completed = userData.finishedgoals || 0;
@@ -51,9 +51,9 @@ const buildData = (userData) => {
   }
 
   return [
-    { title: 'Complete', value: completed, color: green },
-    { title: 'Incomplete', value: incomplete, color: red}
+    { title: "Complete", value: completed, color: green },
+    { title: "Incomplete", value: incomplete, color: red },
   ];
-}
+};
 
 export default UserStats;
