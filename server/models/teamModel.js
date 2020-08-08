@@ -288,12 +288,17 @@ const getUsersNotInTeam = async function (teamId) {
   const getTeamsQuery = `SELECT DISTINCT tm.member_id, tm.first_name, tm.last_name, tm.email
   FROM team_member as tm
            INNER JOIN member_of AS mo ON mo.member_id = tm.member_id
-  WHERE mo.team_id <> $1
-    AND mo.member_id NOT IN
+      WHERE mo.team_id <> $1
+      AND mo.member_id NOT IN
         (SELECT tm.member_id
          FROM team_member as tm
                   INNER JOIN member_of AS mo on mo.member_id = tm.member_id
-         WHERE mo.team_id = $1);`;
+         WHERE mo.team_id = $1)
+  UNION
+  SELECT DISTINCT tm.member_id, tm.first_name, tm.last_name, tm.email
+  FROM team_member as tm
+    WHERE not exists (select 1 from member_of mo where mo.member_id = tm.member_id)
+ order by email`;
 
   const allNonTeamMembers = await Helpers.runQuery(getTeamsQuery, [teamId]);
 
