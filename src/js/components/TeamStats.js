@@ -24,7 +24,7 @@ const TeamStats = (props) => {
     return (
       <div className="TeamStats">
         <Heading baseClass="TeamStats" hLevel={2}>
-          Team Statistics over date range
+          Team Goal Completion Percentages
         </Heading>
         <div className="TeamStats">
           <ResponsiveContainer

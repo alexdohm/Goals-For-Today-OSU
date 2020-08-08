@@ -14,6 +14,7 @@ import {
 
 import { dateToAxisString, getRandomColor } from "./common/helpers";
 import { COLORS } from "./common/constants";
+import Heading from "./common/Heading";
 
 const UserPercentageStats = (props) => {
   const { perMemberInPeriod } = props;
@@ -24,6 +25,9 @@ const UserPercentageStats = (props) => {
   if (data && data.length) {
     return (
       <div className="UserPercentageStats">
+        <Heading hLevel={2} baseClass="UserPercentageStats">
+          Goal Completion Percentage per User
+        </Heading>
         <ResponsiveContainer
           className="UserPercentageStats-chart"
           height={400}

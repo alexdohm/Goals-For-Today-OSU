@@ -6,7 +6,7 @@ import DatePicker from "react-datepicker";
 import Heading from "./components/common/Heading";
 import TeamTaskbar from "./components/TeamTaskbar";
 import Comments from "./components/Comments";
-import { dateToQueryString } from "./components/common/helpers";
+import { dateToQueryString, dateToAxisString } from "./components/common/helpers";
 import UserStats from "./components/UserStats";
 import UserPercentageStats from "./components/UserPercentageStats";
 import TeamStats from "./components/TeamStats";
@@ -158,11 +158,13 @@ class TeamOverviewPage extends Component {
         menuItem: { key: 'user pie charts', icon: 'chart pie large', content: ''},
         render: () => {
           return (
-            <div className="TeamOverview-userStats">
-              <Heading hLevel={2} baseClass="TeamOverview" modifier="userStats">
-                Goals Completed Today Per User
+            <div className="TeamOverview-userStatsCotainer">
+              <Heading hLevel={2} baseClass="TeamOverview" modifier="userStatsHeading">
+                  Goals Completed on {dateToAxisString(this.state.endDate)} Per User
               </Heading>
-              {this.generateUserStatsToday()}
+              <div className="TeamOverview-userStats">
+                {this.generateUserStatsToday()}
+              </div>
             </div>
           )
         }
@@ -219,7 +221,7 @@ class TeamOverviewPage extends Component {
           <div className="TeamOverview-container">
             <div class="TeamOverview-datepickers">
               <div class="TeamOverview-beginDate">
-                <Heading baseClass="TeamOverview" hLevel={3}>
+                <Heading baseClass="TeamOverview" modifier="beginDateHeading" hLevel={3}>
                   Begin Date
                 </Heading>
                 <DatePicker
@@ -230,7 +232,7 @@ class TeamOverviewPage extends Component {
                 />
               </div>
               <div className="TeamOverview-endDate">
-                <Heading baseClass="TeamOverview" hLevel={3}>
+                <Heading baseClass="TeamOverview" modifier="endDateHeading" hLevel={3}>
                   End Date
                 </Heading>
                 <DatePicker
