@@ -14,7 +14,7 @@ import jwtDecode from "jwt-decode";
 
 import AdminPage from "./js/AdminPage";
 import CreateAccountPage from "./js/CreateAccountPage.js";
-import LoginPage from "./js/Loginpage.js";
+import LoginPage from "./js/LoginPage.js";
 import HomePage from "./js/HomePage.js";
 import SettingsPage from "./js/SettingsPage";
 import TeamOverviewPage from "./js/TeamOverviewPage";

@@ -267,10 +267,10 @@ export const TIME_OPTIONS = [
 ];
 
 export const COLORS = [
-  '#FF6358',
-  '#FFD246',
-  '#78D237',
-  '#28B4c8',
-  '#2D73F5',
-  '#AA46BE'
-]
+  "#FF6358",
+  "#FFD246",
+  "#78D237",
+  "#28B4c8",
+  "#2D73F5",
+  "#AA46BE",
+];

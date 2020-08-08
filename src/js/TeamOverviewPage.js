@@ -134,8 +134,8 @@ class TeamOverviewPage extends Component {
   }
 
   generateUserStatsToday() {
-    return this.state.stats.completedPerMemberDate.map( userData => {
-      return <UserStats userData={userData} />
+    return this.state.stats.completedPerMemberDate.map((userData) => {
+      return <UserStats userData={userData} />;
     });
   }
 
@@ -165,7 +165,9 @@ class TeamOverviewPage extends Component {
         render: () => {
           return (
             <div className="TeamOverview-stats">
-              <UserPercentageStats perMemberInPeriod={this.state.stats.completedPerMemberInPeriod} />
+              <UserPercentageStats
+                perMemberInPeriod={this.state.stats.completedPerMemberInPeriod}
+              />
             </div>
           )
         }
@@ -178,7 +180,9 @@ class TeamOverviewPage extends Component {
         render: () => {
           return (
             <div className="TeamOverview-teamStats">
-              <TeamStats teamCompletedInPeriod={this.state.stats.teamCompletedInPeriod} />
+              <TeamStats
+                teamCompletedInPeriod={this.state.stats.teamCompletedInPeriod}
+              />
             </div>
           )
         }

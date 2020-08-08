@@ -11,7 +11,6 @@ import { withRouter } from "react-router-dom";
 import axios from "axios";
 const BASE_URL = `${window.location.protocol}//${window.location.host}`;
 
-
 class ToDoItem extends Component {
   constructor(props) {
     super(props);

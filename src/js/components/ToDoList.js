@@ -11,7 +11,6 @@ import ToDoItem from "./ToDoItem";
 import ToDoForm from "./ToDoForm";
 import { isSameDay } from "./common/helpers";
 
-
 class ToDoList extends Component {
   constructor(props) {
     super(props);

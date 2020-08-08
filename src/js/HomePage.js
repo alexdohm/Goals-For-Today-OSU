@@ -8,7 +8,6 @@ import ToDoList from "./components/ToDoList";
 import WelcomeModal from "./components/WelcomeModal";
 import { selectTeam, selectToDo, selectUser } from "./redux/actions";
 
-
 class HomePage extends Component {
   constructor(props) {
     super(props);
@@ -24,7 +23,6 @@ class HomePage extends Component {
   }
 
   fetchData(isInitialLoad = false) {
-    
     const token = localStorage.getItem("jwtToken");
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
