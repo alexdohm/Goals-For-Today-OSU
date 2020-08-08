@@ -10,6 +10,7 @@ function ConfirmModal(props) {
       onOpen={() => setOpen(true)}
       open={props.open}
       trigger={props.trigger}
+      size={props.size}
     >
       <Modal.Header>{props.header}</Modal.Header>
       <Modal.Content>

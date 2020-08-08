@@ -222,6 +222,7 @@ class SettingsPage extends Component {
             onAction={this.deleteAccount}
             open={this.state.showDeleteConfirm}
             onClose={this.handleDeleteAccountConfirmClose}
+            size={"tiny"}
           />
 
           {this.state.deleteUserError ? (

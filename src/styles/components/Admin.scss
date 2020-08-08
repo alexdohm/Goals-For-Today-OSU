@@ -1,75 +1,66 @@
-.Admin
-{
+.Admin {
   @include form-styling;
 
   display: flex;
 
-  &-col
-  {
+  &-col {
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
     margin-left: 36px;
 
-    @media (max-width: $small-screen) 
-    {
+    @media (max-width: $small-screen) {
       margin-left: 0;
     }
   }
 
-  @media (max-width: $small-screen)
-  {
+  @media (max-width: $small-screen) {
     padding-top: 48px;
     display: block;
   }
 
-  &-teamMember
-  {
+  &-teamMember {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     margin-bottom: 16px;
   }
 
-  &-teamMemberIcon
-  {
+  &-teamMemberIcon {
     margin-right: 12px !important;
   }
 
-  &-button
-  {
+  &-button {
     margin-left: 16px;
   }
 
-  &-emailSection
-  {
+  &-emailSection {
     margin-top: 24px;
   }
 
-  &-grid
-  {
-    width: 100%
+  &-grid {
+    width: 100%;
   }
 
-  &-deleteButton
-  {
+  &-modal {
+    max-width: 500px;
+  }
+
+  &-deleteButton {
     width: 100%;
     max-width: 500px;
     margin-top: 24px;
   }
 
   &-statusSelect,
-  &-approve
-  {
+  &-approve {
     margin-left: auto !important;
   }
 }
 
-.Invite
-{
-  &-overlay
-  {
+.Invite {
+  &-overlay {
     background: $black-shadow;
     position: fixed;
     top: 0;
@@ -81,42 +72,36 @@
     z-index: 1;
   }
 
-  &-formWrapper
-  {
+  &-formWrapper {
     @include responsive-container;
 
     display: flex;
     justify-content: center;
   }
 
-  &-form
-  {
+  &-form {
     background-color: $white;
     padding: 24px;
   }
 
-  &-heading
-  {
+  &-heading {
     margin-bottom: 24px;
   }
 
-  &-inviteButtons
-  {
+  &-inviteButtons {
     margin-top: 48px;
     display: flex;
     justify-content: space-between;
   }
 
-  &-addButtonContainer
-  {
+  &-addButtonContainer {
     display: flex;
     width: 100%;
     justify-content: flex-end;
     padding: 16px;
   }
 
-  &-submit
-  {
+  &-submit {
     width: auto;
   }
 }

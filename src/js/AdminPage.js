@@ -238,6 +238,7 @@ class AdminPage extends Component {
               onAction={this.deleteTeam}
               open={this.state.showDeleteConfirm}
               onClose={this.handleDeleteTeamConfirmClose}
+              size={"tiny"}
             />
           </div>
           {this.state.deleteComplete ? <Redirect to="/settings" /> : null}
