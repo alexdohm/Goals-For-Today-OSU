@@ -203,6 +203,8 @@ class TeamSettings extends Component {
                       options={this.buildTeamOptions(this.props.currentTeams)}
                       value={this.props.currentTeam}
                       onChange={this.handleTeamChange}
+                      compact
+                      fluid
                     />
                   </div>
                 </div>
@@ -220,6 +222,8 @@ class TeamSettings extends Component {
                         this.props.currentTeams
                       )}
                       onChange={this.handleChange}
+                      compact
+                      fluid
                     />
                   </div>
                   <div className="eight wide column">
