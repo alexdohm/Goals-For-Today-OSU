@@ -21,6 +21,7 @@ export const ADMIN_ICON = "user secret";
 export const MENU_ICON = "bars";
 export const CLOSE_ICON = "close";
 export const COMMENT_ICON = "comment alternate outline";
+export const PIE_CHART_ICON = "chart pie";
 
 export const TIME_OPTIONS = [
   {
@@ -266,10 +267,10 @@ export const TIME_OPTIONS = [
 ];
 
 export const COLORS = [
-  '#FF6358',
-  '#FFD246',
-  '#78D237',
-  '#28B4c8',
-  '#2D73F5',
-  '#AA46BE'
-]
+  "#FF6358",
+  "#FFD246",
+  "#78D237",
+  "#28B4c8",
+  "#2D73F5",
+  "#AA46BE",
+];

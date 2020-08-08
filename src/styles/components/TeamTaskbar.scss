@@ -31,7 +31,10 @@
 
   &--collapsed
   {
-    background-color: transparent;
+    @media (max-width: $small-screen)
+    {
+      width: 0 !important;
+    }
   }
 
   &--collapsed &-container

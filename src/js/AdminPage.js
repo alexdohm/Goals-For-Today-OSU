@@ -11,6 +11,7 @@ import AdminDeleteButton from "./components/AdminDeleteButton";
 import InviteForm from "./components/InviteForm";
 import TeamTaskbar from "./components/TeamTaskbar";
 import ConfirmModal from "./components/ConfirmModal";
+import { setInitialView } from './components/common/helpers';
 
 class AdminPage extends Component {
   constructor(props) {
@@ -40,10 +41,10 @@ class AdminPage extends Component {
   }
 
   componentDidMount() {
-    this.fetchData();
+    this.fetchData(true);
   }
 
-  fetchData() {
+  fetchData(isInitialLoad = false) {
     const token = localStorage.getItem("jwtToken");
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -73,6 +74,11 @@ class AdminPage extends Component {
         this.setState({
           teamInfo: data,
         });
+      })
+      .then(() => {
+        if (isInitialLoad) {
+          setInitialView();
+        }
       });
     fetch(`/teams/${this.props.currentTeam}/non_members`, requestOptions)
       .then((response) => response.json())
@@ -80,6 +86,11 @@ class AdminPage extends Component {
         this.setState({
           nonTeamMembers: data,
         });
+      })
+      .then(() => {
+        if (isInitialLoad) {
+          setInitialView();
+        }
       });
   }
 

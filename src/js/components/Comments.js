@@ -40,7 +40,9 @@ class Comments extends Component {
     this.setState((prevState) => ({
       ...prevState,
       isExpanded: !prevState.isExpanded,
-    }));
+    }), () => {
+      window.scrollTo(0, 0)
+    });
   }
 
   renderComments(userToCommentsMap, goalToCommentsMap) {

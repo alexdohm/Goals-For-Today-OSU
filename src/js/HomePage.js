@@ -7,7 +7,7 @@ import TeamTaskbar from "./components/TeamTaskbar";
 import ToDoList from "./components/ToDoList";
 import WelcomeModal from "./components/WelcomeModal";
 import { selectTeam, selectToDo, selectUser } from "./redux/actions";
-
+import { setInitialView } from './components/common/helpers';
 
 class HomePage extends Component {
   constructor(props) {
@@ -24,7 +24,6 @@ class HomePage extends Component {
   }
 
   fetchData(isInitialLoad = false) {
-    
     const token = localStorage.getItem("jwtToken");
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -53,6 +52,10 @@ class HomePage extends Component {
 
         this.setState({
           data: data,
+        }, () => {
+          if (isInitialLoad) {
+            setInitialView();
+          }
         });
         this.props.selectTeam(data.team.team_id);
       });

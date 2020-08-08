@@ -1,21 +1,22 @@
 import React from "react";
-import { BarChart, 
-          ResponsiveContainer, 
-          CartesianGrid, 
-          XAxis,
-          YAxis, 
-          Tooltip, 
-          Legend, 
-          Bar, 
-          LineChart, 
-          Line } from 'recharts';
+import {
+  BarChart,
+  ResponsiveContainer,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  Bar,
+  LineChart,
+  Line,
+} from "recharts";
 
 import Heading from "./common/Heading";
-import { dateToAxisString, getRandomColor } from './common/helpers';
-import { COLORS } from './common/constants';
+import { dateToAxisString, getRandomColor } from "./common/helpers";
+import { COLORS } from "./common/constants";
 
 const TeamStats = (props) => {
-
   const { teamCompletedInPeriod } = props;
   const data = getData(teamCompletedInPeriod);
 
@@ -23,23 +24,31 @@ const TeamStats = (props) => {
     return (
       <div className="TeamStats">
         <Heading baseClass="TeamStats" hLevel={2}>
-          Team Statistics over date range
+          Team Goal Completion Percentages
         </Heading>
         <div className="TeamStats">
-          <ResponsiveContainer className="TeamStats-chart" height={400} width="100%">
+          <ResponsiveContainer
+            className="TeamStats-chart"
+            height={400}
+            width="100%"
+          >
             <LineChart data={data}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name"/>
+              <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
               <Legend />
               <Line type="monotone" dataKey="percent" stroke={getColor(0)} />
             </LineChart>
           </ResponsiveContainer>
-          <ResponsiveContainer className="TeamStats-chart" height={400} width="100%">
+          <ResponsiveContainer
+            className="TeamStats-chart"
+            height={400}
+            width="100%"
+          >
             <BarChart data={data}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name"/>
+              <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
               <Legend />
@@ -62,7 +71,7 @@ const getData = (teamCompletedInPeriod) => {
     if (!dateToGoalsMap[dateString]) {
       dateToGoalsMap[dateString] = {
         total: 0,
-        finished: 0
+        finished: 0,
       };
     }
 
@@ -72,22 +81,24 @@ const getData = (teamCompletedInPeriod) => {
 
   for (const date in dateToGoalsMap) {
     const entry = {};
-    entry['name'] = date;
+    entry["name"] = date;
 
     let percentage;
     if (dateToGoalsMap[date].total == 0) {
       percentage = 0.0;
     } else {
-      percentage = Math.floor(dateToGoalsMap[date].finished / dateToGoalsMap[date].total * 100);
+      percentage = Math.floor(
+        (dateToGoalsMap[date].finished / dateToGoalsMap[date].total) * 100
+      );
     }
-    
+
     entry.percent = percentage;
 
     data.push(entry);
   }
 
   return data;
-}
+};
 
 const getColor = (index) => {
   if (index > COLORS.length) {
@@ -95,6 +106,6 @@ const getColor = (index) => {
   } else {
     return COLORS[index];
   }
-}
+};
 
 export default TeamStats;

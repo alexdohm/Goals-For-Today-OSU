@@ -1,20 +1,22 @@
-import React from 'react';
-import { BarChart, 
-          ResponsiveContainer, 
-          CartesianGrid, 
-          XAxis,
-          YAxis, 
-          Tooltip, 
-          Legend, 
-          Bar, 
-          LineChart, 
-          Line } from 'recharts';
+import React from "react";
+import {
+  BarChart,
+  ResponsiveContainer,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  Bar,
+  LineChart,
+  Line,
+} from "recharts";
 
-import { dateToAxisString, getRandomColor } from './common/helpers';
-import { COLORS } from './common/constants';
+import { dateToAxisString, getRandomColor } from "./common/helpers";
+import { COLORS } from "./common/constants";
+import Heading from "./common/Heading";
 
 const UserPercentageStats = (props) => {
-
   const { perMemberInPeriod } = props;
   const nameList = [];
 
@@ -23,20 +25,31 @@ const UserPercentageStats = (props) => {
   if (data && data.length) {
     return (
       <div className="UserPercentageStats">
-        <ResponsiveContainer className="UserPercentageStats-chart" height={400} width="100%">
+        <Heading hLevel={2} baseClass="UserPercentageStats">
+          Goal Completion Percentage per User
+        </Heading>
+        <ResponsiveContainer
+          className="UserPercentageStats-chart"
+          height={400}
+          width="100%"
+        >
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name"/>
+            <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
             <Legend />
             {generateLines(nameList)}
           </LineChart>
         </ResponsiveContainer>
-        <ResponsiveContainer className="UserPercentageStats-chart" height={400} width="100%">
+        <ResponsiveContainer
+          className="UserPercentageStats-chart"
+          height={400}
+          width="100%"
+        >
           <BarChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name"/>
+            <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
             <Legend />
@@ -46,10 +59,9 @@ const UserPercentageStats = (props) => {
       </div>
     );
   }
-}
+};
 
 const getData = (perMemberInPeriod, nameList) => {
-
   const data = [];
 
   const dateToDataMap = {};
@@ -70,14 +82,14 @@ const getData = (perMemberInPeriod, nameList) => {
     if (item.totalgoals == 0) {
       percentage = 0.0;
     } else {
-      percentage = Math.floor(item.finishedgoals / item.totalgoals * 100);
+      percentage = Math.floor((item.finishedgoals / item.totalgoals) * 100);
     }
     dateToDataMap[dateString][userId] = percentage;
   }
 
   for (const date in dateToDataMap) {
     const entry = {};
-    entry['name'] = date;
+    entry["name"] = date;
 
     for (const userId in dateToDataMap[date]) {
       const name = userIdToNameMap[userId];
@@ -99,19 +111,19 @@ const getData = (perMemberInPeriod, nameList) => {
   }
 
   return data;
-}
+};
 
 const generateBars = (nameList) => {
-  return nameList.map( (name, index) => {
-    return <Bar dataKey={name} fill={getColor(index)} />
+  return nameList.map((name, index) => {
+    return <Bar dataKey={name} fill={getColor(index)} />;
   });
-}
+};
 
 const generateLines = (nameList) => {
-  return nameList.map( (name, index) => {
-    return <Line type="monotone" dataKey={name} stroke={getColor(index)} />
+  return nameList.map((name, index) => {
+    return <Line type="monotone" dataKey={name} stroke={getColor(index)} />;
   });
-}
+};
 
 const getColor = (index) => {
   if (index > COLORS.length) {
@@ -119,6 +131,6 @@ const getColor = (index) => {
   } else {
     return COLORS[index];
   }
-}
+};
 
 export default UserPercentageStats;

@@ -2,7 +2,6 @@
 {
   display: flex;
   height: 100%;
-  overflow: auto;
   
   @media (max-width: $small-screen)
   {
@@ -18,11 +17,28 @@
     flex-grow: 1;
   }
 
+  &-userStatsHeading
+  {
+    text-align: center;
+    margin-top: 16px !important;
+  }
+
   &-userStats
   {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     max-width: 1140px;
+  }
+
+  &-endDate
+  {
+    margin-top: 12px;
+  }
+
+  &-beginDateHeading,
+  &-endDateHeading
+  {
+    margin-bottom: 8px !important;
   }
 }

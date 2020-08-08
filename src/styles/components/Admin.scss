@@ -9,6 +9,8 @@
     align-items: center;
     position: relative;
     margin-left: 36px;
+    padding-left: 16px;
+    padding-right: 16px;
 
     @media (max-width: $small-screen) {
       margin-left: 0;
@@ -56,6 +58,15 @@
   &-statusSelect,
   &-approve {
     margin-left: auto !important;
+  }
+
+  .selection
+  {
+    @media (max-width: $small-screen)
+    {
+      width: 100%;
+      min-width: 0 !important;
+    }
   }
 }
 

@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Dimmer, Loader, Tab } from "semantic-ui-react";
+import { Dimmer, Loader, Tab, Icon } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 
 import Heading from "./components/common/Heading";
 import TeamTaskbar from "./components/TeamTaskbar";
 import Comments from "./components/Comments";
-import { dateToQueryString } from "./components/common/helpers";
+import { dateToQueryString, dateToAxisString } from "./components/common/helpers";
 import UserStats from "./components/UserStats";
 import UserPercentageStats from "./components/UserPercentageStats";
 import TeamStats from "./components/TeamStats";
+import { setInitialView } from "./components/common/helpers";
 
 class TeamOverviewPage extends Component {
   constructor(props) {
@@ -57,10 +58,10 @@ class TeamOverviewPage extends Component {
   }
 
   componentDidMount() {
-    this.fetchData();
+    this.fetchData(true);
   }
 
-  fetchData() {
+  fetchData(isInitialLoad = false) {
     const token = localStorage.getItem("jwtToken");
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -83,6 +84,11 @@ class TeamOverviewPage extends Component {
         this.setState({
           data: data,
         });
+      })
+      .then(() => {
+        if (isInitialLoad) {
+          setInitialView();
+        }
       });
     fetch("/teams/" + this.props.currentTeam, requestOptions)
       .then((response) => response.json())
@@ -100,7 +106,12 @@ class TeamOverviewPage extends Component {
       })
       .then(() => {
         this.updateStatistics();
-      });
+      })
+      .then(() => {
+        if (isInitialLoad) {
+          setInitialView();
+        }
+      });;
   }
 
   updateStatistics() {
@@ -133,47 +144,62 @@ class TeamOverviewPage extends Component {
   }
 
   generateUserStatsToday() {
-    return this.state.stats.completedPerMemberDate.map( userData => {
-      return <UserStats userData={userData} />
+    return this.state.stats.completedPerMemberDate.map((userData) => {
+      return <UserStats userData={userData} />;
     });
   }
 
   getTabPanes() {
-    const panes = [
-      {
-        menuItem: 'Today',
+
+    const panes = [];
+
+    if (this.state.stats.completedPerMemberDate && this.state.stats.completedPerMemberDate.length) {
+      panes.push({
+        menuItem: { key: 'user pie charts', icon: 'chart pie large', content: ''},
         render: () => {
           return (
-            <div className="TeamOverview-userStats">
-              <Heading hLevel={2} baseClass="TeamOverview" modifier="userStats">
-                Goals Completed Today Per User
+            <div className="TeamOverview-userStatsCotainer">
+              <Heading hLevel={2} baseClass="TeamOverview" modifier="userStatsHeading">
+                  Goals Completed on {dateToAxisString(this.state.endDate)} Per User
               </Heading>
-              {this.generateUserStatsToday()}
+              <div className="TeamOverview-userStats">
+                {this.generateUserStatsToday()}
+              </div>
             </div>
           )
         }
-      },
-      {
-        menuItem: 'User Completion',
+      });
+    }
+
+    if (this.state.stats.completedPerMemberInPeriod && this.state.stats.completedPerMemberInPeriod.length) {
+      panes.push({
+        menuItem: { key: 'user pie charts', icon: 'chart line large', content: '' },
         render: () => {
           return (
             <div className="TeamOverview-stats">
-              <UserPercentageStats perMemberInPeriod={this.state.stats.completedPerMemberInPeriod} />
+              <UserPercentageStats
+                perMemberInPeriod={this.state.stats.completedPerMemberInPeriod}
+              />
             </div>
           )
         }
-      },
-      {
-        menuItem: 'Team Completion',
+      });
+    }
+
+    if (this.state.stats.teamCompletedInPeriod && this.state.stats.teamCompletedInPeriod.length) {
+      panes.push({
+        menuItem: { key: 'user pie charts', icon: 'group large', content: '' },
         render: () => {
           return (
             <div className="TeamOverview-teamStats">
-              <TeamStats teamCompletedInPeriod={this.state.stats.teamCompletedInPeriod} />
+              <TeamStats
+                teamCompletedInPeriod={this.state.stats.teamCompletedInPeriod}
+              />
             </div>
           )
         }
-      }
-    ]
+      });
+    }
 
     return panes;
   }
@@ -182,6 +208,7 @@ class TeamOverviewPage extends Component {
     if (this.state.data && this.state.teamInfo && this.state.stats) {
       console.log(this.state);
       const { data } = this.state;
+      window.scrollTo(0, 0);
       return (
         <div className="TeamOverview">
           <TeamTaskbar
@@ -194,7 +221,7 @@ class TeamOverviewPage extends Component {
           <div className="TeamOverview-container">
             <div class="TeamOverview-datepickers">
               <div class="TeamOverview-beginDate">
-                <Heading baseClass="TeamOverview" hLevel={3}>
+                <Heading baseClass="TeamOverview" modifier="beginDateHeading" hLevel={3}>
                   Begin Date
                 </Heading>
                 <DatePicker
@@ -205,7 +232,7 @@ class TeamOverviewPage extends Component {
                 />
               </div>
               <div className="TeamOverview-endDate">
-                <Heading baseClass="TeamOverview" hLevel={3}>
+                <Heading baseClass="TeamOverview" modifier="endDateHeading" hLevel={3}>
                   End Date
                 </Heading>
                 <DatePicker
