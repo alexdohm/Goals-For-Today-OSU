@@ -184,7 +184,7 @@ const approveUserRequest = async function (userId, teamId) {
  * Add or remove a user from the manages table effectively updating admin status
  * @param {number} userId
  * @param {number} teamId
- * @param {objeect} updateInfo if admin_ind = 1, add user to manages table, else remove
+ * @param {object} updateInfo if admin_ind = 1, add user to manages table, else remove
  */
 const updateTeamAdmin = async function (userId, teamId, updateInfo) {
   let updateStatement;
