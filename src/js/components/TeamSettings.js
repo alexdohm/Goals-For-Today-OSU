@@ -270,7 +270,7 @@ class TeamSettings extends Component {
               header="Success!"
               style="success"
               content="Team was successfully created"
-              onDimiss={this.handleDismissMsg}
+              onDismiss={this.handleDismissMsg}
             />
           ) : null}
         </div>
