@@ -8,6 +8,7 @@ import UserSettings from "./components/UserSettings";
 import TeamSettings from "./components/TeamSettings";
 import PendingInvites from "./components/PendingInvites";
 import SettingsDeleteButton from "./components/SettingsDeleteButton";
+import ConfirmModal from "./components/ConfirmModal";
 import {
   selectUser,
   setAuthorizationToken,
@@ -15,7 +16,6 @@ import {
   selectTeam,
 } from "./redux/actions";
 const BASE_URL = `${window.location.protocol}//${window.location.host}`;
-
 
 class SettingsPage extends Component {
   constructor(props) {
@@ -26,12 +26,20 @@ class SettingsPage extends Component {
       userInfo: null,
       pending: null,
       deleteUserError: "",
+      showDeleteConfirm: false,
+      deleteComplete: false,
     };
 
     this.deleteAccount = this.deleteAccount.bind(this);
     this.addPending = this.addPending.bind(this);
     this.removePending = this.removePending.bind(this);
     this.addTeam = this.addTeam.bind(this);
+    this.handleDeleteAccountConfirmOpen = this.handleDeleteAccountConfirmOpen.bind(
+      this
+    );
+    this.handleDeleteAccountConfirmClose = this.handleDeleteAccountConfirmClose.bind(
+      this
+    );
   }
 
   async componentDidMount() {
@@ -75,6 +83,18 @@ class SettingsPage extends Component {
     if (!this.state.teams) {
       this.props.selectTeam(-1);
     }
+  }
+
+  handleDeleteAccountConfirmOpen() {
+    this.setState({
+      showDeleteConfirm: true,
+    });
+  }
+
+  handleDeleteAccountConfirmClose() {
+    this.setState({
+      showDeleteConfirm: false,
+    });
   }
 
   deleteAccount() {
@@ -190,7 +210,20 @@ class SettingsPage extends Component {
             pending={this.state.pending}
             onRemovePending={this.removePending}
           />
-          <SettingsDeleteButton onClick={this.deleteAccount} />
+          <ConfirmModal
+            trigger={
+              <SettingsDeleteButton
+                onClick={this.handleDeleteAccountConfirmOpen}
+              />
+            }
+            message="Do you want to delete your account? This cannot be undone."
+            header="Confirm account deletion"
+            buttonLabel="Yes"
+            onAction={this.deleteAccount}
+            open={this.state.showDeleteConfirm}
+            onClose={this.handleDeleteAccountConfirmClose}
+          />
+
           {this.state.deleteUserError ? (
             <Message negative content={this.state.deleteUserError} />
           ) : null}
@@ -215,6 +248,7 @@ const mapDispatchToProps = (dispatch) => ({
     setAuthorizationToken(false);
     dispatch(setCurrentUser({}));
   },
+  selectTeam: (teamID) => dispatch(selectTeam(teamID)),
 });
 
 const mapStateToProps = (state) => {
@@ -233,6 +267,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { mapDispatchToProps, selectTeam })(
-  SettingsPage
-);
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsPage);
