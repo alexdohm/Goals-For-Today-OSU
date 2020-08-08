@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Dimmer, Loader, Tab } from "semantic-ui-react";
+import { Dimmer, Loader, Tab, Icon } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 
 import Heading from "./components/common/Heading";
@@ -10,6 +10,7 @@ import { dateToQueryString } from "./components/common/helpers";
 import UserStats from "./components/UserStats";
 import UserPercentageStats from "./components/UserPercentageStats";
 import TeamStats from "./components/TeamStats";
+import { PIE_CHART_ICON } from "./components/common/helpers";
 
 class TeamOverviewPage extends Component {
   constructor(props) {
@@ -139,9 +140,12 @@ class TeamOverviewPage extends Component {
   }
 
   getTabPanes() {
-    const panes = [
-      {
-        menuItem: 'Today',
+
+    const panes = [];
+
+    if (this.state.stats.completedPerMemberDate && this.state.stats.completedPerMemberDate.length) {
+      panes.push({
+        menuItem: { key: 'user pie charts', icon: 'chart pie large', content: ''},
         render: () => {
           return (
             <div className="TeamOverview-userStats">
@@ -152,9 +156,12 @@ class TeamOverviewPage extends Component {
             </div>
           )
         }
-      },
-      {
-        menuItem: 'User Completion',
+      });
+    }
+
+    if (this.state.stats.completedPerMemberInPeriod && this.state.stats.completedPerMemberInPeriod.length) {
+      panes.push({
+        menuItem: { key: 'user pie charts', icon: 'chart line large', content: '' },
         render: () => {
           return (
             <div className="TeamOverview-stats">
@@ -162,9 +169,12 @@ class TeamOverviewPage extends Component {
             </div>
           )
         }
-      },
-      {
-        menuItem: 'Team Completion',
+      });
+    }
+
+    if (this.state.stats.teamCompletedInPeriod && this.state.stats.teamCompletedInPeriod.length) {
+      panes.push({
+        menuItem: { key: 'user pie charts', icon: 'group large', content: '' },
         render: () => {
           return (
             <div className="TeamOverview-teamStats">
@@ -172,8 +182,8 @@ class TeamOverviewPage extends Component {
             </div>
           )
         }
-      }
-    ]
+      });
+    }
 
     return panes;
   }
