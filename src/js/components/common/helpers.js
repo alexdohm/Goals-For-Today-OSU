@@ -91,3 +91,8 @@ export const getRandomColor = () => {
   }
   return color;
 };
+
+export const setInitialView = () => {
+  window.scrollTo(0, 0);
+  document.body.style.zoom = "100%";
+}

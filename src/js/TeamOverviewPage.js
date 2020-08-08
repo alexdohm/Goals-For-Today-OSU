@@ -10,7 +10,7 @@ import { dateToQueryString } from "./components/common/helpers";
 import UserStats from "./components/UserStats";
 import UserPercentageStats from "./components/UserPercentageStats";
 import TeamStats from "./components/TeamStats";
-import { PIE_CHART_ICON } from "./components/common/helpers";
+import { setInitialView } from "./components/common/helpers";
 
 class TeamOverviewPage extends Component {
   constructor(props) {
@@ -58,10 +58,10 @@ class TeamOverviewPage extends Component {
   }
 
   componentDidMount() {
-    this.fetchData();
+    this.fetchData(true);
   }
 
-  fetchData() {
+  fetchData(isInitialLoad = false) {
     const token = localStorage.getItem("jwtToken");
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -84,6 +84,11 @@ class TeamOverviewPage extends Component {
         this.setState({
           data: data,
         });
+      })
+      .then(() => {
+        if (isInitialLoad) {
+          setInitialView();
+        }
       });
     fetch("/teams/" + this.props.currentTeam, requestOptions)
       .then((response) => response.json())
@@ -101,7 +106,12 @@ class TeamOverviewPage extends Component {
       })
       .then(() => {
         this.updateStatistics();
-      });
+      })
+      .then(() => {
+        if (isInitialLoad) {
+          setInitialView();
+        }
+      });;
   }
 
   updateStatistics() {
@@ -196,6 +206,7 @@ class TeamOverviewPage extends Component {
     if (this.state.data && this.state.teamInfo && this.state.stats) {
       console.log(this.state);
       const { data } = this.state;
+      window.scrollTo(0, 0);
       return (
         <div className="TeamOverview">
           <TeamTaskbar
