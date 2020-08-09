@@ -97,6 +97,13 @@ const getData = (teamCompletedInPeriod) => {
     data.push(entry);
   }
 
+  data.sort((a, b) => {
+    const aDate = new Date(a.name);
+    const bDate = new Date(b.name);
+
+    return aDate.getTime() - bDate.getTime();
+  });
+
   return data;
 };
 
