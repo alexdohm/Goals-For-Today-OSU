@@ -172,18 +172,19 @@ class TeamOverviewPage extends Component {
     }
 
     if (this.state.stats.completedPerMemberInPeriod && this.state.stats.completedPerMemberInPeriod.length) {
-      panes.push({
-        menuItem: { key: 'user pie charts', icon: 'chart line large', content: '' },
-        render: () => {
-          return (
-            <div className="TeamOverview-stats">
-              <UserPercentageStats
-                perMemberInPeriod={this.state.stats.completedPerMemberInPeriod}
-              />
-            </div>
-          )
-        }
-      });
+      const shouldRender = this.checkIfAnyMemberHasGoals(this.state.stats.completedPerMemberInPeriod);
+      if (shouldRender) {
+        panes.push({
+          menuItem: { key: 'user pie charts', icon: 'chart line large', content: '' },
+          render: () => {
+            return (
+              <div className="TeamOverview-stats">
+                <UserPercentageStats perMemberInPeriod={this.state.stats.completedPerMemberInPeriod} />
+              </div>
+            )
+          }
+        });
+      }
     }
 
     if (this.state.stats.teamCompletedInPeriod && this.state.stats.teamCompletedInPeriod.length) {
@@ -202,6 +203,15 @@ class TeamOverviewPage extends Component {
     }
 
     return panes;
+  }
+
+  checkIfAnyMemberHasGoals(completedPerMemberInPeriod) {
+    for (const member of completedPerMemberInPeriod) {
+      if (member.totalgoals) {
+        return true;
+      }
+    }
+    return false;
   }
 
   render() {

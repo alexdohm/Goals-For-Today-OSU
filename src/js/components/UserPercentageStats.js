@@ -58,6 +58,8 @@ const UserPercentageStats = (props) => {
         </ResponsiveContainer>
       </div>
     );
+  } else {
+    return null;
   }
 };
 
@@ -68,6 +70,9 @@ const getData = (perMemberInPeriod, nameList) => {
   const userIdToNameMap = {};
 
   for (const item of perMemberInPeriod) {
+    if (!item.goaldate) {
+      continue;
+    }
     const dateString = dateToAxisString(new Date(item.goaldate));
     if (!dateToDataMap[dateString]) {
       dateToDataMap[dateString] = {};
@@ -109,7 +114,9 @@ const getData = (perMemberInPeriod, nameList) => {
   for (const id in userIdToNameMap) {
     nameList.push(userIdToNameMap[id]);
   }
-
+  console.log('dateToDataMap', dateToDataMap);
+  console.log('userIdToNameMap', userIdToNameMap);
+  console.log('data', data);
   return data;
 };
 
