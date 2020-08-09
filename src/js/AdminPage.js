@@ -66,6 +66,10 @@ class AdminPage extends Component {
       .then((data) => {
         this.setState({
           data: data,
+        }, () => {
+          if (!this.state.data.team.team_admin) {
+            this.props.history.push('/home');
+          }
         });
       });
     fetch("/teams/" + this.props.currentTeam, requestOptions)
