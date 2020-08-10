@@ -65,7 +65,7 @@ const goalsCompletedPerTeamMemberPeriod = async function (
                             FROM goal
                             WHERE team_id = $1
                               AND DATE(date_time) >= $2
-                              AND DATE(date_time) < $3
+                              AND DATE(date_time) <= $3
                             GROUP BY member_id, DATE(date_time)) as u2
                            ON u1.member_id = u2.member_id;`;
   const finishedGoals = await Helpers.runQuery(timePeriodGoalsQuery, [
@@ -97,7 +97,7 @@ const goalsCompletedInPeriod = async function (teamId, beginDate, endDate) {
 FROM goal
 WHERE team_id = $1
 AND DATE(date_time) >= $2
-AND DATE(date_time) < $3
+AND DATE(date_time) <= $3
 GROUP BY member_id, DATE(date_time);`;
 
   const finishedGoals = await Helpers.runQuery(allForTeamQuery, [
