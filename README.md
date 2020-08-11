@@ -1,9 +1,13 @@
 # Goals-For-Today
-Capstone project preliminary scaffolding
+
+Capstone project for CS 467
+To-do app designed as an effective replacement of daily standup meetings.
+
+## Initial setup
 
 Followed the steps here for React, Babel, and Webpack setup: https://www.valentinog.com/blog/babel/
 
-Needed a combo of sources for the Sass setup, mostly these two: https://developerhandbook.com/webpack/how-to-configure-scss-modules-for-webpack/ and https://blog.marcnuri.com/react-babel-webpack-sass-application/ 
+Needed a combo of sources for the Sass setup, mostly these two: https://developerhandbook.com/webpack/how-to-configure-scss-modules-for-webpack/ and https://blog.marcnuri.com/react-babel-webpack-sass-application/
 
 ## To run locally
 
