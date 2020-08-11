@@ -20,7 +20,10 @@ const UserPercentageStats = (props) => {
   const { perMemberInPeriod } = props;
   const nameList = [];
 
-  const data = getData(perMemberInPeriod, nameList);
+  const dateToDataMap = {};
+  const userIdToNameMap = {};
+  const data = getData(perMemberInPeriod, nameList, dateToDataMap, userIdToNameMap);
+  const dataWithZeros = getDataWithZeros(dateToDataMap, nameList, data, props.beginDate, props.endDate);
 
   if (data && data.length) {
     return (
@@ -33,7 +36,7 @@ const UserPercentageStats = (props) => {
           height={400}
           width="100%"
         >
-          <LineChart data={data}>
+          <LineChart data={dataWithZeros}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
@@ -63,11 +66,8 @@ const UserPercentageStats = (props) => {
   }
 };
 
-const getData = (perMemberInPeriod, nameList) => {
+const getData = (perMemberInPeriod, nameList, dateToDataMap, userIdToNameMap) => {
   const data = [];
-
-  const dateToDataMap = {};
-  const userIdToNameMap = {};
 
   for (const item of perMemberInPeriod) {
     if (!item.goaldate) {
@@ -114,11 +114,40 @@ const getData = (perMemberInPeriod, nameList) => {
   for (const id in userIdToNameMap) {
     nameList.push(userIdToNameMap[id]);
   }
-  console.log('dateToDataMap', dateToDataMap);
-  console.log('userIdToNameMap', userIdToNameMap);
-  console.log('data', data);
   return data;
 };
+
+const getDataWithZeros = (dateToDataMap, nameList, data, beginDate, endDate) => {
+  
+  //clone existing data to zeroData
+  const zeroData = [];
+  for (const entry of data) {
+    zeroData.push(JSON.parse(JSON.stringify(entry)));
+  }
+
+  let date = new Date(beginDate.getTime());
+  while (date.getTime() <= endDate.getTime()) {
+    const dateString = dateToAxisString(date);
+    if (!dateToDataMap[dateString]) {
+      const zeroEntry = {};
+      for (const name of nameList) {
+        zeroEntry[name] = 0;
+      }
+      zeroEntry["name"] = dateString;
+      zeroData.push(zeroEntry);
+    }
+    date.setDate(date.getDate() + 1);
+  }
+
+  zeroData.sort((a, b) => {
+    const aDate = new Date(a.name);
+    const bDate = new Date(b.name);
+
+    return aDate.getTime() - bDate.getTime();
+  });
+
+  return zeroData;
+}
 
 const generateBars = (nameList) => {
   return nameList.map((name, index) => {
@@ -128,7 +157,7 @@ const generateBars = (nameList) => {
 
 const generateLines = (nameList) => {
   return nameList.map((name, index) => {
-    return <Line type="monotone" dataKey={name} stroke={getColor(index)} />;
+    return <Line type="monotone" dataKey={name} stroke={getColor(index)} strokeWidth={2} />;
   });
 };
 

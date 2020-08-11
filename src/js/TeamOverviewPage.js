@@ -179,7 +179,11 @@ class TeamOverviewPage extends Component {
           render: () => {
             return (
               <div className="TeamOverview-stats">
-                <UserPercentageStats perMemberInPeriod={this.state.stats.completedPerMemberInPeriod} />
+                <UserPercentageStats 
+                  perMemberInPeriod={this.state.stats.completedPerMemberInPeriod} 
+                  beginDate={this.state.beginDate}
+                  endDate={this.state.endDate}
+                />
               </div>
             )
           }
@@ -194,7 +198,9 @@ class TeamOverviewPage extends Component {
           return (
             <div className="TeamOverview-teamStats">
               <TeamStats
-                teamCompletedInPeriod={this.state.stats.teamCompletedInPeriod}
+                teamCompletedInPeriod={this.state.stats.teamCompletedInPeriod} 
+                beginDate={this.state.beginDate}
+                endDate={this.state.endDate}
               />
             </div>
           )
