@@ -18,7 +18,10 @@ import { COLORS } from "./common/constants";
 
 const TeamStats = (props) => {
   const { teamCompletedInPeriod } = props;
-  const data = getData(teamCompletedInPeriod);
+
+  const dateToGoalsMap = {};
+  const data = getData(teamCompletedInPeriod, dateToGoalsMap);
+  const zeroData = getDataWithZeros(data, dateToGoalsMap, props.beginDate, props.endDate);
 
   if (data && data.length) {
     return (
@@ -32,13 +35,13 @@ const TeamStats = (props) => {
             height={400}
             width="100%"
           >
-            <LineChart data={data}>
+            <LineChart data={zeroData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="percent" stroke={getColor(0)} />
+              <Line type="monotone" dataKey="percent" stroke={getColor(0)} strokeWidth={2}/>
             </LineChart>
           </ResponsiveContainer>
           <ResponsiveContainer
@@ -61,10 +64,8 @@ const TeamStats = (props) => {
   }
 };
 
-const getData = (teamCompletedInPeriod) => {
+const getData = (teamCompletedInPeriod, dateToGoalsMap) => {
   const data = [];
-
-  const dateToGoalsMap = {};
 
   for (const item of teamCompletedInPeriod) {
     const dateString = dateToAxisString(new Date(item.goaldate));
@@ -106,6 +107,36 @@ const getData = (teamCompletedInPeriod) => {
 
   return data;
 };
+
+const getDataWithZeros = (data, dateToGoalsMap, beginDate, endDate) => {
+
+  //clone existing data to zeroData
+  const zeroData = [];
+  for (const entry of data) {
+    zeroData.push(JSON.parse(JSON.stringify(entry)));
+  }
+
+  let date = new Date(beginDate.getTime());
+  while (date.getTime() <= endDate.getTime()) {
+    const dateString = dateToAxisString(date);
+    if (!dateToGoalsMap[dateString]) {
+      const zeroEntry = {};
+      zeroEntry["percent"] = 0
+      zeroEntry["name"] = dateString;
+      zeroData.push(zeroEntry);
+    }
+    date.setDate(date.getDate() + 1);
+  }
+
+  zeroData.sort((a, b) => {
+    const aDate = new Date(a.name);
+    const bDate = new Date(b.name);
+
+    return aDate.getTime() - bDate.getTime();
+  });
+
+  return zeroData;
+}
 
 const getColor = (index) => {
   if (index > COLORS.length) {
