@@ -90,7 +90,7 @@ class TeamTaskbar extends Component {
             <TaskbarItem
               key={currentUserId}
               onClick={
-                this.props.isTeamOverview
+                this.props.taskbarNavigatesHome
                   ? this.navigateToHome
                   : () => this.props.onUserSelected(currentUserId)
               }
@@ -108,7 +108,7 @@ class TeamTaskbar extends Component {
                     <TaskbarItem
                       key={user.member_id}
                       onClick={
-                        this.props.isTeamOverview
+                        this.props.taskbarNavigatesHome
                           ? this.navigateToHome
                           : () => this.props.onUserSelected(user.member_id)
                       }

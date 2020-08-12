@@ -212,6 +212,7 @@ class AdminPage extends Component {
             currentUserId={this.state.data.member_id}
             currentUserFirstName={this.state.data.first_name}
             currentUserLastName={this.state.data.last_name}
+            taskbarNavigatesHome={true}
             team={this.state.data.team}
           />
           <div className="Admin-col">

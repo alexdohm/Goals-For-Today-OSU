@@ -232,7 +232,7 @@ class TeamOverviewPage extends Component {
             currentUserFirstName={data.first_name}
             currentUserLastName={data.last_name}
             team={data.team}
-            isTeamOverview={true}
+            taskbarNavigatesHome={true}
           />
           <div className="TeamOverview-container">
             <div class="TeamOverview-datepickers">
